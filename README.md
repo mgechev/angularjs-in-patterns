@@ -1,14 +1,14 @@
 # AngularJS Patterns
 
-# Abstract
+## Abstract
 
 This document describes different design patterns used in AngularJS or any AngularJS application, their purpose and applications.
 
-# Introduction
+## Introduction
 
 The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. Next sections describes the different design patterns used in the different component.
 
-# AngularJS overview
+## AngularJS overview
 
 AngularJS is JavaScript framework developed by Google. It intents to provide solid base for the development of CRUD Single-Page Applications (SPA).
 SPA is web application, which doesn't require page reload when the user performs different actions. This means that all the web application should be loaded with the initial request or better - the information and resources should be loaded on demand.
