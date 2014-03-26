@@ -38,7 +38,7 @@ Initially each SPA loads `index.html` file. In the case of AngularJS this file c
 
 Sample partial:
 
-```html
+```HTML
 <html ng-app>
  <!-- Body tag augmented with ngController directive  -->
  <body ng-controller="MyController">
@@ -50,10 +50,19 @@ Sample partial:
    <script src="angular.js">
  </body>
 </html>
-```
+````
 
-With AngularJS expressions partials define what kind of actions should be performed for handling different user interractions. In the example above the value of the attribute `ng-click` states that the method `changeFoo` of the current *scope* will be invoked.
+With AngularJS expressions partials define what kind of actions should be performed for handling different user interactions. In the example above the value of the attribute `ng-click` states that the method `changeFoo` of the current *scope* will be invoked.
 
 ### Controllers
 
-The controllers are JavaScript functions, which handle the user interractions with the templates (for example mouse events, keyboard events, etc.). All external for the controller components are provided through the Dependency Injection machanism of AngularJS.
+The AngularJS controllers are JavaScript functions, which handle the user interactions with the partials (for example mouse events, keyboard events, etc.), by attaching methods to the *scope*. All required external for the controllers components are provided through the Dependency Injection mechanism of AngularJS. The controllers are also responsible for providing the model to the partials by attaching data to the *scope*. We can think of this data as *view model*.
+
+```JavaScript
+function SampleCtrl($scope) {
+  $scope.foo = 42;
+  $scope.changeFoo = function () {
+    //body...
+  };
+}
+````
