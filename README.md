@@ -1,4 +1,4 @@
-# AngularJS Patterns
+# AngularJS in Patterns
 
 ## Abstract
 
