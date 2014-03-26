@@ -1,5 +1,17 @@
 # AngularJS in Patterns
 
+## Contents
+
+<!-- MarkdownTOC depth=2 -->
+
+- Abstract
+- Introduction
+- AngularJS overview
+- Scope
+
+<!-- /MarkdownTOC -->
+
+
 ## Abstract
 
 This document describes different design patterns used in AngularJS or any AngularJS application, their purpose and applications.
