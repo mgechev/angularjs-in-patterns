@@ -110,3 +110,43 @@ function ChildCtrl($scope) {
 ```
 
 With `div#child` is associated `ChildCtrl` but since the scope injected inside `ChildCtrl` inherits prototipically from its parent scope (i.e. the one injected inside `BaseCtrl`) the method `foo` is accessible by `button#parent-method`.
+
+### Directives
+
+In AngularJS the directives are the place where all DOM manipulations are isolated. Each directive has a name and logic associated with it. In the simplest case the directive contains only name and definition of *postLink* function, which encapsulates all the logic required for the directive. In more complex cases the directive could contain a lot of properties such as:
+
+- template
+- compile function
+- link function
+- etc...
+
+By using the name of the directives they can be used inside the declarative templates.
+
+Example:
+
+```JavaScript
+myModule.directive('alertButton', function () {
+  return {
+    template: '<button ng-transclude></button>',
+    scope: {
+      content: '@'
+    },
+    replace: true,
+    restrict: 'E',
+    transclude: true,
+    link: function (scope, el) {
+      el.click(function () {
+        alert(scope.content);
+      });
+    }
+  };
+});
+```
+
+```HTML
+<alert-button content="42">Click me</alert-button>
+```
+
+In the example above the tag `<alert-button></alert-button>` will be replaced button element. When the user clicks on this element the string `42` will be alerted.
+
+Since the intent of this papre is not to explain the complete API of AngularJS, we will stop with the directives here.
