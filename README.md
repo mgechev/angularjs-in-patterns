@@ -1,17 +1,5 @@
 # AngularJS in Patterns
 
-## Contents
-
-<!-- MarkdownTOC depth=2 -->
-
-- Abstract
-- Introduction
-- AngularJS overview
-- Scope
-
-<!-- /MarkdownTOC -->
-
-
 ## Abstract
 
 This document describes different design patterns used in AngularJS or any AngularJS application, their purpose and applications.
@@ -90,7 +78,7 @@ For example, if we wire the sample controller above with the partial provided in
 
 All the custom elements, attributes, comments or classes could be recognized as AngularJS *directives* if they are previously defined as ones.
 
-## Scope
+### Scope
 
 In AngularJS scope is JavaScript object, which is exposed to the partials. The scope could contains different properties - primitives, objects or methods. All methods attached to the scope could be invoked by evaluation of AngularJS expression inside the partials associated with the given scope or direct call of the method by any component, which keeps reference to the scope. By using appropriate *directives*, the data attached to the scope could be binded to the view in such way that each change in the partial will reflect the scope property and each change of the scope property will reflect the partial.
 
