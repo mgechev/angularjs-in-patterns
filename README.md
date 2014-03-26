@@ -51,3 +51,9 @@ Sample partial:
  </body>
 </html>
 ```
+
+With AngularJS expressions partials define what kind of actions should be performed for handling different user interractions. In the example above the value of the attribute `ng-click` states that the method `changeFoo` of the current *scope* will be invoked.
+
+### Controllers
+
+The controllers are JavaScript functions, which handle the user interractions with the templates (for example mouse events, keyboard events, etc.). All external for the controller components are provided through the Dependency Injection machanism of AngularJS.
