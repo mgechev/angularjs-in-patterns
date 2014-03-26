@@ -113,14 +113,14 @@ With `div#child` is associated `ChildCtrl` but since the scope injected inside `
 
 ### Directives
 
-In AngularJS the directives are the place where all DOM manipulations are isolated. Each directive has a name and logic associated with it. In the simplest case the directive contains only name and definition of *postLink* function, which encapsulates all the logic required for the directive. In more complex cases the directive could contain a lot of properties such as:
+In AngularJS the directives are the place where all DOM manipulations should be encapsulated. Each directive has a name and logic associated with it. In the simplest case the directive contains only name and definition of *postLink* function, which encapsulates all the logic required for the directive. In more complex cases the directive could contain a lot of properties such as:
 
 - template
 - compile function
 - link function
 - etc...
 
-By using the name of the directives they can be used inside the declarative templates.
+By citing the name of the directives they can be used inside the declarative templates.
 
 Example:
 
@@ -147,6 +147,6 @@ myModule.directive('alertButton', function () {
 <alert-button content="42">Click me</alert-button>
 ```
 
-In the example above the tag `<alert-button></alert-button>` will be replaced button element. When the user clicks on this element the string `42` will be alerted.
+In the example above the tag `<alert-button></alert-button>` will be replaced button element. When the user clicks on the button the string `42` will be alerted.
 
 Since the intent of this papre is not to explain the complete API of AngularJS, we will stop with the directives here.
