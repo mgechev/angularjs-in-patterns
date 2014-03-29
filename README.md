@@ -33,9 +33,9 @@ These components can be grouped inside different modules, which helps to achieve
 
 ### Partials
 
-The partials are HTML strings. They may contain AngularJS expressions inside the elements or their attributes. One of the main advantages of AngularJS is the fact that Angular's templates are not in an intermediate format, which needs to be turned into HTML.
+The partials are HTML strings. They may contain AngularJS expressions inside the elements or their attributes. One of the distinctions between AngularJS and the others frameworks is the fact that Angular's templates are not in an intermediate format, which needs to be turned into HTML.
 
-Initially each SPA loads `index.html` file. In the case of AngularJS this file contains a set of standard and custom HTML attributes, directives and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, through the data binding provided by the framework.
+Initially each SPA loads `index.html` file. In the case of AngularJS this file contains a set of standard and custom HTML attributes, elements and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, for example through the data binding provided by the framework.
 
 Sample partial:
 
@@ -48,7 +48,7 @@ Sample partial:
           string expression 'buttonText'
           wrapped in "{{ }}" markup -->
    <button ng-click="changeFoo()">{{buttonText}}</button>
-   <script src="angular.js">
+   <script src="angular.js"></script>
  </body>
 </html>
 ````
