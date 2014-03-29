@@ -2,17 +2,18 @@
 
 ## Abstract
 
-This document describes different design patterns used in AngularJS or any AngularJS application, their purpose and applications.
+One of the best ways to learn something new is to see how the things you already know fits in it.
+The goal of this paper is to show the patterns used in the framework AngularJS and any application build with this framework.
 
 ## Introduction
 
-The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. Next sections describes the different design patterns used in the different components.
+The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. Next sections describe the different design patterns used in the framework and how you can take advantage of concepts we are already familiar with.
 
 ## AngularJS overview
 
 AngularJS is JavaScript framework developed by Google. It intents to provide solid base for the development of CRUD Single-Page Applications (SPA).
 SPA is web application, which doesn't require page reload when the user performs any actions. This means that all web application should be loaded with the initial request or better - the information and resources should be loaded on demand.
-Since most of the CRUD applications has common characteristics and requirements AngularJS intents to provide the optimal set of them out-of-the-box. Few important features of AngularJS are:
+Since most of the CRUD applications has common characteristics and requirements, AngularJS intents to provide the optimal set of them out-of-the-box. Few important features of AngularJS are:
 
 - two-way data binding
 - dependency injection
@@ -28,7 +29,7 @@ The separation of concerns is achieved by dividing each AngularJS application in
 - services
 - filters
 
-These components can be grouped inside different modules, which helps to achieve higher level of abstraction when required.
+These components can be grouped inside different modules, which helps to achieve higher level of abstraction when required. Each of the components encapsulates specific piece of the application's logic.
 
 ### Partials
 
