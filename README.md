@@ -37,7 +37,7 @@ The partials are HTML strings. They may contain AngularJS expressions inside the
 
 Initially each SPA loads `index.html` file. In the case of AngularJS this file contains a set of standard and custom HTML attributes, elements and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, for example through the data binding provided by the framework.
 
-Sample partial:
+**Sample partial**
 
 ```HTML
 <html ng-app>
