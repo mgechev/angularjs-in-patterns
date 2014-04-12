@@ -253,6 +253,19 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ![Observer](./images/observer.png "Fig. 6")
 
+There are two basic ways of communication between the different scopes. The first one is calling methods of given parent scope by a child scope. This is possible since the child scope inherits prototypically as mentioned above. This allows communication in only a single direction - child to parent. Some times it is necessary to call method of the child scope or notify about a triggered event in the context of the parent scope. Another possible use case is when multiple scopes are interested in given event but the scope, in which context the event is triggered is not aware of them.
+
+Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as observer (JavaScript has first-class functions):
+
+```JavaScript
+function ExampleCtrl($scope) {
+  $scope.$on('event', function handler() {
+    //body
+  });
+}
+```
+
+The methods `$emit` and `$broadcast` are used for triggering events respectively upwards and downwards through the scope chain.
 
 ### Active record
 
