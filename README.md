@@ -253,9 +253,9 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ![Observer](./images/observer.png "Fig. 6")
 
-There are two basic ways of communication between the different scopes. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above. This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify about a triggered event in the context of the parent scope. Another possible use case is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them.
+There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them.
 
-Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as observer (JavaScript has first-class functions):
+Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as an observer (in JavaScript the functions are first-class):
 
 ```JavaScript
 function ExampleCtrl($scope) {
@@ -279,6 +279,7 @@ function ExampleCtrl($scope) {
 The scope in the example above, triggers the event `event-name` to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event `event-name`, would be notified and their handler callback will be invoked.
 
 Analogical is the case when the method `$broadcast` is called. The only difference is that the event would be transmitted downwards - to all children scopes.
+Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).
 
 ### Active record
 
