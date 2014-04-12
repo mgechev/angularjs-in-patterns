@@ -256,4 +256,8 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ### Active record
 
+### Page Controller
+
 ## AngularJS application Patterns
+
+### Data Mapper
