@@ -151,3 +151,7 @@ myModule.directive('alertButton', function () {
 In the example above the tag `<alert-button></alert-button>` will be replaced button element. When the user clicks on the button the string `42` will be alerted.
 
 Since the intent of this paper is not to explain the complete API of AngularJS, we will stop with the directives here.
+
+### Services
+
+### Filters
