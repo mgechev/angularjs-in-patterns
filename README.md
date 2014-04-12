@@ -216,9 +216,23 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ### Factory Method
 
+>The factory method pattern is a creational pattern which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
+
+![Factory Method](./images/factory-method.png "Fig. 2")
+
 ### Composite
 
+>The composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects are to be treated in the same way as a single instance of an object. The intent of a composite is to "compose" objects into tree structures to represent part-whole hierarchies.
+
+![Composite](./images/composite.png "Fig. 3")
+
+
 ### Decorator
+
+>The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
+
+![Decorator](./images/decorator.png "Fig. 4")
+
 
 ### Facade
 
@@ -228,9 +242,12 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ### Chain of Responsibilities
 
-### Observer (publish/subscribe)
+>The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
 
-### Active Record
+![Chain of Responsibilities](./images/chain-of-responsibilities.png "Fig. 5")
+
+
+### Observer (publish/subscribe)
 
 ### Active record
 
