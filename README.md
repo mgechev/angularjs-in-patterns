@@ -152,6 +152,34 @@ In the example above the tag `<alert-button></alert-button>` will be replaced bu
 
 Since the intent of this paper is not to explain the complete API of AngularJS, we will stop with the directives here.
 
+### Filters
+
+The filters in AngularJS are responsible for encapsulating logic required for formatting data. Usually filters are used inside the partials but they are also accessible in the controllers, directives, *services* and other filters through Dependency Injection.
+
+Here is definition of a sample filter, which turns given string to uppercase:
+
+```JavaScript
+myModule.filter('uppercase', function () {
+  return function (str) {
+    return (str || '').toUpperCase();
+  };
+});
+```
+
+Inside a partial this filter could be used using the Unix's piping syntax:
+
+```HTML
+<div>{{ name | uppercase }}</div>
+```
+
+Inside a controller the filter could be used as follows:
+
+```JavaScript
+function MyCtrl(uppercaseFilter) {
+  $scope.name = uppercaseFilter('foo'); //FOO
+}
+```
+
 ### Services
 
-### Filters
+Everything, which don't fit inside the components described
