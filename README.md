@@ -240,12 +240,6 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ### Proxy
 
-### Chain of Responsibilities
-
->The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
-
-![Chain of Responsibilities](./images/chain-of-responsibilities.png "Fig. 5")
-
 
 ### Observer (publish/subscribe)
 
@@ -280,6 +274,30 @@ The scope in the example above, triggers the event `event-name` to all scopes up
 
 Analogical is the case when the method `$broadcast` is called. The only difference is that the event would be transmitted downwards - to all children scopes.
 Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).
+
+### Chain of Responsibilities
+
+>The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
+
+![Chain of Responsibilities](./images/chain-of-responsibilities.png "Fig. 5")
+
+```JavaScript
+myModule.controller('MainCtrl', function ($scope) {
+  $scope.$on('foo', function () {
+    console.log('foo received');
+  });
+});
+
+myModule.controller('ParentCtrl', function ($scope) {
+  $scope.$on('foo', function (e) {
+    console.log('foo received');
+  });
+});
+
+myModule.controller('ChildCtrl', function ($scope) {
+  $scope.$emit('foo');
+});
+```
 
 ### Active record
 
