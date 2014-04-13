@@ -233,6 +233,36 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ![Decorator](./images/decorator.png "Fig. 4")
 
+AngularJS provides out-of-the-box way for extending/changing the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined:
+
+```JavaScript
+myModule.controller('MainCtrl', function (foo) {
+  foo.bar();
+});
+
+myModule.factory('foo', function () {
+  return {
+    bar: function () {
+      console.log('I\'m bar');
+    },
+    baz: function () {
+      console.log('I\'m baz');
+    }
+  };
+});
+
+myModule.config(function ($provide) {
+  $provide.decorator('foo', function ($delegate) {
+    var barBackup = $delegate.bar;
+    $delegate.bar = function () {
+      console.log('Decorated');
+      barBackup.apply($delegate, arguments);
+    };
+    return $delegate;
+  });
+});
+```
+The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument. We decorate the service by overriding its method `bar`. We extend `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method into appropriate context.
 
 ### Facade
 
