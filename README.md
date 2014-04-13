@@ -290,7 +290,7 @@ When `$emit` or `$broadcast` are called we can think of the scope chain as event
 - Pass the event to the next scope in the chain without handling it
 - Stop the event propagation without handling it
 
-In the example bellow you can see an example in which `ChildCtrl` triggers an event, which is propagated upwards through the scope chain.
+In the example bellow you can see an example in which `ChildCtrl` triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in `ParentCtrl` and the one used in `MainCtrl`) are going to handle the event by logging into the console: `"foo received"`. If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
 
 ```JavaScript
 myModule.controller('MainCtrl', function ($scope) {
