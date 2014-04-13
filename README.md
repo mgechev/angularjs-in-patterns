@@ -281,6 +281,17 @@ Each scope can subscribe to any event with multiple callbacks (i.e. it can assoc
 
 ![Chain of Responsibilities](./images/chain-of-responsibilities.png "Fig. 5")
 
+As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
+
+When `$emit` or `$broadcast` are called we can think of the scope chain as event bus, or even more accurately chain of responsibilities. Once the event is triggered it is emitted downwards or upwards (depending on the method, which was called). Each subsequent scope may:
+
+- Handle the event and pass it to the next scope in the chain
+- Handle the event and stop its propagation
+- Pass the event to the next scope in the chain without handling it
+- Stop the event propagation without handling it
+
+In the example bellow you can see an example in which `ChildCtrl` triggers an event, which is propagated upwards through the scope chain.
+
 ```JavaScript
 myModule.controller('MainCtrl', function ($scope) {
   $scope.$on('foo', function () {
