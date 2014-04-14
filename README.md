@@ -270,6 +270,7 @@ The example above defines new service called `foo`. In the `config` callback is 
 
 ### Proxy
 
+### Interpreter
 
 ### Observer (publish/subscribe)
 
