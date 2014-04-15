@@ -216,14 +216,14 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 When given dependency is required by any component, AngularJS resolves it using the following algorithm:
 
-- Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility)
-- If the dependency exists AngularJS pass it as parameter to the component, which requires it
+- Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).
+- If the dependency exists AngularJS pass it as parameter to the component, which requires it.
 - If the dependency does not exists:
   - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm.
-  - AngularJS caches it inside a hash map
-  - AngularJS passes it as parameter to the component, which requires it
+  - AngularJS caches it inside a hash map.
+  - AngularJS passes it as parameter to the component, which requires it.
 
-We can take better look at the AngularJS's source code:
+We can take better look at the AngularJS's source code, which implements the method `getService`:
 
 ```JavaScript
 function getService(serviceName) {
@@ -249,7 +249,7 @@ function getService(serviceName) {
 }
 ```
 
-We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager.
+We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside itself, we keep the reference inside the singleton manager (called `cache`).
 
 ### Factory Method
 
