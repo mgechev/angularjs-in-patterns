@@ -219,7 +219,7 @@ When given dependency is required by any component, AngularJS resolves it using 
 - Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility)
 - If the dependency exists AngularJS pass it as parameter to the component, which requires it
 - If the dependency does not exists:
-  - AngularJS initialize it by calling the factory method of its provider (i.e. `$get`)
+  - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm.
   - AngularJS caches it inside a hash map
   - AngularJS passes it as parameter to the component, which requires it
 
