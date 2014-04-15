@@ -214,6 +214,43 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ![Singleton](./images/singleton.png "Fig. 1")
 
+When given dependency is required by any component, AngularJS resolves it using the following algorithm:
+
+- Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility)
+- If the dependency exists AngularJS pass it as parameter to the component, which requires it
+- If the dependency does not exists:
+  - AngularJS initialize it by calling the factory method of its provider (i.e. `$get`)
+  - AngularJS caches it inside a hash map
+  - AngularJS passes it as parameter to the component, which requires it
+
+We can take better look at the AngularJS's source code:
+
+```JavaScript
+function getService(serviceName) {
+  if (cache.hasOwnProperty(serviceName)) {
+    if (cache[serviceName] === INSTANTIATING) {
+      throw $injectorMinErr('cdep', 'Circular dependency found: {0}', path.join(' <- '));
+    }
+    return cache[serviceName];
+  } else {
+    try {
+      path.unshift(serviceName);
+      cache[serviceName] = INSTANTIATING;
+      return cache[serviceName] = factory(serviceName);
+    } catch (err) {
+      if (cache[serviceName] === INSTANTIATING) {
+        delete cache[serviceName];
+      }
+      throw err;
+    } finally {
+      path.shift();
+    }
+  }
+}
+```
+
+We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager.
+
 ### Factory Method
 
 >The factory method pattern is a creational pattern which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
