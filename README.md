@@ -253,9 +253,86 @@ We can think of each service as a singleton, because each service is instantiate
 
 ### Factory Method
 
->The factory method pattern is a creational pattern which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
+>The factory method pattern is a creational pattern, which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
 
 ![Factory Method](./images/factory-method.png "Fig. 2")
+
+Lets consider the following snippet:
+
+```JavaScript
+myModule.config(function ($provide) {
+  $provide.provider('foo', function () {
+    return {
+
+      //Factory method
+      $get: function (bar) {
+        var baz = bar.baz();
+        return {
+          baz: baz
+        };
+      }
+    };
+  });
+});
+
+```
+
+In the code above we use the config callback in order to define new "provider". Provider is an object, which has a method called `$get`. Since in JavaScript we don't have interfaces and the language is duck-typed there is a convention to name the factory method of the providers this way.
+
+Each service, filter, directive and controller has a provider (i.e. object which factory method), which is responsible for creating the component's instance.
+
+We can dig a little bit deeper in AngularJS's implementation:
+
+```JavaScript
+//...
+
+createInternalInjector(instanceCache, function(servicename) {
+  var provider = providerInjector.get(servicename + providerSuffix);
+  return instanceInjector.invoke(provider.$get, provider, undefined, servicename);
+}, strictDi));
+
+//...
+
+function invoke(fn, self, locals, serviceName){
+  if (typeof locals === 'string') {
+    serviceName = locals;
+    locals = null;
+  }
+
+  var args = [],
+      $inject = annotate(fn, strictDi, serviceName),
+      length, i,
+      key;
+
+  for(i = 0, length = $inject.length; i < length; i++) {
+    key = $inject[i];
+    if (typeof key !== 'string') {
+      throw $injectorMinErr('itkn',
+              'Incorrect injection token! Expected service name as string, got {0}', key);
+    }
+    args.push(
+      locals && locals.hasOwnProperty(key)
+      ? locals[key]
+      : getService(key)
+    );
+  }
+  if (!fn.$inject) {
+    // this means that we must be an array.
+    fn = fn[length];
+  }
+
+  return fn.apply(self, args);
+}
+```
+
+From the example above we can notice how the `$get` method is actually used:
+
+```JavaScript
+instanceInjector.invoke(provider.$get, provider, undefined, servicename)
+```
+
+The snippet above calls the `invoke` method with the factory method (i.e. `$get`) of given service. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
+
 
 ### Composite
 
