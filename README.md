@@ -263,7 +263,6 @@ Lets consider the following snippet:
 myModule.config(function ($provide) {
   $provide.provider('foo', function () {
     return {
-
       //Factory method
       $get: function (bar) {
         var baz = bar.baz();
@@ -332,6 +331,8 @@ instanceInjector.invoke(provider.$get, provider, undefined, servicename)
 ```
 
 The snippet above calls the `invoke` method with the factory method (i.e. `$get`) of given service. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
+
+If we think in terms of the UML diagram above we can call the provider a "ConcreteCreator" and the actual component, which is being created a "Product".
 
 
 ### Composite
