@@ -341,6 +341,48 @@ If we think in terms of the UML diagram above we can call the provider a "Concre
 
 ![Composite](./images/composite.png "Fig. 3")
 
+According to the Gang of Four, MVC is nothing more than combination of:
+
+- Strategy
+- Composite
+- Observer
+
+They state that the view is composition of components. In AngularJS the situation is similar. Our views are formed by a composition of directives and DOM elements.
+
+Lets look at the following example:
+
+```HTML
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <zippy title="Zippy">
+      Zippy!
+    </zippy>
+  </body>
+</html>
+```
+
+```JavaScript
+myModule.directive('zippy', function () {
+  return {
+    restrict: 'E',
+    template: '<div><div class="header"></div><div class="content" ng-transclude></div></div>',
+    link: function (scope, el) {
+      el.find('.header').click(function () {
+        el.find('.content').toggle();
+      });
+    }
+  }
+});
+```
+
+This example defines a simple directive, which defines a UI component. The defined component (called "zippy") has header and content. Click on its header toggles the visibility of the content.
+
+From the first example we can note that the whole DOM tree is a composition of elements. The root component is the `html` element, directly followed by the nested elements `head` and `body` and so on...
+
+In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives.
 
 ### Decorator
 
