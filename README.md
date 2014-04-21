@@ -529,7 +529,9 @@ myModule.controller('ChildCtrl', function ($scope) {
 
 >An object that handles a request for a specific page or action on a Web site. Martin Fowler
 
-According to [4](references) the page controller:
+![Page Controller](./images/page-controller.png "Fig. 7")
+
+According to [4](#references) the page controller:
 
 >Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code
 
