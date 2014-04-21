@@ -433,6 +433,26 @@ The example above defines new service called `foo`. In the `config` callback is 
 
 ![Interpreter](./images/interpreter.png "Fig. 6")
 
+Inside its `$parse` service, AngularJS has its own interpreter of expressions. The described language is simplified and modified version of JavaScript.
+Inside the `$parse` service are defined two main components:
+
+```JavaScript
+//Responsible for converting given string into tokens
+var Lexer;
+
+//Responsible for parsing the tokens and evaluating the expression
+var Parser;
+```
+
+Once given expression have been tokenized it is cached internally, because of performance concerns.
+
+Few sample AngularJS expressions are:
+
+```
+// toUpperCase filter is applied to the result of the expression
+// (foo) ? bar : baz
+(foo) ? bar : baz | toUpperCase
+```
 
 
 ### Observer (publish/subscribe)
