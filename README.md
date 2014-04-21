@@ -439,7 +439,6 @@ Inside the `$parse` service are defined two main components:
 ```JavaScript
 //Responsible for converting given string into tokens
 var Lexer;
-
 //Responsible for parsing the tokens and evaluating the expression
 var Parser;
 ```
@@ -448,7 +447,7 @@ Once given expression have been tokenized it is cached internally, because of pe
 
 Few sample AngularJS expressions are:
 
-```
+```JavaScript
 // toUpperCase filter is applied to the result of the expression
 // (foo) ? bar : baz
 (foo) ? bar : baz | toUpperCase
@@ -528,6 +527,54 @@ myModule.controller('ChildCtrl', function ($scope) {
 
 ### Page Controller
 
+>An object that handles a request for a specific page or action on a Web site. Martin Fowler
+
+According to [4](references) the page controller:
+
+>Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code
+
+Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) the page controllers can form a hierarchy. In AngularJS we have controllers, which has more limited scope of responsibilities. They don't care of accepting page requests, since this is responsibility of the `$route` or `$state` services.
+
+Similarly to the page controllers, AngularJS controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the AngularJS controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.
+
+The controllers in AngularJS are very closely related to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
+Here is an example hierarchy between few controllers:
+
+```HTML
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body ng-controller="MainCtrl">
+    <div ng-controller="ChildCtrl">
+      <span>{{user.name}}</span>
+      <button ng-click="click()">Click</button>
+    </div>
+  </body>
+</html>
+```
+
+```JavaScript
+function MainCtrl($scope, $location, User) {
+  if (!User.isAuthenticated()) {
+    $location.path('/unauthenticated');
+  }
+}
+
+function ChildCtrl($scope, User) {
+  $scope.click = function () {
+    alert('You clicked me!');
+  };
+  $scope.user = User.get(0);
+}
+```
+
+The most appropriate location to verify that the user is already authenticated is not the main controller. Anyway, this example aims to illustrates the most trivial way to reuse logic by using a base controller.
+
+The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
+
+### Template View
+
 ## AngularJS application Patterns
 
 ### Data Mapper
@@ -537,3 +584,4 @@ myModule.controller('ChildCtrl', function ($scope) {
 1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is wikipedia.
 2. [AngularJS documentation](https://docs.angularjs.org)
 3. [AngularJS's git repository](https://github.com/angular/angular.js)
+4. [Page Controller](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
