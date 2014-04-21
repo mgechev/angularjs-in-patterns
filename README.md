@@ -511,3 +511,9 @@ myModule.controller('ChildCtrl', function ($scope) {
 ## AngularJS application Patterns
 
 ### Data Mapper
+
+## Refarence
+
+1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is wikipedia.
+2. [AngularJS documentation](https://docs.angularjs.org)
+3. [AngularJS's git repository](https://github.com/angular/angular.js)
