@@ -512,7 +512,7 @@ myModule.controller('ChildCtrl', function ($scope) {
 
 ### Data Mapper
 
-## Refarence
+## References
 
 1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is wikipedia.
 2. [AngularJS documentation](https://docs.angularjs.org)
