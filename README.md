@@ -523,13 +523,43 @@ myModule.controller('ChildCtrl', function ($scope) {
 });
 ```
 
-### Active record
+### Active Record
+
+>The Active Record object is an object, which carries both data and behavior. Usually most of the data in these objects is persistent, responsibility of the Active Record object is to take care of the communication with the database in order to create, update, retrieve or delete the data. It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.
+
+![Active Record](./images/active-record.png "Fig. 7")
+
+AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is distributed in module outside of the core.
+
+According to the AngularJS' documentation `$resource` is:
+
+>A factory which creates a resource object that lets you interact with RESTful server-side data sources.
+>The returned resource object has action methods which provide high-level behaviors without the need to interact with the low level $http service.
+
+Here is how `$resource` could be used:
+
+```JavaScript
+var User = $resource('/users/:id');
+```
+
+The call of `$resource` will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operation.
+
+This way we can use the constructor function and its static methods by:
+
+```JavaScript
+User.get({ userid: userid });
+```
+
+Which will create an empty object, which will be populated with data once the reserver return a response.
+You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
+
+`$resource` allows us to use Active Record like pattern of communication with our RESTful service.
 
 ### Page Controller
 
 >An object that handles a request for a specific page or action on a Web site. Martin Fowler
 
-![Page Controller](./images/page-controller.png "Fig. 7")
+![Page Controller](./images/page-controller.png "Fig. 8")
 
 According to [4](#references) the page controller:
 
