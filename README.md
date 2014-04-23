@@ -565,7 +565,7 @@ According to [4](#references) the page controller:
 
 >Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code
 
-Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) the page controllers can form a hierarchy. In AngularJS we have controllers, which has more limited scope of responsibilities. They don't care of accepting page requests, since this is responsibility of the `$route` or `$state` services.
+Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) page controllers can form a hierarchy. In AngularJS we have controllers, which are with more limited scope of responsibilities. They don't accept user requests, since this is responsibility of the `$route` or `$state` services, the page rendering is responsibility of the directives `ng-view`/`ui-view`.
 
 Similarly to the page controllers, AngularJS controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the AngularJS controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.
 
