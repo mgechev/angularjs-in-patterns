@@ -427,6 +427,12 @@ The example above defines new service called `foo`. In the `config` callback is 
 
 ### Proxy
 
+>A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.
+
+![Proxy](./images/proxy.png "Fig. 9")
+
+
+
 ### Interpreter
 
 >In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.
