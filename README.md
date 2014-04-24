@@ -529,7 +529,7 @@ myModule.controller('ChildCtrl', function ($scope) {
 
 ![Active Record](./images/active-record.png "Fig. 7")
 
-AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is distributed in module outside of the core.
+AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is distributed in module outside of the AngularJS' core.
 
 According to the AngularJS' documentation `$resource` is:
 
@@ -539,10 +539,16 @@ According to the AngularJS' documentation `$resource` is:
 Here is how `$resource` could be used:
 
 ```JavaScript
-var User = $resource('/users/:id');
+var User = $resource('/users/:id'),
+    user = new User({
+      name: 'foo',
+      age : 42
+    });
+
+user.$save();
 ```
 
-The call of `$resource` will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operation.
+The call of `$resource` will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operations.
 
 This way we can use the constructor function and its static methods by:
 
@@ -550,10 +556,11 @@ This way we can use the constructor function and its static methods by:
 User.get({ userid: userid });
 ```
 
-Which will create an empty object, which will be populated with data once the reserver return a response.
+The code above will immediately return an empty object and keep referene to it. Once the response have been successfully returned and praced, AngularJS will populate this object with the received data (see [proxy](#proxy)).
+
 You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
 
-`$resource` allows us to use Active Record like pattern of communication with our RESTful service.
+`$resource` allows us to use Active Record like pattern of communication with RESTful services.
 
 ### Page Controller
 
