@@ -431,7 +431,13 @@ The example above defines new service called `foo`. In the `config` callback is 
 
 ![Proxy](./images/proxy.png "Fig. 9")
 
+We can distinguish few different types of proxy:
 
+- Virtual Proxy
+- Remote Proxy
+- Protection Proxy
+
+In this sub-chapter we are going to take a look at AngularJS implementation of Virtual Proxy.
 
 ### Interpreter
 
