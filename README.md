@@ -433,6 +433,8 @@ The example above defines new service called `foo`. In the `config` callback is 
 
 >4. wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).
 
+![Facade](./images/facade.png "Fig. 11")
+
 There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you usually use facade.
 
 For example, lets take a look at the `$http` service. We can use `$http` as a method, which accepts a configuration object:
