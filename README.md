@@ -433,6 +433,26 @@ The example above defines new service called `foo`. In the `config` callback is 
 
 >4. wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).
 
+There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you usually use facade.
+
+For example, lets take a look at the `$http` service. We can use `$http` as a method, which accepts a configuration object:
+
+```JavaScript
+$http({
+  method: 'GET',
+  url: '/someUrl',
+  timeout: 1000
+});
+```
+Another way to use `$http` is by calling its methods:
+
+```JavaScript
+$http.get('/someUrl');
+```
+The second option provides pre-configured version, which creates a HTTP GET request to the given URL.
+
+Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service.
+
 ### Flyweight
 
 ### Proxy
