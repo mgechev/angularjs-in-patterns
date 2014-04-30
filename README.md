@@ -689,7 +689,7 @@ The `ChildCtrl` is responsible for handling actions such as clicking the button 
 ## References
 
 1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is wikipedia.
-2. [AngularJS documentation](https://docs.angularjs.org)
-3. [AngularJS's git repository](https://github.com/angular/angular.js)
+2. [AngularJS' documentation](https://docs.angularjs.org)
+3. [AngularJS' git repository](https://github.com/angular/angular.js)
 4. [Page Controller](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
 5. Patterns of Enterprise Application Architecture (P of EAA)
