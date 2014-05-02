@@ -686,6 +686,34 @@ The `ChildCtrl` is responsible for handling actions such as clicking the button 
 
 ![Template View](./images/template-view.png "Fig. 8")
 
+The dynamic page rendering is not that trivial thing. It is connected with a lot of string concatenations, manipulations and frustration. Far easier way to build your dynamic page is to write your markup and embed little expressions inside it, which are lately evaluated in given context and so compiled to the end format. In our case this format is going to be HTML (or even DOM). This is exactly what the template engines do they take given DSL, evaluate it in the appropriate context and then turns it into its end format.
+
+Templates are very commonly used especially in the back-end.
+For example, you can embed PHP code inside HTML and create a dynamic page, you can use Smarty or you can use eRuby with Ruby in order to embed Ruby code inside your static pages.
+
+For JavaScript there are plenty of template engines, such as mustache.js, handlebars, etc. The templates of most of these engines are embedded inside the application as strings.
+For example:
+
+```html
+<script type="template/mustache">
+  <h2>Names</h2>
+  {{#names}}
+    <strong>{{name}}</strong>
+  {{/names}}
+</script>
+```
+
+The template engine turns this string into DOM elements by compiling it with a given context. This way all the expressions embedded in the markup are evaluated and replaced by their value.
+
+For example if we evaluate the template above in the context of the following object: `{ names: ['foo', 'bar', 'baz'] }`, so we will get:
+
+```html
+<h2>Names</h2>
+  <strong>foo</strong>
+  <strong>bar</strong>
+  <strong>baz</strong>
+```
+
 
 ## AngularJS application Patterns
 
