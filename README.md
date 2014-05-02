@@ -793,7 +793,6 @@ Once we want to inject `foo` inside any other component we won't be able to use 
 
 ### Data Mapper
 
-
 ## References
 
 1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is wikipedia.
