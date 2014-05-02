@@ -714,6 +714,8 @@ For example if we evaluate the template above in the context of the following ob
   <strong>baz</strong>
 ```
 
+AngularJS templates are actually HTML, they are not in an intermediate format like the traditional templates are.
+What AngularJS compiler does is to traverse the DOM tree and look for already known directives (elements, attributes, classes or even comments). When AngularJS finds any of these directives it invokes the logic associated with them, which may involve evaluation of different expressions in the context of the current scope.
 
 ## AngularJS application Patterns
 
