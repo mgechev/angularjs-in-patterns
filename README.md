@@ -684,7 +684,7 @@ The `ChildCtrl` is responsible for handling actions such as clicking the button 
 
 > Renders information into HTML by embedding markers in an HTML page.
 
-![Template View](./images/page-controller.png "Fig. 8")
+![Template View](./images/template-view.png "Fig. 8")
 
 
 ## AngularJS application Patterns
