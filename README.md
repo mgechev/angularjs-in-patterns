@@ -727,4 +727,4 @@ What AngularJS compiler does is to traverse the DOM tree and look for already kn
 2. [AngularJS' documentation](https://docs.angularjs.org)
 3. [AngularJS' git repository](https://github.com/angular/angular.js)
 4. [Page Controller](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
-5. Patterns of Enterprise Application Architecture (P of EAA)
+5. [Patterns of Enterprise Application Architecture (P of EAA)](http://martinfowler.com/books/eaa.html)
