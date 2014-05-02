@@ -717,6 +717,22 @@ For example if we evaluate the template above in the context of the following ob
 AngularJS templates are actually HTML, they are not in an intermediate format like the traditional templates are.
 What AngularJS compiler does is to traverse the DOM tree and look for already known directives (elements, attributes, classes or even comments). When AngularJS finds any of these directives it invokes the logic associated with them, which may involve evaluation of different expressions in the context of the current scope.
 
+For example:
+
+```html
+<ul ng-repeat="name in names">
+  <li>{{name}}</li>
+</ul>
+```
+
+in the context of the scope:
+
+```javascript
+$scope.names = ['foo', 'bar', 'baz'];
+```
+
+will produce the same result as the one above. The main difference here is that the template is not wrapped inside a `script` tag but is HTML instead.
+
 ## AngularJS application Patterns
 
 ### Data Mapper
