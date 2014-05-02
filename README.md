@@ -733,9 +733,64 @@ $scope.names = ['foo', 'bar', 'baz'];
 
 will produce the same result as the one above. The main difference here is that the template is not wrapped inside a `script` tag but is HTML instead.
 
+### Module Pattern
+
+This is actually not a design pattern from Gang of Four, neither one from P of EAA. This is a tranditional JavaScript pattern, which main goal is to provide encapsulation and privacy.
+
+Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may have one or more private members, which are hidden in the local scope of a function, and an object, which exports the public API of the given module:
+
+```javascript
+var Page = (function () {
+
+  var title;
+
+  function setTitle(t) {
+    document.title = t;
+    title = t;
+  }
+
+  function getTitle() {
+    return title;
+  }
+
+  return {
+    setTitle: setTitle,
+    getTitle: getTitle
+  };
+}());
+```
+
+In the example above we have IIFE (Immediately-Invoked Function Expression), which after being called returns an object, with two methods (`setTitle` and `getTitle`). The returned object is being assigned to the `Page` variable.
+
+In this case the user of the `Page` object does not has direct access to the `title` variable, which is defined inside the local scope of the IIFE.
+
+The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually have) privacy:
+
+```javascript
+app.factory('', function () {
+
+  function privateMember() {
+    //body...
+  }
+
+  function publicMember() {
+    //body...
+    privateMember();
+    //body
+  }
+
+  return {
+    publicMember: publicMember
+  };
+});
+```
+
 ## AngularJS application Patterns
 
+### Prototype
+
 ### Data Mapper
+
 
 ## References
 
