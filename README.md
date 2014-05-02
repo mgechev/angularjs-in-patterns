@@ -767,7 +767,7 @@ In this case the user of the `Page` object does not has direct access to the `ti
 The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually have) privacy:
 
 ```javascript
-app.factory('', function () {
+app.factory('foo', function () {
 
   function privateMember() {
     //body...
@@ -784,6 +784,8 @@ app.factory('', function () {
   };
 });
 ```
+
+Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a third-party library.
 
 ## AngularJS application Patterns
 
