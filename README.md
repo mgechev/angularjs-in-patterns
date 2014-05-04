@@ -379,7 +379,7 @@ According to the Gang of Four, MVC is nothing more than combination of:
 - Composite
 - Observer
 
-They state that the view is composition of components. In AngularJS the situation is similar. Our views are formed by a composition of directives and DOM elements.
+They state that the view is composition of components. In AngularJS the situation is similar. Our views are formed by a composition of directives and DOM elements, on which these directives could be applied.
 
 Lets look at the following example:
 
@@ -422,7 +422,7 @@ In the second, JavaScript, example we see that the `template` property of the di
 
 ![Decorator](./images/decorator.png "Fig. 4")
 
-AngularJS provides out-of-the-box way for extending/changing the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined:
+AngularJS provides out-of-the-box way for extending, enchanting the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined:
 
 ```JavaScript
 myModule.controller('MainCtrl', function (foo) {
@@ -452,6 +452,8 @@ myModule.config(function ($provide) {
 });
 ```
 The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument. We decorate the service by overriding its method `bar`. We extend `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method into appropriate context.
+
+Using this pattern is especially useful when we need to modify the functionality of third party services.
 
 ### Facade
 
