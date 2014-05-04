@@ -293,6 +293,7 @@ Lets consider the following snippet:
 ```JavaScript
 myModule.config(function ($provide) {
   $provide.provider('foo', function () {
+    var baz = 42;
     return {
       //Factory method
       $get: function (bar) {
@@ -307,7 +308,7 @@ myModule.config(function ($provide) {
 
 ```
 
-In the code above we use the config callback in order to define new "provider". Provider is an object, which has a method called `$get`. Since in JavaScript we don't have interfaces and the language is duck-typed there is a convention to name the factory method of the providers this way.
+In the code above we use the `config` callback in order to define new "provider". Provider is an object, which has a method called `$get`. Since in JavaScript we don't have interfaces and the language is duck-typed there is a convention to name the factory method of the providers this way.
 
 Each service, filter, directive and controller has a provider (i.e. object which factory method), which is responsible for creating the component's instance.
 
