@@ -455,8 +455,6 @@ The second option provides pre-configured version, which creates a HTTP GET requ
 
 Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service.
 
-### Flyweight
-
 ### Proxy
 
 >A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.
