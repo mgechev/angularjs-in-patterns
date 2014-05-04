@@ -31,12 +31,14 @@
 
 ## Abstract
 
-One of the best ways to learn something new is to see how the things you already know fits in it.
-The goal of this paper is to show the patterns used in the AngularJS framework and any application build with this framework.
+One of the best ways to learn something new is to see how the things you already know are used in it.
+This paper describes how different software design and architectural patterns are applied in AngularJS or any AngularJS single-page application.
 
 ## Introduction
 
-The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. Next sections describe the different design patterns used in the framework and how you can take advantage of concepts we are already familiar with.
+The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. The second section lists and describes different design and architectural patterns, which are implemented inside the framework.
+
+The last section contains a few architectural patterns, which are commonly used inside most of the single-page applications build with AngularJS.
 
 ## AngularJS overview
 
@@ -248,7 +250,7 @@ When given dependency is required by any component, AngularJS resolves it using 
 - Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).
 - If the dependency exists AngularJS pass it as parameter to the component, which requires it.
 - If the dependency does not exists:
-  - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm.
+  - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm, for all dependencies required by the dependency. This process may lead to circular dependency.
   - AngularJS caches it inside a hash map.
   - AngularJS passes it as parameter to the component, which requires it.
 
@@ -278,7 +280,7 @@ function getService(serviceName) {
 }
 ```
 
-We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside itself, we keep the reference inside the singleton manager (called `cache`).
+We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside its constructor function, we keep the reference inside the singleton manager (stated in the snippet above as `cache`).
 
 ### Factory Method
 
