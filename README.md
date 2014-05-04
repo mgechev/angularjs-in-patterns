@@ -2,8 +2,6 @@
 
 ## Table of Contents
 
-* [AngularJS in Patterns](#angularjs-in-patterns)
-* [Table of Contents](#table-of-contents)
 * [Abstract](#abstract)
 * [Introduction](#introduction)
 * [AngularJS overview](#angularjs-overview)
