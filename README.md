@@ -311,7 +311,7 @@ myModule.config(function ($provide) {
 
 In the code above we use the `config` callback in order to define new "provider". Provider is an object, which has a method called `$get`. Since in JavaScript we don't have interfaces and the language is duck-typed there is a convention to name the factory method of the providers this way.
 
-Each service, filter, directive and controller has a provider (i.e. object which factory method), which is responsible for creating the component's instance.
+Each service, filter, directive and controller has a provider (i.e. object which factory method, called `$get`), which is responsible for creating the component's instance.
 
 We can dig a little bit deeper in AngularJS's implementation:
 
@@ -363,10 +363,9 @@ From the example above we can notice how the `$get` method is actually used:
 instanceInjector.invoke(provider.$get, provider, undefined, servicename)
 ```
 
-The snippet above calls the `invoke` method with the factory method (i.e. `$get`) of given service. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
+The snippet above calls the `invoke` method of `instanceInjector` with the factory method (i.e. `$get`) of given service, as first argument. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
 
 If we think in terms of the UML diagram above we can call the provider a "ConcreteCreator" and the actual component, which is being created a "Product".
-
 
 ### Composite
 
