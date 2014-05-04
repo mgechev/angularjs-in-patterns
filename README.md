@@ -560,7 +560,7 @@ Few sample AngularJS expressions are:
 (foo) ? bar : baz | toUpperCase
 ```
 
-### Observer (publish/subscribe)
+### Observer
 
 >The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. It is mainly used to implement distributed event handling systems.
 
@@ -628,6 +628,8 @@ myModule.controller('ChildCtrl', function ($scope) {
   $scope.$emit('foo');
 });
 ```
+
+The different handlers from the UML diagram above are the different scopes, injected to the controllers.
 
 ### Active Record
 
