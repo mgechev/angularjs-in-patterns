@@ -495,7 +495,7 @@ Even higher level of abstraction is being created by `$resource`, which is build
 
 ![Proxy](./images/proxy.png "Fig. 9")
 
-We can distinguish few different types of proxy:
+We can distinguish three different types of proxy:
 
 - Virtual Proxy
 - Remote Proxy
@@ -503,7 +503,7 @@ We can distinguish few different types of proxy:
 
 In this sub-chapter we are going to take a look at AngularJS implementation of Virtual Proxy.
 
-In the snippet bellow, there is a call to the `get` method of `$resource` instance called `User`:
+In the snippet bellow, there is a call to the `get` method of `$resource` instance, called `User`:
 
 ```JavaScript
 var User = $resource('/users/:id'),
@@ -511,7 +511,7 @@ var User = $resource('/users/:id'),
 console.log(user); //{}
 ```
 
-`console.log` call, just after the call of the `User`'s get method, outputs an empty object. We can think of this object as virtual proxy, which would be populated with data once the client receives response by the server.
+`console.log` would outputs an empty object. Since the ajax request, which happens behind the scene, when `User.get` is invoked, is asynchronous, we don't have the actual user when `console.log` is called. Just after `User.get` makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy, which would be populated with data once the client receives response by the server.
 
 How does this works with AngularJS? Well, lets consider the following snippet:
 
@@ -525,7 +525,7 @@ function MainCtrl($scope, $resource) {
 ```html
 <span ng-bind="user.name"></span>
 ```
-Initially when the snippet above executes the property `user` of the `$scope` object will be with value an empty object (`{}`). Internally AngularJS will keep reference to this empty object. When the dirty checking loop detects change in the `$scope`, AngularJS will try to set `user.name` as value of the span. Since the value is `undefined` the span will stay empty. Once the server return response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
+Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`). Internally AngularJS will keep reference to this empty object. When the dirty checking loop detects change in the `$scope`, AngularJS will try to set `user.name` as value of the span. Since the value is `undefined` the span will stay empty. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
 
 ### Interpreter
 
@@ -533,7 +533,14 @@ Initially when the snippet above executes the property `user` of the `$scope` ob
 
 ![Interpreter](./images/interpreter.png "Fig. 6")
 
-Inside its `$parse` service, AngularJS has its own interpreter of expressions. The described language is simplified and modified version of JavaScript.
+Inside its `$parse` service, AngularJS has its own interpreter of a DSL. The used DSL is simplified and modified version of JavaScript.
+The main differences between the JavaScript expressions and AngularJS expressions that AngularJS expressions:
+
+- may contain filters with UNIX like pipe syntax
+- don't throw any errors
+- don't have any flow control statements
+- are evaluated in given context (the context of the current `$scope`)
+
 Inside the `$parse` service are defined two main components:
 
 ```JavaScript
@@ -552,7 +559,6 @@ Few sample AngularJS expressions are:
 // (foo) ? bar : baz
 (foo) ? bar : baz | toUpperCase
 ```
-
 
 ### Observer (publish/subscribe)
 
