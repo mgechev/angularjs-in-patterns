@@ -2,6 +2,8 @@
 
 ## Table of Contents
 
+* [AngularJS in Patterns](#angularjs-in-patterns)
+* [Table of Contents](#table-of-contents)
 * [Abstract](#abstract)
 * [Introduction](#introduction)
 * [AngularJS overview](#angularjs-overview)
@@ -19,7 +21,7 @@
 * [Facade](#facade)
 * [Proxy](#proxy)
 * [Interpreter](#interpreter)
-* [Observer (publish/subscribe)](#observer-(publish/subscribe))
+* [Observer](#observer)
 * [Chain of Responsibilities](#chain-of-responsibilities)
 * [Active Record](#active-record)
 * [Page Controller](#page-controller)
