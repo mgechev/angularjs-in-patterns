@@ -32,7 +32,8 @@
 ## Abstract
 
 One of the best ways to learn something new is to see how the things you already know are used in it.
-This paper describes how different software design and architectural patterns are applied in AngularJS or any AngularJS single-page application.
+The document does not intents to make its readers familiar with the design or architectural patterns, it suggests basic understanding of the concepts of the OOP, design patterns and architectural patterns.
+The goal of this paper is to describe how different software design and architectural patterns are applied in AngularJS or any AngularJS single-page application.
 
 ## Introduction
 
