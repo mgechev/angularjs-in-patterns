@@ -65,7 +65,7 @@ These components can be grouped inside different modules, which helps to achieve
 
 ### Partials
 
-The partials are HTML strings. They may contain AngularJS expressions inside the elements or their attributes. One of the distinctions between AngularJS and the others frameworks is the fact that AngularJS's templates are not in an intermediate format, which needs to be turned into HTML (which is the case with mustache.js and handlebars, for example).
+The partials are HTML strings. They may contain AngularJS expressions inside the elements or their attributes. One of the distinctions between AngularJS and the others frameworks is the fact that AngularJS' templates are not in an intermediate format, which needs to be turned into HTML (which is the case with mustache.js and handlebars, for example).
 
 Initially each SPA loads `index.html` file. In the case of AngularJS this file contains a set of standard and custom HTML attributes, elements and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, for example through the data binding provided by the framework.
 
@@ -255,7 +255,7 @@ When given dependency is required by any component, AngularJS resolves it using 
   - AngularJS caches it inside a hash map.
   - AngularJS passes it as parameter to the component, which requires it.
 
-We can take better look at the AngularJS's source code, which implements the method `getService`:
+We can take better look at the AngularJS' source code, which implements the method `getService`:
 
 ```JavaScript
 function getService(serviceName) {
@@ -313,7 +313,7 @@ In the code above we use the `config` callback in order to define new "provider"
 
 Each service, filter, directive and controller has a provider (i.e. object which factory method, called `$get`), which is responsible for creating the component's instance.
 
-We can dig a little bit deeper in AngularJS's implementation:
+We can dig a little bit deeper in AngularJS' implementation:
 
 ```JavaScript
 //...
@@ -637,7 +637,7 @@ The different handlers from the UML diagram above are the different scopes, inje
 
 ![Active Record](./images/active-record.png "Fig. 7")
 
-AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is distributed in module outside of the AngularJS' core.
+AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS' core.
 
 According to the AngularJS' documentation `$resource` is:
 
