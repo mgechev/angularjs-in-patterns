@@ -1,5 +1,36 @@
 # AngularJS in Patterns
 
+## Table of Contents
+
+* [AngularJS in Patterns](#angularjs-in-patterns)
+* [Table of Contents](#table-of-contents)
+* [Abstract](#abstract)
+* [Introduction](#introduction)
+* [AngularJS overview](#angularjs-overview)
+* [Partials](#partials)
+* [Controllers](#controllers)
+* [Scope](#scope)
+* [Directives](#directives)
+* [Filters](#filters)
+* [Services](#services)
+* [AngularJS Patterns](#angularjs-patterns)
+* [Singleton](#singleton)
+* [Factory Method](#factory-method)
+* [Composite](#composite)
+* [Decorator](#decorator)
+* [Facade](#facade)
+* [Proxy](#proxy)
+* [Interpreter](#interpreter)
+* [Observer (publish/subscribe)](#observer-(publish/subscribe))
+* [Chain of Responsibilities](#chain-of-responsibilities)
+* [Active Record](#active-record)
+* [Page Controller](#page-controller)
+* [Template View](#template-view)
+* [Module Pattern](#module-pattern)
+* [AngularJS application Patterns](#angularjs-application-patterns)
+* [Data Mapper](#data-mapper)
+* [References](#references)
+
 ## Abstract
 
 One of the best ways to learn something new is to see how the things you already know fits in it.
