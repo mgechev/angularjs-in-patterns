@@ -794,7 +794,76 @@ Once we want to inject `foo` inside any other component we won't be able to use 
 >A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.
 
 ![Data Mapper](./images/data-mapper.png "Fig. 10")
- 
+
+As the description above states, the data mapper is used for bidirectional transfer of data between a persistent data store and an in memory data representation. Usually our AngularJS application communicates with API server, which is written in any server-side language (Ruby, PHP, Java, JavaScript, etc.). 
+
+Usually, if we have RESTful API `$resource` will help us communicate with the server in Active Record like fashion. Although, in some applications the data entities returned by the server are not in the most appropriate format, which we want to use in the front-end.
+
+For instance, lets assume we have application in which each user has:
+
+- name
+- address
+- list of friends
+
+And our API has the methods:
+
+- `GET /user/:id` - returns the user's name and the address of given user
+- `GET /friends/:id` - returns the list of friends of given user
+
+Possible solution is to have two different services, one for the first method and one for the second one. Probably more useful solution would be if we have a single service called `User`, which loads the user's friends when we request the user:
+
+```javascript
+app.factory('User', function ($q) {
+
+  function User(name, address, friends) {
+    this.name = name;
+    this.address = address;
+    this.friends = friends;
+  }
+
+  User.get = function (params) {
+    var user = $http.get('/user/' + params.id),
+        friends = $http.get('/friends/' + params.id);
+    $q.all([user, friends])
+    .then(function (user, friends) {
+      return new User(user.name, user.address, friends);
+    });
+  };
+  return User;
+});
+```
+
+This way we create pseudo-data mapper, which adapts our API according to the SPA requirements.
+
+We can use the `User` service by:
+
+```javascript
+function MainCtrl($scope, User) {
+  User.get({ id: 1 })
+  .then(function (data) {
+    $scope.user = data;
+  });
+}
+```
+
+And the following partial:
+
+```html
+<div>
+  <div>
+    Name: {{user.name}}
+  </div>
+  <div>
+    Address: {{user.address}}
+  </div>
+  <div>
+    Friends with ids:
+    <ul>
+      <li ng-repeat="friend in user.friends">{{friend}}</li>
+    </ul>
+  </div>
+</div>
+```
 
 ## References
 
