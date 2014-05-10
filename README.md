@@ -232,6 +232,7 @@ The service could be injected inside any component, which supports dependency in
 
 ```JavaScript
 function MyCtrl(developer) {
+  var developer = new Developer();
   developer.live();
 }
 ```
