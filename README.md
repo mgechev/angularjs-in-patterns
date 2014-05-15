@@ -540,7 +540,7 @@ The main differences between the JavaScript expressions and AngularJS expression
 
 - may contain filters with UNIX like pipe syntax
 - don't throw any errors
-- don't have any control flow statements (loops, if statements although you can use the ternary operator)
+- don't have any control flow statements (exceptions, loops, if statements although you can use the ternary operator)
 - are evaluated in given context (the context of the current `$scope`)
 
 Inside the `$parse` service are defined two main components:
