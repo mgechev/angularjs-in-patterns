@@ -242,6 +242,8 @@ function MyCtrl(developer) {
 
 ### Services
 
+In this section I'm going to describe the design and architectural patterns used in the services, as a component and the ones, which are built-into AngularJS.
+
 #### Singleton
 
 >The singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects.
