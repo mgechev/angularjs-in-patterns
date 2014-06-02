@@ -12,21 +12,26 @@
 * [Filters](#filters)
 * [Services](#services)
 * [AngularJS Patterns](#angularjs-patterns)
-* [Singleton](#singleton)
-* [Factory Method](#factory-method)
-* [Composite](#composite)
-* [Decorator](#decorator)
-* [Facade](#facade)
-* [Proxy](#proxy)
-* [Interpreter](#interpreter)
-* [Observer](#observer)
-* [Chain of Responsibilities](#chain-of-responsibilities)
-* [Active Record](#active-record)
-* [Page Controller](#page-controller)
-* [Template View](#template-view)
-* [Module Pattern](#module-pattern)
+* [Services](#services)
+  * [Singleton](#singleton)
+  * [Factory Method](#factory-method)
+  * [Decorator](#decorator)
+  * [Facade](#facade)
+  * [Proxy](#proxy)
+* [Partials](#partials)
+  * [Composite](#composite)
+  * [Interpreter](#interpreter)
+* [Scope](#scope)
+  * [Observer](#observer)
+  * [Chain of Responsibilities](#chain-of-responsibilities)
+  * [Template View](#template-view)
+* [Services](#services)
+  * [Active Record](#active-record)
+  * [Page Controller](#page-controller)
+* [Common](#common)
+  * [Module Pattern](#module-pattern)
 * [AngularJS application Patterns](#angularjs-application-patterns)
-* [Data Mapper](#data-mapper)
+  * [Data Mapper](#data-mapper)
 * [References](#references)
 
 ## Abstract
@@ -240,7 +245,11 @@ function MyCtrl(developer) {
 
 ## AngularJS Patterns
 
-### Singleton
+### Services
+
+In this section I'm going to describe the design and architectural patterns used in the services, as a component and the ones, which are built-into AngularJS.
+
+#### Singleton
 
 >The singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects.
 
@@ -285,7 +294,7 @@ function getService(serviceName) {
 
 We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside its constructor function, we keep the reference inside the singleton manager (stated in the snippet above as `cache`).
 
-### Factory Method
+#### Factory Method
 
 >The factory method pattern is a creational pattern, which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
 
@@ -369,7 +378,160 @@ The snippet above calls the `invoke` method of `instanceInjector` with the facto
 
 If we think in terms of the UML diagram above we can call the provider a "ConcreteCreator" and the actual component, which is being created a "Product".
 
-### Composite
+#### Decorator
+
+>The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
+
+![Decorator](./images/decorator.png "Fig. 4")
+
+AngularJS provides out-of-the-box way for extending, enchanting the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined:
+
+```JavaScript
+myModule.controller('MainCtrl', function (foo) {
+  foo.bar();
+});
+
+myModule.factory('foo', function () {
+  return {
+    bar: function () {
+      console.log('I\'m bar');
+    },
+    baz: function () {
+      console.log('I\'m baz');
+    }
+  };
+});
+
+myModule.config(function ($provide) {
+  $provide.decorator('foo', function ($delegate) {
+    var barBackup = $delegate.bar;
+    $delegate.bar = function () {
+      console.log('Decorated');
+      barBackup.apply($delegate, arguments);
+    };
+    return $delegate;
+  });
+});
+```
+The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument. We decorate the service by overriding its method `bar`. We extend `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method into appropriate context.
+
+Using this pattern is especially useful when we need to modify the functionality of third party services.
+
+#### Facade
+
+>A facade is an object that provides a simplified interface to a larger body of code, such as a class library. A facade can:
+
+>1. make a software library easier to use, understand and test, since the facade has convenient methods for common tasks;
+
+>2. make the library more readable, for the same reason;
+
+>3. reduce dependencies of outside code on the inner workings of a library, since most code uses the facade, thus allowing more flexibility in developing the system;
+
+>4. wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).
+
+![Facade](./images/facade.png "Fig. 11")
+
+There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you usually use facade.
+
+For example, lets take a look at the `$http` service. We can use `$http` as a method, which accepts a configuration object:
+
+```JavaScript
+$http({
+  method: 'GET',
+  url: '/someUrl',
+  timeout: 1000
+});
+```
+Another way to use `$http` is by calling its methods:
+
+```JavaScript
+$http.get('/someUrl');
+```
+The second option provides pre-configured version, which creates a HTTP GET request to the given URL.
+
+Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service.
+
+#### Proxy
+
+>A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.
+
+![Proxy](./images/proxy.png "Fig. 9")
+
+We can distinguish three different types of proxy:
+
+- Virtual Proxy
+- Remote Proxy
+- Protection Proxy
+
+In this sub-chapter we are going to take a look at AngularJS implementation of Virtual Proxy.
+
+In the snippet bellow, there is a call to the `get` method of `$resource` instance, called `User`:
+
+```JavaScript
+var User = $resource('/users/:id'),
+    user = User.get({ id: 42 });
+console.log(user); //{}
+```
+
+`console.log` would outputs an empty object. Since the ajax request, which happens behind the scene, when `User.get` is invoked, is asynchronous, we don't have the actual user when `console.log` is called. Just after `User.get` makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy, which would be populated with data once the client receives response by the server.
+
+How does this works with AngularJS? Well, lets consider the following snippet:
+
+```JavaScript
+function MainCtrl($scope, $resource) {
+  var User = $resource('/users/:id'),
+  $scope.user = User.get({ id: 42 });
+}
+```
+
+```html
+<span ng-bind="user.name"></span>
+```
+Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`). Internally AngularJS will keep reference to this empty object. When the dirty checking loop detects change in the `$scope`, AngularJS will try to set `user.name` as value of the span. Since the value is `undefined` the span will stay empty. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
+
+#### Active Record
+
+>The Active Record object is an object, which carries both data and behavior. Usually most of the data in these objects is persistent, responsibility of the Active Record object is to take care of the communication with the database in order to create, update, retrieve or delete the data. It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.
+
+![Active Record](./images/active-record.png "Fig. 7")
+
+AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS' core.
+
+According to the AngularJS' documentation `$resource` is:
+
+>A factory which creates a resource object that lets you interact with RESTful server-side data sources.
+>The returned resource object has action methods which provide high-level behaviors without the need to interact with the low level $http service.
+
+Here is how `$resource` could be used:
+
+```JavaScript
+var User = $resource('/users/:id'),
+    user = new User({
+      name: 'foo',
+      age : 42
+    });
+
+user.$save();
+```
+
+The call of `$resource` will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operations.
+
+This way we can use the constructor function and its static methods by:
+
+```JavaScript
+User.get({ userid: userid });
+```
+
+The code above will immediately return an empty object and keep referene to it. Once the response have been successfully returned and praced, AngularJS will populate this object with the received data (see [proxy](#proxy)).
+
+You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
+
+`$resource` allows us to use Active Record like pattern of communication with RESTful services.
+
+
+### Partials
+
+#### Composite
 
 >The composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects are to be treated in the same way as a single instance of an object. The intent of a composite is to "compose" objects into tree structures to represent part-whole hierarchies.
 
@@ -418,117 +580,6 @@ From the first example we can note that the whole DOM tree is a composition of e
 
 In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives.
 
-### Decorator
-
->The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
-
-![Decorator](./images/decorator.png "Fig. 4")
-
-AngularJS provides out-of-the-box way for extending, enchanting the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined:
-
-```JavaScript
-myModule.controller('MainCtrl', function (foo) {
-  foo.bar();
-});
-
-myModule.factory('foo', function () {
-  return {
-    bar: function () {
-      console.log('I\'m bar');
-    },
-    baz: function () {
-      console.log('I\'m baz');
-    }
-  };
-});
-
-myModule.config(function ($provide) {
-  $provide.decorator('foo', function ($delegate) {
-    var barBackup = $delegate.bar;
-    $delegate.bar = function () {
-      console.log('Decorated');
-      barBackup.apply($delegate, arguments);
-    };
-    return $delegate;
-  });
-});
-```
-The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument. We decorate the service by overriding its method `bar`. We extend `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method into appropriate context.
-
-Using this pattern is especially useful when we need to modify the functionality of third party services.
-
-### Facade
-
->A facade is an object that provides a simplified interface to a larger body of code, such as a class library. A facade can:
-
->1. make a software library easier to use, understand and test, since the facade has convenient methods for common tasks;
-
->2. make the library more readable, for the same reason;
-
->3. reduce dependencies of outside code on the inner workings of a library, since most code uses the facade, thus allowing more flexibility in developing the system;
-
->4. wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).
-
-![Facade](./images/facade.png "Fig. 11")
-
-There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you usually use facade.
-
-For example, lets take a look at the `$http` service. We can use `$http` as a method, which accepts a configuration object:
-
-```JavaScript
-$http({
-  method: 'GET',
-  url: '/someUrl',
-  timeout: 1000
-});
-```
-Another way to use `$http` is by calling its methods:
-
-```JavaScript
-$http.get('/someUrl');
-```
-The second option provides pre-configured version, which creates a HTTP GET request to the given URL.
-
-Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service.
-
-### Proxy
-
->A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.
-
-![Proxy](./images/proxy.png "Fig. 9")
-
-We can distinguish three different types of proxy:
-
-- Virtual Proxy
-- Remote Proxy
-- Protection Proxy
-
-In this sub-chapter we are going to take a look at AngularJS implementation of Virtual Proxy.
-
-In the snippet bellow, there is a call to the `get` method of `$resource` instance, called `User`:
-
-```JavaScript
-var User = $resource('/users/:id'),
-    user = User.get({ id: 42 });
-console.log(user); //{}
-```
-
-`console.log` would outputs an empty object. Since the ajax request, which happens behind the scene, when `User.get` is invoked, is asynchronous, we don't have the actual user when `console.log` is called. Just after `User.get` makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy, which would be populated with data once the client receives response by the server.
-
-How does this works with AngularJS? Well, lets consider the following snippet:
-
-```JavaScript
-function MainCtrl($scope, $resource) {
-  var User = $resource('/users/:id'),
-  $scope.user = User.get({ id: 42 });
-}
-```
-
-```html
-<span ng-bind="user.name"></span>
-```
-Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`). Internally AngularJS will keep reference to this empty object. When the dirty checking loop detects change in the `$scope`, AngularJS will try to set `user.name` as value of the span. Since the value is `undefined` the span will stay empty. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
-
 ### Interpreter
 
 >In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.
@@ -562,167 +613,7 @@ Few sample AngularJS expressions are:
 (foo) ? bar : baz | toUpperCase
 ```
 
-### Observer
-
->The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. It is mainly used to implement distributed event handling systems.
-
-![Observer](./images/observer.png "Fig. 7")
-
-There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them.
-
-Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as an observer (in JavaScript the functions are first-class):
-
-```JavaScript
-function ExampleCtrl($scope) {
-  $scope.$on('event-name', function handler() {
-    //body
-  });
-}
-```
-
-In this way the current scope "subscribes" to events of type `event-name`. When `event-name` is triggered in any parent or child scope of the given one, `handler` would be called.
-
-The methods `$emit` and `$broadcast` are used for triggering events respectively upwards and downwards through the scope chain.
-For example:
-
-```JavaScript
-function ExampleCtrl($scope) {
-  $scope.$emit('event-name', { foo: 'bar' });
-}
-```
-
-The scope in the example above, triggers the event `event-name` to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event `event-name`, would be notified and their handler callback will be invoked.
-
-Analogical is the case when the method `$broadcast` is called. The only difference is that the event would be transmitted downwards - to all children scopes.
-Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).
-
-### Chain of Responsibilities
-
->The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
-
-![Chain of Responsibilities](./images/chain-of-responsibilities.png "Fig. 5")
-
-As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
-
-When `$emit` or `$broadcast` are called we can think of the scope chain as event bus, or even more accurately chain of responsibilities. Once the event is triggered it is emitted downwards or upwards (depending on the method, which was called). Each subsequent scope may:
-
-- Handle the event and pass it to the next scope in the chain
-- Handle the event and stop its propagation
-- Pass the event to the next scope in the chain without handling it
-- Stop the event propagation without handling it
-
-In the example bellow you can see an example in which `ChildCtrl` triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in `ParentCtrl` and the one used in `MainCtrl`) are going to handle the event by logging into the console: `"foo received"`. If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
-
-```JavaScript
-myModule.controller('MainCtrl', function ($scope) {
-  $scope.$on('foo', function () {
-    console.log('foo received');
-  });
-});
-
-myModule.controller('ParentCtrl', function ($scope) {
-  $scope.$on('foo', function (e) {
-    console.log('foo received');
-  });
-});
-
-myModule.controller('ChildCtrl', function ($scope) {
-  $scope.$emit('foo');
-});
-```
-
-The different handlers from the UML diagram above are the different scopes, injected to the controllers.
-
-### Active Record
-
->The Active Record object is an object, which carries both data and behavior. Usually most of the data in these objects is persistent, responsibility of the Active Record object is to take care of the communication with the database in order to create, update, retrieve or delete the data. It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.
-
-![Active Record](./images/active-record.png "Fig. 7")
-
-AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS' core.
-
-According to the AngularJS' documentation `$resource` is:
-
->A factory which creates a resource object that lets you interact with RESTful server-side data sources.
->The returned resource object has action methods which provide high-level behaviors without the need to interact with the low level $http service.
-
-Here is how `$resource` could be used:
-
-```JavaScript
-var User = $resource('/users/:id'),
-    user = new User({
-      name: 'foo',
-      age : 42
-    });
-
-user.$save();
-```
-
-The call of `$resource` will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operations.
-
-This way we can use the constructor function and its static methods by:
-
-```JavaScript
-User.get({ userid: userid });
-```
-
-The code above will immediately return an empty object and keep referene to it. Once the response have been successfully returned and praced, AngularJS will populate this object with the received data (see [proxy](#proxy)).
-
-You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
-
-`$resource` allows us to use Active Record like pattern of communication with RESTful services.
-
-### Page Controller
-
->An object that handles a request for a specific page or action on a Web site. Martin Fowler
-
-![Page Controller](./images/page-controller.png "Fig. 8")
-
-According to [4](#references) the page controller:
-
->Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code
-
-Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) page controllers can form a hierarchy. In AngularJS we have controllers, which are with more limited scope of responsibilities. They don't accept user requests, since this is responsibility of the `$route` or `$state` services and the page rendering is responsibility of the directives `ng-view`/`ui-view`.
-
-Similarly to the page controllers, AngularJS controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the AngularJS controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.
-
-The controllers in AngularJS are quite similar to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
-Here is an example hierarchy between few controllers:
-
-```HTML
-<!doctype html>
-<html>
-  <head>
-  </head>
-  <body ng-controller="MainCtrl">
-    <div ng-controller="ChildCtrl">
-      <span>{{user.name}}</span>
-      <button ng-click="click()">Click</button>
-    </div>
-  </body>
-</html>
-```
-
-```JavaScript
-function MainCtrl($scope, $location, User) {
-  if (!User.isAuthenticated()) {
-    $location.path('/unauthenticated');
-  }
-}
-
-function ChildCtrl($scope, User) {
-  $scope.click = function () {
-    alert('You clicked me!');
-  };
-  $scope.user = User.get(0);
-}
-```
-
-The most appropriate location to verify that the user is already authenticated is not the main controller. Anyway, this example aims to illustrates the most trivial way to reuse logic by using a base controller.
-
-The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
-
-### Template View
+#### Template View
 
 > Renders information into HTML by embedding markers in an HTML page.
 
@@ -775,7 +666,135 @@ $scope.names = ['foo', 'bar', 'baz'];
 
 will produce the same result as the one above. The main difference here is that the template is not wrapped inside a `script` tag but is HTML instead.
 
-### Module Pattern
+
+### Scope
+
+#### Observer
+
+>The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. It is mainly used to implement distributed event handling systems.
+
+![Observer](./images/observer.png "Fig. 7")
+
+There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them.
+
+Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as an observer (in JavaScript the functions are first-class):
+
+```JavaScript
+function ExampleCtrl($scope) {
+  $scope.$on('event-name', function handler() {
+    //body
+  });
+}
+```
+
+In this way the current scope "subscribes" to events of type `event-name`. When `event-name` is triggered in any parent or child scope of the given one, `handler` would be called.
+
+The methods `$emit` and `$broadcast` are used for triggering events respectively upwards and downwards through the scope chain.
+For example:
+
+```JavaScript
+function ExampleCtrl($scope) {
+  $scope.$emit('event-name', { foo: 'bar' });
+}
+```
+
+The scope in the example above, triggers the event `event-name` to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event `event-name`, would be notified and their handler callback will be invoked.
+
+Analogical is the case when the method `$broadcast` is called. The only difference is that the event would be transmitted downwards - to all children scopes.
+Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).
+
+#### Chain of Responsibilities
+
+>The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
+
+![Chain of Responsibilities](./images/chain-of-responsibilities.png "Fig. 5")
+
+As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
+
+When `$emit` or `$broadcast` are called we can think of the scope chain as event bus, or even more accurately chain of responsibilities. Once the event is triggered it is emitted downwards or upwards (depending on the method, which was called). Each subsequent scope may:
+
+- Handle the event and pass it to the next scope in the chain
+- Handle the event and stop its propagation
+- Pass the event to the next scope in the chain without handling it
+- Stop the event propagation without handling it
+
+In the example bellow you can see an example in which `ChildCtrl` triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in `ParentCtrl` and the one used in `MainCtrl`) are going to handle the event by logging into the console: `"foo received"`. If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
+
+```JavaScript
+myModule.controller('MainCtrl', function ($scope) {
+  $scope.$on('foo', function () {
+    console.log('foo received');
+  });
+});
+
+myModule.controller('ParentCtrl', function ($scope) {
+  $scope.$on('foo', function (e) {
+    console.log('foo received');
+  });
+});
+
+myModule.controller('ChildCtrl', function ($scope) {
+  $scope.$emit('foo');
+});
+```
+
+The different handlers from the UML diagram above are the different scopes, injected to the controllers.
+
+### Controllers
+
+#### Page Controller
+
+>An object that handles a request for a specific page or action on a Web site. Martin Fowler
+
+![Page Controller](./images/page-controller.png "Fig. 8")
+
+According to [4](#references) the page controller:
+
+>Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code
+
+Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) page controllers can form a hierarchy. In AngularJS we have controllers, which are with more limited scope of responsibilities. They don't accept user requests, since this is responsibility of the `$route` or `$state` services and the page rendering is responsibility of the directives `ng-view`/`ui-view`.
+
+Similarly to the page controllers, AngularJS controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the AngularJS controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.
+
+The controllers in AngularJS are quite similar to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
+Here is an example hierarchy between few controllers:
+
+```HTML
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body ng-controller="MainCtrl">
+    <div ng-controller="ChildCtrl">
+      <span>{{user.name}}</span>
+      <button ng-click="click()">Click</button>
+    </div>
+  </body>
+</html>
+```
+
+```JavaScript
+function MainCtrl($scope, $location, User) {
+  if (!User.isAuthenticated()) {
+    $location.path('/unauthenticated');
+  }
+}
+
+function ChildCtrl($scope, User) {
+  $scope.click = function () {
+    alert('You clicked me!');
+  };
+  $scope.user = User.get(0);
+}
+```
+
+The most appropriate location to verify that the user is already authenticated is not the main controller. Anyway, this example aims to illustrates the most trivial way to reuse logic by using a base controller.
+
+The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
+
+### Common
+
+#### Module Pattern
 
 This is actually not a design pattern from Gang of Four, neither one from P of EAA. This is a tranditional JavaScript pattern, which main goal is to provide encapsulation and privacy.
 
