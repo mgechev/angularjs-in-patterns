@@ -48,9 +48,9 @@ The last section contains a few architectural patterns, which are commonly used 
 
 ## AngularJS overview
 
-AngularJS is JavaScript framework developed by Google. It intents to provide solid base for the development of CRUD Single-Page Applications (SPA).
+AngularJS is JavaScript framework developed by Google. It intends to provide solid base for the development of CRUD Single-Page Applications (SPA).
 SPA is web application, which once loaded, does not require full page reload when the user performs any actions with it. This means that all application resources (data, templates, scripts, styles) should be loaded with the initial request or better - the information and resources should be loaded on demand.
-Since most of the CRUD applications has common characteristics and requirements, AngularJS intents to provide the optimal set of them out-of-the-box. Few important features of AngularJS are:
+Since most of the CRUD applications has common characteristics and requirements, AngularJS intends to provide the optimal set of them out-of-the-box. Few important features of AngularJS are:
 
 - two-way data binding
 - dependency injection
