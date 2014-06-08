@@ -504,7 +504,7 @@ We can distinguish three different types of proxy:
 - Remote Proxy
 - Protection Proxy
 
-In this sub-chapter we are going to take a look at AngularJS implementation of Virtual Proxy.
+In this sub-chapter we are going to take a look at AngularJS' implementation of Virtual Proxy.
 
 In the snippet bellow, there is a call to the `get` method of `$resource` instance, called `User`:
 
@@ -514,7 +514,7 @@ var User = $resource('/users/:id'),
 console.log(user); //{}
 ```
 
-`console.log` would outputs an empty object. Since the ajax request, which happens behind the scene, when `User.get` is invoked, is asynchronous, we don't have the actual user when `console.log` is called. Just after `User.get` makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy, which would be populated with data once the client receives response by the server.
+`console.log` would outputs an empty object. Since the AJAX request, which happens behind the scene, when `User.get` is invoked, is asynchronous, we don't have the actual user when `console.log` is called. Just after `User.get` makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy (a simple placeholder), which would be populated with the actual data once the client receives response by the server.
 
 How does this works with AngularJS? Well, lets consider the following snippet:
 
@@ -528,7 +528,7 @@ function MainCtrl($scope, $resource) {
 ```html
 <span ng-bind="user.name"></span>
 ```
-Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`). Internally AngularJS will keep reference to this empty object. When the dirty checking loop detects change in the `$scope`, AngularJS will try to set `user.name` as value of the span. Since the value is `undefined` the span will stay empty. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
+Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`), which means that `user.name` will be undefined and nothing will be rendered. Internally AngularJS will keep reference to this empty object. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
 
 #### Active Record
 
