@@ -301,6 +301,8 @@ This way the services are actually singletons but not implemented through the Si
 - It improves the testability of your source code
 - You can control the creation of singleton objects (in our case the IoC container controls it for us, by instantiating the singletons lazy)
 
+For further discussion on this topic Misko Hevery's [article](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) in the Google Testing blog could be considered.
+
 #### Factory Method
 
 >The factory method pattern is a creational pattern, which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
@@ -940,3 +942,4 @@ And the following partial:
 3. [AngularJS' git repository](https://github.com/angular/angular.js)
 4. [Page Controller](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
 5. [Patterns of Enterprise Application Architecture (P of EAA)](http://martinfowler.com/books/eaa.html)
+6. [Using Dependancy Injection to Avoid Singletons](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html)
