@@ -563,12 +563,15 @@ This way we can use the constructor function and its static methods by:
 User.get({ userid: userid });
 ```
 
-The code above will immediately return an empty object and keep referene to it. Once the response have been successfully returned and praced, AngularJS will populate this object with the received data (see [proxy](#proxy)).
+The code above will immediately return an empty object and keep reference to it. Once the response have been successfully returned and parsed, AngularJS will populate this object with the received data (see [proxy](#proxy)).
 
 You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
 
-`$resource` allows us to use Active Record like pattern of communication with RESTful services.
+Since Martin Fowler states that
 
+> responsibility of the Active Record object is to take care of the communication with the databse in order to create...
+
+`$resource` does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".
 
 ### Partials
 
