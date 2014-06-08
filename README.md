@@ -399,7 +399,7 @@ There are a few benefits of using the factory method pattern in this case, becau
 
 ![Decorator](./images/decorator.png "Fig. 4")
 
-AngularJS provides out-of-the-box way for extending, enchanting the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined:
+AngularJS provides out-of-the-box way for extending and/or enchanting the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
 
 ```JavaScript
 myModule.controller('MainCtrl', function (foo) {
@@ -428,9 +428,10 @@ myModule.config(function ($provide) {
   });
 });
 ```
-The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument. We decorate the service by overriding its method `bar`. We extend `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method into appropriate context.
+The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument of the constructor function.
+We decorate the service by overriding its method `bar`. The actual decoration is simply extending `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method with the appropriate context.
 
-Using this pattern is especially useful when we need to modify the functionality of third party services.
+Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use [aspect-oriented programming](http://en.wikipedia.org/wiki/Aspect-oriented_programming). The only AOP framework for AngularJS I'm aware of could be found at [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop).
 
 #### Facade
 
