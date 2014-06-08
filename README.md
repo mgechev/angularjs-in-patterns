@@ -573,7 +573,7 @@ Since Martin Fowler states that
 
 `$resource` does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".
 
-### Partials
+### Directives
 
 #### Composite
 
@@ -618,11 +618,11 @@ myModule.directive('zippy', function () {
 });
 ```
 
-This example defines a simple directive, which defines a UI component. The defined component (called "zippy") has header and content. Click on its header toggles the visibility of the content.
+This example defines a simple directive, which is a UI component. The defined component (called "zippy") has header and content. Click on its header toggles the visibility of the content.
 
 From the first example we can note that the whole DOM tree is a composition of elements. The root component is the `html` element, directly followed by the nested elements `head` and `body` and so on...
 
-In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives.
+In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives. Theoretically we can nest the components infinitely until we reach a leaf node.
 
 ### Interpreter
 
@@ -630,7 +630,7 @@ In the second, JavaScript, example we see that the `template` property of the di
 
 ![Interpreter](./images/interpreter.png "Fig. 6")
 
-Inside its `$parse` service, AngularJS has its own interpreter of a DSL. The used DSL is simplified and modified version of JavaScript.
+Behind its `$parse` service, AngularJS provides its own implementation of interpreter of a DSL (Domain Specific Language). The used DSL is simplified and modified version of JavaScript.
 The main differences between the JavaScript expressions and AngularJS expressions that AngularJS expressions:
 
 - may contain filters with UNIX like pipe syntax
@@ -648,6 +648,43 @@ var Parser;
 ```
 
 Once given expression have been tokenized it is cached internally, because of performance concerns.
+
+The terminal expressions in the AngularJS DSL are defined as follows:
+
+```JavaScript
+var OPERATORS = {
+  /* jshint bitwise : false */
+  'null':function(){return null;},
+  'true':function(){return true;},
+  'false':function(){return false;},
+  undefined:noop,
+  '+':function(self, locals, a,b){
+        //...
+      },
+  '*':function(self, locals, a,b){return a(self, locals)*b(self, locals);},
+  '/':function(self, locals, a,b){return a(self, locals)/b(self, locals);},
+  '%':function(self, locals, a,b){return a(self, locals)%b(self, locals);},
+  '^':function(self, locals, a,b){return a(self, locals)^b(self, locals);},
+  '=':noop,
+  '===':function(self, locals, a, b){return a(self, locals)===b(self, locals);},
+  '!==':function(self, locals, a, b){return a(self, locals)!==b(self, locals);},
+  '==':function(self, locals, a,b){return a(self, locals)==b(self, locals);},
+  '!=':function(self, locals, a,b){return a(self, locals)!=b(self, locals);},
+  '<':function(self, locals, a,b){return a(self, locals)<b(self, locals);},
+  '>':function(self, locals, a,b){return a(self, locals)>b(self, locals);},
+  '<=':function(self, locals, a,b){return a(self, locals)<=b(self, locals);},
+  '>=':function(self, locals, a,b){return a(self, locals)>=b(self, locals);},
+  '&&':function(self, locals, a,b){return a(self, locals)&&b(self, locals);},
+  '||':function(self, locals, a,b){return a(self, locals)||b(self, locals);},
+  '&':function(self, locals, a,b){return a(self, locals)&b(self, locals);},
+  '|':function(self, locals, a,b){return b(self, locals)(self, locals, a(self, locals));},
+  '!':function(self, locals, a){return !a(self, locals);}
+};
+```
+
+We can think of the function associated with each terminal as implementation of the `AbstractExpression`'s interface.
+
+Each `Client` interprets given AngularJS expression in a specific context - specific scope.
 
 Few sample AngularJS expressions are:
 
