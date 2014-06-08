@@ -447,25 +447,50 @@ Using this pattern is especially useful when we need to modify the functionality
 
 ![Facade](./images/facade.png "Fig. 11")
 
-There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you usually use facade.
+There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you practically create a facade.
 
-For example, lets take a look at the `$http` service. We can use `$http` as a method, which accepts a configuration object:
+For example, lets take a look how we can create an `XMLHttpRequest` POST request:
+
+```JavaScript
+var http = new XMLHttpRequest(),
+    url = '/example/new',
+    params = encodeURIComponent(data);
+http.open("POST", url, true);
+
+http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+http.setRequestHeader("Content-length", params.length);
+http.setRequestHeader("Connection", "close");
+
+http.onreadystatechange = function () {
+  if(http.readyState == 4 && http.status == 200) {
+    alert(http.responseText);
+  }
+}
+http.send(params);
+```
+But if we want to post this data using the AngularJS' `$http` service we can:
 
 ```JavaScript
 $http({
-  method: 'GET',
-  url: '/someUrl',
-  timeout: 1000
+  method: 'POST',
+  url: '/example/new',
+  data: data
+})
+.then(function (response) {
+  alert(response);
 });
 ```
-Another way to use `$http` is by calling its methods:
+or we can even:
 
 ```JavaScript
-$http.get('/someUrl');
+$http.post('/someUrl', data)
+.then(function (response) {
+  alert(response);
+});
 ```
-The second option provides pre-configured version, which creates a HTTP GET request to the given URL.
+The second option provides pre-configured version, which creates a HTTP POST request to the given URL.
 
-Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service.
+Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service. We will take a further look at this service in [Active Record](#active-record) and [Proxy](#proxy) sections.
 
 #### Proxy
 
