@@ -264,8 +264,8 @@ When given dependency is required by any component, AngularJS resolves it using 
 - Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).
 - If the dependency exists AngularJS pass it as parameter to the component, which requires it.
 - If the dependency does not exists:
-  - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm, for all dependencies required by the dependency. This process may lead to circular dependency.
-  - AngularJS caches it inside a hash map.
+  - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm, for resolving all the dependencies required by the given dependency. This process may lead to circular dependency.
+  - AngularJS caches it inside the hash map mentioned above.
   - AngularJS passes it as parameter to the component, which requires it.
 
 We can take better look at the AngularJS' source code, which implements the method `getService`:
@@ -295,6 +295,11 @@ function getService(serviceName) {
 ```
 
 We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside its constructor function, we keep the reference inside the singleton manager (stated in the snippet above as `cache`).
+
+This way the services are actually singletons but not implemented through the Singleton pattern, which provides a few advantages over the standard implementation:
+
+- It improves the testability of your source code
+- You can control the creation of singleton objects (in our case the IoC container controls it for us, by instantiating the singletons lazy)
 
 #### Factory Method
 
