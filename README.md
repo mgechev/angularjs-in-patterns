@@ -42,7 +42,7 @@ The goal of this paper is to describe how different software design and architec
 
 ## Introduction
 
-The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. The second section lists and describes different design and architectural patterns, which are implemented inside the framework.
+The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. The second section lists and describes different design and architectural patterns, which are implemented inside the framework. The patterns are grouped by the AngularJS component they are used in. If some patterns are used inside multiple components it will be explicitly mentioned.
 
 The last section contains a few architectural patterns, which are commonly used inside most of the single-page applications build with AngularJS.
 
@@ -245,9 +245,11 @@ function MyCtrl(developer) {
 
 ## AngularJS Patterns
 
-### Services
+In the next a couple of sections, we are going to take a look how the traditional design and architectural patterns are composed in the AngularJS components.
 
-In this section I'm going to describe the design and architectural patterns used in the services, as a component and the ones, which are built-into AngularJS.
+In the last chapter we are going to take a look at some architectural patterns, which are frequently used in the development of Single-Page Applications with (but not limited to) AngularJS.
+
+### Services
 
 #### Singleton
 
