@@ -12,23 +12,23 @@
 * [Filters](#filters)
 * [Services](#services)
 * [AngularJS Patterns](#angularjs-patterns)
-* [Services](#services)
+* [Services](#services-1)
   * [Singleton](#singleton)
   * [Factory Method](#factory-method)
   * [Decorator](#decorator)
   * [Facade](#facade)
   * [Proxy](#proxy)
-* [Partials](#partials)
+  * [Active Record](#active-record)
+* [Directives](#directives-1)
   * [Composite](#composite)
   * [Interpreter](#interpreter)
-* [Scope](#scope)
+* [Scope](#scope-1)
   * [Observer](#observer)
   * [Chain of Responsibilities](#chain-of-responsibilities)
   * [Template View](#template-view)
-* [Services](#services)
-  * [Active Record](#active-record)
+* [Controller](#controller-1)
   * [Page Controller](#page-controller)
-* [Common](#common)
+* [Others](#others)
   * [Module Pattern](#module-pattern)
 * [AngularJS application Patterns](#angularjs-application-patterns)
   * [Data Mapper](#data-mapper)
@@ -873,7 +873,7 @@ The most appropriate location to verify that the user is already authenticated i
 
 The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
 
-### Common
+### Others
 
 #### Module Pattern
 
