@@ -830,6 +830,43 @@ The different handlers from the UML diagram above are the different scopes, inje
 
 ![Command](./images/command.png "Fig. 11")
 
+Before continuing with the application of the command pattern lets describe how AngularJS implements data binding.
+
+When we want to bind our model to the view we use the directives `ng-bind` (for single-way data binding) and `ng-model` (for two-way data binding). For example, if we want each change in the model `foo` to reflect the view we can:
+
+```html
+<span ng-bind="foo"></span>
+```
+
+Now each time we change the value of `foo` the inner text of the span will be changed. We can achieve the same effect with more complex AngularJS expressions, like:
+
+```html
+<span ng-bind="foo + ' ' + bar | uppercase"></span>
+```
+
+In the example above the value of the span will be the concatenated uppercased value of `foo` and `bar`. What happens behind the scene?
+
+Each `$scope` has method called `$watch`. When the AngularJS compiler find the directive `ng-bind` it creates a new watcher of the expression `foo + ' ' + bar | uppercase`, i.e. `$scope.$watch("foo + ' ' + bar | uppercase", function () { /* body */ });`. The callback will be triggered each time the value of the expression change. In the current case the callback will update the value of the span.
+
+Here are the first a couple of lines of the implementation of `$watch`:
+
+```javascript
+$watch: function(watchExp, listener, objectEquality) {
+  var scope = this,
+      get = compileToFn(watchExp, 'watch'),
+      array = scope.$$watchers,
+      watcher = {
+        fn: listener,
+        last: initWatchVal,
+        get: get,
+        exp: watchExp,
+        eq: !!objectEquality
+      };
+//...
+```
+
+We can think of the `watcher` object as a command. The expression of the command is being evaluated on each `"$digest"` loop, once AngularJS detects change it invokes the `listener` function. The `watcher` command encapsulates the whole information required for watching the given expression and delegates the execution of the command to the `listener` (the actual receiver). We can think of the `$scope` as the command `Client` and the `$digest` loop as command `Invoker`.
+
 ### Controllers
 
 #### Page Controller
