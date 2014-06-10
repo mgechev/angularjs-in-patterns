@@ -865,7 +865,7 @@ $watch: function(watchExp, listener, objectEquality) {
 //...
 ```
 
-We can think of the `watcher` object as a command. The expression of the command is being evaluated on each `"$digest"` loop, once AngularJS detects change it invokes the `listener` function. The `watcher` command encapsulates the whole information required for watching the given expression and delegates the execution of the command to the `listener` (the actual receiver). We can think of the `$scope` as the command `Client` and the `$digest` loop as command `Invoker`.
+We can think of the `watcher` object as a command. The expression of the command is being evaluated on each [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) loop. Once AngularJS detects change in the expression, it invokes the `listener` function. The `watcher` command encapsulates the whole information required for watching given expression and delegates the execution of the command to the `listener` (the actual receiver). We can think of the `$scope` as the command's `Client` and the `$digest` loop as the command's `Invoker`.
 
 ### Controllers
 
