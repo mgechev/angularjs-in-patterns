@@ -872,7 +872,7 @@ function ChildCtrl($scope, User) {
 }
 ```
 
-The most appropriate location to verify that the user is already authenticated is not the main controller. Anyway, this example aims to illustrates the most trivial way to reuse logic by using a base controller.
+This example aims to illustrates the most trivial way to reuse logic by using a base controller, anyway in production applications I don't recommend you to put your authorization logic in the controllers. The access to the different routes could be determined on a higher level of abstraction. 
 
 The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
 
@@ -880,9 +880,9 @@ The `ChildCtrl` is responsible for handling actions such as clicking the button 
 
 #### Module Pattern
 
-This is actually not a design pattern from Gang of Four, neither one from P of EAA. This is a tranditional JavaScript pattern, which main goal is to provide encapsulation and privacy.
+This is actually not a design pattern from Gang of Four, neither one from P of EAA. This is a traditional JavaScript pattern, which main goal is to provide encapsulation and privacy.
 
-Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may have one or more private members, which are hidden in the local scope of a function, and an object, which exports the public API of the given module:
+Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may has zero or more private members, which are hidden in the local scope of a function. This function returns an object, which exports the public API of the given module:
 
 ```javascript
 var Page = (function () {
@@ -907,9 +907,9 @@ var Page = (function () {
 
 In the example above we have IIFE (Immediately-Invoked Function Expression), which after being called returns an object, with two methods (`setTitle` and `getTitle`). The returned object is being assigned to the `Page` variable.
 
-In this case the user of the `Page` object does not has direct access to the `title` variable, which is defined inside the local scope of the IIFE.
+In this case the user of the `Page` object doesn't has direct access to the `title` variable, which is defined inside the local scope of the IIFE.
 
-The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually have) privacy:
+The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually achieve) privacy:
 
 ```javascript
 app.factory('foo', function () {
@@ -930,7 +930,7 @@ app.factory('foo', function () {
 });
 ```
 
-Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a third-party library.
+Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.
 
 ## AngularJS application Patterns
 
