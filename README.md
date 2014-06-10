@@ -824,6 +824,12 @@ myModule.controller('ChildCtrl', function ($scope) {
 
 The different handlers from the UML diagram above are the different scopes, injected to the controllers.
 
+#### Command
+
+>In object-oriented programming, the command pattern is a behavioral design pattern in which an object is used to represent and encapsulate all the information needed to call a method at a later time. This information includes the method name, the object that owns the method and values for the method parameters.
+
+![Command](./images/command.png "Fig. 11")
+
 ### Controllers
 
 #### Page Controller
