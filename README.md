@@ -31,7 +31,6 @@
   * [Page Controller](#page-controller)
 * [Others](#others)
   * [Module Pattern](#module-pattern)
-* [AngularJS application Patterns](#angularjs-application-patterns)
   * [Data Mapper](#data-mapper)
 * [References](#references)
 
@@ -975,8 +974,6 @@ app.factory('foo', function () {
 ```
 
 Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.
-
-## AngularJS application Patterns
 
 ### Data Mapper
 
