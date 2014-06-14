@@ -257,7 +257,7 @@ In the last chapter we are going to take a look at some architectural patterns, 
 
 In the UML diagram bellow is illustrated the singleton design pattern.
 
-![Singleton](./images/singleton.svg "Fig. 1")
+![Singleton](//rawgit.com/mgechev/angularjs-in-patterns/master/images/singleton.svg "Fig. 1")
 
 When given dependency is required by any component, AngularJS resolves it using the following algorithm:
 
