@@ -257,7 +257,7 @@ In the last chapter we are going to take a look at some architectural patterns, 
 
 In the UML diagram bellow is illustrated the singleton design pattern.
 
-![Singleton](./images/singleton.png "Fig. 1")
+![Singleton](./images/singleton.svg "Fig. 1")
 
 When given dependency is required by any component, AngularJS resolves it using the following algorithm:
 
@@ -307,7 +307,7 @@ For further discussion on this topic Misko Hevery's [article](http://googletesti
 
 >The factory method pattern is a creational pattern, which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
 
-![Factory Method](./images/factory-method.png "Fig. 2")
+![Factory Method](./images/factory-method.svg "Fig. 2")
 
 Lets consider the following snippet:
 
@@ -397,7 +397,7 @@ There are a few benefits of using the factory method pattern in this case, becau
 
 >The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
 
-![Decorator](./images/decorator.png "Fig. 4")
+![Decorator](./images/decorator.svg "Fig. 4")
 
 AngularJS provides out-of-the-box way for extending and/or enchanting the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
 
@@ -445,7 +445,7 @@ Using this pattern is especially useful when we need to modify the functionality
 
 >4. wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).
 
-![Facade](./images/facade.png "Fig. 11")
+![Facade](./images/facade.svg "Fig. 11")
 
 There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you practically create a facade.
 
@@ -496,7 +496,7 @@ Even higher level of abstraction is being created by `$resource`, which is build
 
 >A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.
 
-![Proxy](./images/proxy.png "Fig. 9")
+![Proxy](./images/proxy.svg "Fig. 9")
 
 We can distinguish three different types of proxy:
 
@@ -534,7 +534,7 @@ Initially when the snippet above executes, the property `user` of the `$scope` o
 
 >The Active Record object is an object, which carries both data and behavior. Usually most of the data in these objects is persistent, responsibility of the Active Record object is to take care of the communication with the database in order to create, update, retrieve or delete the data. It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.
 
-![Active Record](./images/active-record.png "Fig. 7")
+![Active Record](./images/active-record.svg "Fig. 7")
 
 AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS' core.
 
@@ -579,7 +579,7 @@ Since Martin Fowler states that
 
 >The composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects are to be treated in the same way as a single instance of an object. The intent of a composite is to "compose" objects into tree structures to represent part-whole hierarchies.
 
-![Composite](./images/composite.png "Fig. 3")
+![Composite](./images/composite.svg "Fig. 3")
 
 According to the Gang of Four, MVC is nothing more than combination of:
 
@@ -628,7 +628,7 @@ In the second, JavaScript, example we see that the `template` property of the di
 
 >In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.
 
-![Interpreter](./images/interpreter.png "Fig. 6")
+![Interpreter](./images/interpreter.svg "Fig. 6")
 
 Behind its `$parse` service, AngularJS provides its own implementation of interpreter of a DSL (Domain Specific Language). The used DSL is simplified and modified version of JavaScript.
 The main differences between the JavaScript expressions and AngularJS expressions that AngularJS expressions:
@@ -698,7 +698,7 @@ Few sample AngularJS expressions are:
 
 > Renders information into HTML by embedding markers in an HTML page.
 
-![Template View](./images/template-view.png "Fig. 8")
+![Template View](./images/template-view.svg "Fig. 8")
 
 The dynamic page rendering is not that trivial thing. It is connected with a lot of string concatenations, manipulations and frustration. Far easier way to build your dynamic page is to write your markup and embed little expressions inside it, which are lately evaluated in given context and so the whole template is being compiled to its end format. In our case this format is going to be HTML (or even DOM). This is exactly what the template engines do - they take given DSL, evaluate it in the appropriate context and then turn it into its end format.
 
@@ -755,7 +755,7 @@ will produce the same result as the one above. The main difference here is that 
 
 >The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. It is mainly used to implement distributed event handling systems.
 
-![Observer](./images/observer.png "Fig. 7")
+![Observer](./images/observer.svg "Fig. 7")
 
 There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them. This allows decoupling between the different scopes, non of the scopes should be aware of the rest of the scopes.
 
@@ -791,7 +791,7 @@ In the JavaScript community this pattern is better known as publish/subscribe.
 
 >The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
 
-![Chain of Responsibilities](./images/chain-of-responsibilities.png "Fig. 5")
+![Chain of Responsibilities](./images/chain-of-responsibilities.svg "Fig. 5")
 
 As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
 
@@ -828,7 +828,7 @@ The different handlers from the UML diagram above are the different scopes, inje
 
 >In object-oriented programming, the command pattern is a behavioral design pattern in which an object is used to represent and encapsulate all the information needed to call a method at a later time. This information includes the method name, the object that owns the method and values for the method parameters.
 
-![Command](./images/command.png "Fig. 11")
+![Command](./images/command.svg "Fig. 11")
 
 Before continuing with the application of the command pattern lets describe how AngularJS implements data binding.
 
@@ -873,7 +873,7 @@ We can think of the `watcher` object as a command. The expression of the command
 
 >An object that handles a request for a specific page or action on a Web site. Martin Fowler
 
-![Page Controller](./images/page-controller.png "Fig. 8")
+![Page Controller](./images/page-controller.svg "Fig. 8")
 
 According to [4](#references) the page controller:
 
@@ -979,7 +979,7 @@ Once we want to inject `foo` inside any other component we won't be able to use 
 
 >A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.
 
-![Data Mapper](./images/data-mapper.png "Fig. 10")
+![Data Mapper](./images/data-mapper.svg "Fig. 10")
 
 As the description above states, the data mapper is used for bidirectional transfer of data between a persistent data store and an in memory data representation. Usually our AngularJS application communicates with API server, which is written in any server-side language (Ruby, PHP, Java, JavaScript, etc.).
 
