@@ -19,6 +19,7 @@
   * [Facade](#facade)
   * [Proxy](#proxy)
   * [Active Record](#active-record)
+  * [Intercepting Filters](#intercepting-filters)
 * [Directives](#directives-1)
   * [Composite](#composite)
   * [Interpreter](#interpreter)
@@ -572,6 +573,10 @@ Since Martin Fowler states that
 > responsibility of the Active Record object is to take care of the communication with the databse in order to create...
 
 `$resource` does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".
+
+#### Intercepting Filters
+
+
 
 ### Directives
 
