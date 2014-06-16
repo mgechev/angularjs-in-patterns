@@ -576,7 +576,30 @@ Since Martin Fowler states that
 
 #### Intercepting Filters
 
+>Create a chain of composable filters to implement common pre-processing and post-processing tasks during a Web page request.
 
+![Composite](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/intercepting-filters.svg "Fig. 3")
+
+In some cases you need to do some kind of pre and/or post processing of HTTP requests. In the case of the Intercepting Filters you pre/post process given HTTP request/response in order to include logging, security or any other concern, which is influenced by the request body or headers. Basically the Intercepting Filters pattern include a chain of filters, each of which process data in given order. The output of each filter is input of the next one.
+
+In AngularJS we have the idea of the Intercepting Filters in `$httpProvider`. `$httpProvider` has an array property called `interceptors`, which contains a list of objects. Each object may have properties called: `request`, `response`, `requestError`, `responseError`.
+
+`requestError` is an interceptor, which gets called when a previous interceptor threw an error or resolved with a rejection, respectively `responseError` is being called when the previous `response` interceptor has thrown an error.
+
+Here is a basic example how you can add interceptors using object literal:
+
+```JavaScript
+$httpProvider.interceptors.push(function($q, dependency1, dependency2) {
+  return {
+   'request': function(config) {
+       // same as above
+    },
+    'response': function(response) {
+       // same as above
+    }
+  };
+});
+```
 
 ### Directives
 
