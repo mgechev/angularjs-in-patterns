@@ -1,0 +1,21 @@
+{
+  "name": "angularjs-in-patterns",
+  "version": "0.0.0",
+  "description": "AngularJS in patterns - this repository provides different look into AngularJS. It contains information where different design patterns are used inside the framework or any AngularJS application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mgechev/angularjs-patterns.git"
+  },
+  "author": "mgechev",
+  "license": "MIT",
+  "gitHead": "2009434a6dfdbe5f06f81253fb853840af753b36",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-markdown-pdf": "^1.0.1"
+  }
+}
