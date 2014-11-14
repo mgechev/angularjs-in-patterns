@@ -953,7 +953,7 @@ The `ChildCtrl` is responsible for handling actions such as clicking the button 
 
 This is actually not a design pattern from Gang of Four, neither one from P of EAA. This is a traditional JavaScript pattern, which main goal is to provide encapsulation and privacy.
 
-Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may has zero or more private members, which are hidden in the local scope of a function. This function returns an object, which exports the public API of the given module:
+Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may have zero or more private members, which are hidden in the local scope of a function. This function returns an object, which exports the public API of the given module:
 
 ```javascript
 var Page = (function () {
