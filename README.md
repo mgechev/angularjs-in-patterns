@@ -45,13 +45,13 @@ The goal of this paper is to describe how different software design and architec
 
 The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. The second section lists and describes different design and architectural patterns, which are implemented inside the framework. The patterns are grouped by the AngularJS component they are used in. If some patterns are used inside multiple components it will be explicitly mentioned.
 
-The last section contains a few architectural patterns, which are commonly used inside most of the single-page applications build with AngularJS.
+The last section contains a few architectural patterns, which are commonly used inside most of the single-page applications built with AngularJS.
 
 ## AngularJS overview
 
-AngularJS is JavaScript framework developed by Google. It intends to provide solid base for the development of CRUD Single-Page Applications (SPA).
-SPA is web application, which once loaded, does not require full page reload when the user performs any actions with it. This means that all application resources (data, templates, scripts, styles) should be loaded with the initial request or better - the information and resources should be loaded on demand.
-Since most of the CRUD applications has common characteristics and requirements, AngularJS intends to provide the optimal set of them out-of-the-box. Few important features of AngularJS are:
+AngularJS is a JavaScript framework developed by Google. It intends to provide a solid base for the development of CRUD Single-Page Applications (SPA).
+SPA is a web application, which once loaded, does not require full page reload when the user performs any actions with it. This means that all application resources (data, templates, scripts, styles) should be loaded with the initial request or better - the information and resources should be loaded on demand.
+Since most of the CRUD applications has common characteristics and requirements, AngularJS intends to provide the optimal set of them out-of-the-box. A few important features of AngularJS are:
 
 - two-way data binding
 - dependency injection
@@ -67,7 +67,7 @@ The separation of concerns is achieved by dividing each AngularJS application in
 - services
 - filters
 
-These components can be grouped inside different modules, which helps to achieve higher level of abstraction and handle complexity. Each of the components encapsulates specific piece of the application's logic.
+These components can be grouped inside different modules, which helps to achieve a higher level of abstraction and handle complexity. Each of the components encapsulates a specific piece of the application's logic.
 
 ### Partials
 
@@ -119,7 +119,7 @@ All the custom elements, attributes, comments or classes could be recognized as 
 
 ### Scope
 
-In AngularJS scope is JavaScript object, which is exposed to the partials. The scope could contains different properties - primitives, objects or methods. All methods attached to the scope could be invoked by evaluation of AngularJS expression inside the partials associated with the given scope or direct call of the method by any component, which keeps reference to the scope. By using appropriate *directives*, the data attached to the scope could be binded to the view in such way that each change in the partial will reflect a scope property and each change of a scope property will reflect the partial.
+In AngularJS scope is a JavaScript object, which is exposed to the partials. The scope could contain different properties - primitives, objects or methods. All methods attached to the scope could be invoked by evaluation of AngularJS expression inside the partials associated with the given scope or direct call of the method by any component, which keeps reference to the scope. By using appropriate *directives*, the data attached to the scope could be binded to the view in such a way that each change in the partial will reflect a scope property and each change of a scope property will reflect the partial.
 
 Another important characteristics of the scopes of any AngularJS application is that they are connected into a prototypical chain (except scopes, which are explicitly stated as *isolated*). This way any child scope will be able to invoke methods of its parents since they are properties of its direct or indirect prototype.
 
@@ -195,7 +195,7 @@ Since the intent of this paper is not to explain the complete API of AngularJS, 
 
 The filters in AngularJS are responsible for encapsulating logic required for formatting data. Usually filters are used inside the partials but they are also accessible in the controllers, directives, *services* and other filters through Dependency Injection.
 
-Here is definition of a sample filter, which turns given string to uppercase:
+Here is a definition of a sample filter, which changes the given string to uppercase:
 
 ```JavaScript
 myModule.filter('uppercase', function () {
@@ -400,7 +400,7 @@ There are a few benefits of using the factory method pattern in this case, becau
 
 ![Decorator](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/decorator.svg "Fig. 4")
 
-AngularJS provides out-of-the-box way for extending and/or enchanting the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
+AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
 
 ```JavaScript
 myModule.controller('MainCtrl', function (foo) {
