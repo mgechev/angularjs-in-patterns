@@ -99,7 +99,6 @@ The AngularJS controllers are JavaScript functions, which help handling the user
 
 ```JavaScript
 function MyController($scope) {
-
   $scope.buttonText = 'Click me to change foo!';
   $scope.foo = 42;
 
