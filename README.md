@@ -89,7 +89,7 @@ Initially each SPA loads `index.html` file. In the case of AngularJS this file c
    <script src="angular.js"></script>
  </body>
 </html>
-````
+```
 
 With AngularJS expressions partials define what kind of actions should be performed for handling different user interactions. In the example above the value of the attribute `ng-click` states that the method `changeFoo` of the current *scope* will be invoked.
 
@@ -107,7 +107,7 @@ function MyController($scope) {
     alert('Foo changed');
   };
 }
-````
+```
 
 For example, if we wire the sample controller above with the partial provided in the previous section the user will be able to interact with the application in few different ways.
 
@@ -942,7 +942,7 @@ function ChildCtrl($scope, User) {
 }
 ```
 
-This example aims to illustrates the most trivial way to reuse logic by using a base controller, anyway in production applications I don't recommend you to put your authorization logic in the controllers. The access to the different routes could be determined on a higher level of abstraction. 
+This example aims to illustrates the most trivial way to reuse logic by using a base controller, anyway in production applications I don't recommend you to put your authorization logic in the controllers. The access to the different routes could be determined on a higher level of abstraction.
 
 The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
 
