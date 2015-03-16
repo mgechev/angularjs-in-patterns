@@ -1,6 +1,6 @@
 # AngularJS in Patterns
 
-<!-- toc -->
+<!--toc-->
 
 ## Table of Contents
 
@@ -37,7 +37,7 @@
   * [Data Mapper](#data-mapper)
 * [References](#references)
 
-<!-- endtoc -->
+<!--endtoc-->
 
 ## Abstract
 
