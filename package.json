@@ -15,8 +15,6 @@
   "gitHead": "2009434a6dfdbe5f06f81253fb853840af753b36",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "gulp": "^3.8.10",
-    "markdown-styles": "https://github.com/mgechev/markdown-styles/tarball/master",
-    "gulp-shell": "^0.2.11"
+    "markdown-styles": "https://github.com/mgechev/markdown-styles/tarball/master"
   }
 }
