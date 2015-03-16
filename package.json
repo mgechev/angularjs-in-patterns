@@ -16,6 +16,7 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "gulp": "^3.8.10",
-    "gulp-markdown-pdf": "^1.0.1"
+    "markdown-styles": "https://github.com/mgechev/markdown-styles/tarball/master",
+    "gulp-shell": "^0.2.11"
   }
 }
