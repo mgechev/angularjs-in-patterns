@@ -179,7 +179,7 @@ Each directive has a name and logic associated with it. In the simplest case the
 <p>The singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects.</p>
 </blockquote>
 <p>In the UML diagram bellow is illustrated the singleton design pattern.</p>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/singleton.svg" alt="Singleton" title="Fig. 1"></p>
+<p class="img-container"><img src="./singleton.svg" alt="Singleton" title="Fig. 1"></p>
 <p>When given dependency is required by any component, AngularJS resolves it using the following algorithm:</p>
 <ul class="list">
 <li>Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).</li>
@@ -223,7 +223,7 @@ Each directive has a name and logic associated with it. In the simplest case the
 <blockquote>
 <p>The factory method pattern is a creational pattern, which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/factory-method.svg" alt="Factory Method" title="Fig. 2"></p>
+<p class="img-container"><img src="./factory-method.svg" alt="Factory Method" title="Fig. 2"></p>
 <p>Lets consider the following snippet:</p>
 <pre class="hljs"><code>myModule.config(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$provide</span>)</span> </span>{
   <span class="hljs-variable">$provide</span>.provider(<span class="hljs-string">'foo'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
@@ -292,7 +292,7 @@ createInternalInjector(instanceCache, <span class="hljs-keyword">function</span>
 <blockquote>
 <p>The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/decorator.svg" alt="Decorator" title="Fig. 4"></p>
+<p class="img-container"><img src="./decorator.svg" alt="Decorator" title="Fig. 4"></p>
 <p>AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method <code>decorator</code> of <code>$provide</code> you can create &quot;wrapper&quot; of any service you have previously defined or used by a third-party:</p>
 <pre class="hljs"><code>myModule.controller(<span class="hljs-string">'MainCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(foo)</span> </span>{
   foo.bar();
@@ -335,7 +335,7 @@ We decorate the service by overriding its method <code>bar</code>. The actual de
 </li>
 </ol>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/facade.svg" alt="Facade" title="Fig. 11"></p>
+<p class="img-container"><img src="./facade.svg" alt="Facade" title="Fig. 11"></p>
 <p>There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you practically create a facade.</p>
 <p>For example, lets take a look how we can create an <code>XMLHttpRequest</code> POST request:</p>
 <pre class="hljs"><code>var <span class="hljs-keyword">http</span> = new XMLHttpRequest(),
@@ -370,7 +370,7 @@ We decorate the service by overriding its method <code>bar</code>. The actual de
 <blockquote>
 <p>A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/proxy.svg" alt="Proxy" title="Fig. 9"></p>
+<p class="img-container"><img src="./proxy.svg" alt="Proxy" title="Fig. 9"></p>
 <p>We can distinguish three different types of proxy:</p>
 <ul class="list">
 <li>Virtual Proxy</li>
@@ -391,7 +391,7 @@ console<span class="hljs-built_in">.</span><span class="hljs-keyword">log</span>
 <blockquote>
 <p>The Active Record object is an object, which carries both data and behavior. Usually most of the data in these objects is persistent, responsibility of the Active Record object is to take care of the communication with the database in order to create, update, retrieve or delete the data. It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/active-record.svg" alt="Active Record" title="Fig. 7"></p>
+<p class="img-container"><img src="./active-record.svg" alt="Active Record" title="Fig. 7"></p>
 <p>AngularJS defines a service called <code>$resource</code>. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS&#39; core.</p>
 <p>According to the AngularJS&#39; documentation <code>$resource</code> is:</p>
 <blockquote>
@@ -418,7 +418,7 @@ user<span class="hljs-built_in">.</span><span class="hljs-variable">$save</span>
 <blockquote>
 <p>Create a chain of composable filters to implement common pre-processing and post-processing tasks during a Web page request.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/intercepting-filters.svg" alt="Composite" title="Fig. 3"></p>
+<p class="img-container"><img src="./intercepting-filters.svg" alt="Composite" title="Fig. 3"></p>
 <p>In some cases you need to do some kind of pre and/or post processing of HTTP requests. In the case of the Intercepting Filters you pre/post process given HTTP request/response in order to include logging, security or any other concern, which is influenced by the request body or headers. Basically the Intercepting Filters pattern include a chain of filters, each of which process data in given order. The output of each filter is input of the next one.</p>
 <p>In AngularJS we have the idea of the Intercepting Filters in <code>$httpProvider</code>. <code>$httpProvider</code> has an array property called <code>interceptors</code>, which contains a list of objects. Each object may have properties called: <code>request</code>, <code>response</code>, <code>requestError</code>, <code>responseError</code>.</p>
 <p><code>requestError</code> is an interceptor, which gets called when a previous interceptor threw an error or resolved with a rejection, respectively <code>responseError</code> is being called when the previous <code>response</code> interceptor has thrown an error.</p>
@@ -437,7 +437,7 @@ user<span class="hljs-built_in">.</span><span class="hljs-variable">$save</span>
 <blockquote>
 <p>The composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects are to be treated in the same way as a single instance of an object. The intent of a composite is to &quot;compose&quot; objects into tree structures to represent part-whole hierarchies.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/composite.svg" alt="Composite" title="Fig. 3"></p>
+<p class="img-container"><img src="./composite.svg" alt="Composite" title="Fig. 3"></p>
 <p>According to the Gang of Four, MVC is nothing more than combination of:</p>
 <ul class="list">
 <li>Strategy</li>
@@ -472,7 +472,7 @@ user<span class="hljs-built_in">.</span><span class="hljs-variable">$save</span>
 <blockquote>
 <p>In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/interpreter.svg" alt="Interpreter" title="Fig. 6"></p>
+<p class="img-container"><img src="./interpreter.svg" alt="Interpreter" title="Fig. 6"></p>
 <p>Behind its <code>$parse</code> service, AngularJS provides its own implementation of interpreter of a DSL (Domain Specific Language). The used DSL is simplified and modified version of JavaScript.
 The main differences between the JavaScript expressions and AngularJS expressions that AngularJS expressions:</p>
 <ul class="list">
@@ -523,7 +523,7 @@ The main differences between the JavaScript expressions and AngularJS expression
 <blockquote>
 <p>Renders information into HTML by embedding markers in an HTML page.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/template-view.svg" alt="Template View" title="Fig. 8"></p>
+<p class="img-container"><img src="./template-view.svg" alt="Template View" title="Fig. 8"></p>
 <p>The dynamic page rendering is not that trivial thing. It is connected with a lot of string concatenations, manipulations and frustration. Far easier way to build your dynamic page is to write your markup and embed little expressions inside it, which are lately evaluated in given context and so the whole template is being compiled to its end format. In our case this format is going to be HTML (or even DOM). This is exactly what the template engines do - they take given DSL, evaluate it in the appropriate context and then turn it into its end format.</p>
 <p>Templates are very commonly used especially in the back-end.
 For example, you can embed PHP code inside HTML and create a dynamic page, you can use Smarty or you can use eRuby with Ruby in order to embed Ruby code inside your static pages.</p>
@@ -551,7 +551,7 @@ What AngularJS compiler does is to traverse the DOM tree and look for already kn
 <blockquote>
 <p>The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. It is mainly used to implement distributed event handling systems.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/observer.svg" alt="Observer" title="Fig. 7"></p>
+<p class="img-container"><img src="./observer.svg" alt="Observer" title="Fig. 7"></p>
 <p>There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see <a href="#scope">Scope</a>). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them. This allows decoupling between the different scopes, non of the scopes should be aware of the rest of the scopes.</p>
 <p>Each AngularJS scope has public methods called <code>$on</code>, <code>$emit</code> and <code>$broadcast</code>. The method <code>$on</code> accepts topic as first argument and callback as second. We can think of the callback as an observer - an object, which implements the <code>Observer</code> interface (in JavaScript the functions are first-class, so we can provide only implementation of the <code>notify</code> method):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ExampleCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
@@ -571,7 +571,7 @@ Each scope can subscribe to any event with multiple callbacks (i.e. it can assoc
 <blockquote>
 <p>The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/chain-of-responsibilities.svg" alt="Chain of Responsibilities" title="Fig. 5"></p>
+<p class="img-container"><img src="./chain-of-responsibilities.svg" alt="Chain of Responsibilities" title="Fig. 5"></p>
 <p>As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are &quot;isolated&quot;, which means that they don&#39;t inherit prototypically by their parent scope, but are connected to it via their <code>$parent</code> property.</p>
 <p>When <code>$emit</code> or <code>$broadcast</code> are called we can think of the scope chain as event bus, or even more accurately chain of responsibilities. Once the event is triggered it is emitted downwards or upwards (depending on the method, which was called). Each subsequent scope may:</p>
 <ul class="list">
@@ -600,7 +600,7 @@ myModule.controller(<span class="hljs-string">'ChildCtrl'</span>, <span class="h
 <blockquote>
 <p>In object-oriented programming, the command pattern is a behavioral design pattern in which an object is used to represent and encapsulate all the information needed to call a method at a later time. This information includes the method name, the object that owns the method and values for the method parameters.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/command.svg" alt="Command" title="Fig. 11"></p>
+<p class="img-container"><img src="./command.svg" alt="Command" title="Fig. 11"></p>
 <p>Before continuing with the application of the command pattern lets describe how AngularJS implements data binding.</p>
 <p>When we want to bind our model to the view we use the directives <code>ng-bind</code> (for single-way data binding) and <code>ng-model</code> (for two-way data binding). For example, if we want each change in the model <code>foo</code> to reflect the view we can:</p>
 <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">ng-bind</span>=<span class="hljs-value">"foo"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span></code></pre><p>Now each time we change the value of <code>foo</code> the inner text of the span will be changed. We can achieve the same effect with more complex AngularJS expressions, like:</p>
@@ -624,7 +624,7 @@ myModule.controller(<span class="hljs-string">'ChildCtrl'</span>, <span class="h
 <blockquote>
 <p>An object that handles a request for a specific page or action on a Web site. Martin Fowler</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/page-controller.svg" alt="Page Controller" title="Fig. 8"></p>
+<p class="img-container"><img src="./page-controller.svg" alt="Page Controller" title="Fig. 8"></p>
 <p>According to <a href="#references">4</a> the page controller:</p>
 <blockquote>
 <p>Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code</p>
@@ -700,7 +700,7 @@ Here is an example hierarchy between few controllers:</p>
 <blockquote>
 <p>A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.</p>
 </blockquote>
-<p class="img-container"><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/data-mapper.svg" alt="Data Mapper" title="Fig. 10"></p>
+<p class="img-container"><img src="./data-mapper.svg" alt="Data Mapper" title="Fig. 10"></p>
 <p>As the description above states, the data mapper is used for bidirectional transfer of data between a persistent data store and an in memory data representation. Usually our AngularJS application communicates with API server, which is written in any server-side language (Ruby, PHP, Java, JavaScript, etc.).</p>
 <p>Usually, if we have RESTful API <code>$resource</code> will help us communicate with the server in Active Record like fashion. Although, in some applications the data entities returned by the server are not in the most appropriate format, which we want to use in the front-end.</p>
 <p>For instance, lets assume we have application in which each user has:</p>
