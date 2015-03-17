@@ -271,3 +271,39 @@ div.notice {
   font-size: larger;
   margin: 8px;
 }
+
+.nav li {
+  margin-bottom: 6px;
+}
+
+.heading-1 {
+  margin-left: 0;
+}
+
+.heading-2 {
+  margin-left: 10px;
+}
+
+.heading-3 {
+  margin-left: 20px;
+}
+
+.heading-4 {
+  margin-left: 30px;
+  display: none;
+}
+
+.heading-5 {
+  margin-left: 40px;
+  display: none;
+}
+
+@media only screen
+and (max-device-width : 667px) {
+  #sidebar {
+    display: none;
+  }
+  #container {
+    width: 100%;
+  }
+}
