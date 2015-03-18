@@ -302,12 +302,18 @@ div.notice {
   #sidebar {
     display: none;
   }
+  #container,
   #content {
     float: none;
+  }
+  #content {
     margin: auto;
     width: 90%;
   }
   #wrapper {
     width: 100%;
+  }
+  .post p {
+    max-width: 100%;
   }
 }
