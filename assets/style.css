@@ -298,8 +298,7 @@ div.notice {
   display: none;
 }
 
-@media only screen
-and (max-device-width : 667px) {
+@media (max-device-width : 667px) {
   #sidebar {
     display: none;
   }
