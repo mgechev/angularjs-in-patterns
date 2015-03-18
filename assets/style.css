@@ -298,11 +298,16 @@ div.notice {
   display: none;
 }
 
-@media (max-device-width : 667px) {
+@media (max-width : 980px) {
   #sidebar {
     display: none;
   }
-  #container {
+  #content {
+    float: none;
+    margin: auto;
+    width: 90%;
+  }
+  #wrapper {
     width: 100%;
   }
 }
