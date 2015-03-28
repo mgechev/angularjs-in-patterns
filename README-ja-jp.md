@@ -10,7 +10,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 * [はじめに](#はじめに)
 * [AngularJSの概要](#AngularJSの概要)
 * [パーシャル](#パーシャル)
-* [Controllers](#controllers)
+* [コントローラ](#コントローラ)
 * [Scope](#scope)
 * [Directives](#directives)
 * [Filters](#filters)
@@ -99,9 +99,9 @@ SPAは最初に `index.html` ファイルを読み込みます。AngularJSの場
 
 AngularJSのエクスプレッションでパーシャルはユーザとの対話の中でどのアクションを実行すべきかを定義します。上記の例では、 `ng-click` の値は、現在の *scope* の `changeFoo` メソッドが実行されることを表しています。
 
-### Controllers
+### コントローラ
 
-The AngularJS controllers are JavaScript functions, which help handling the user interactions with the web application (for example mouse events, keyboard events, etc.), by attaching methods to the *scope*. All required external, for the controllers, components are provided through the Dependency Injection mechanism of AngularJS. The controllers are also responsible for providing the *model* to the partials by attaching data to the *scope*. We can think of this data as *view model*.
+AngularJSのコントローラはユーザとウェブ・アプリケーションとの双方向のやりとり（マウスイベント、キーボードイベントなど）を扱うJavaScriptの関数です。 *scope* に、メソッドを追加することで実現します。コントローラに必要なコンポーネントはAngularJSの依存性の注入によって提供されます。コントローラはまた *scope* にデータを追加することで、パーシャルに *model* を提供する責務を負います。このデータを *view model* と考えることができます。
 
 ```JavaScript
 function MyController($scope) {
@@ -115,12 +115,12 @@ function MyController($scope) {
 }
 ```
 
-For example, if we wire the sample controller above with the partial provided in the previous section the user will be able to interact with the application in few different ways.
+例えば、もし上記のサンプルコントローラと、前述のパーシャルをつなげた場合、ユーザはアプリケーションといくつかの方法でコミュニケーションができるようになります。
 
-1. Change the value of `foo` by typing in the input box. This will immediately reflect the value of `foo` because of the two-way data binding.
-2. Change the value of `foo` by clicking the button, which will be labeled `Click me to change foo!`.
+1. インプット・ボックスにタイプすることで、 `foo` の値を変更します。双方向バインディングによって、この変更はすぐに `foo` の値に反映されます。
+2. `Click me to change foo!` と表示されているボタンをクリックすることで `foo` の値を変更します。
 
-All the custom elements, attributes, comments or classes could be recognized as AngularJS *directives* if they are previously defined as ones.
+全てのカスタム・エレメント、コメント、また、クラスは事前に定義されている場合、AngularJSの *ディレクティブ* として認識されます。
 
 ### Scope
 
