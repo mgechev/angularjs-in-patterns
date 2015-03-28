@@ -14,7 +14,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 * [スコープ](#スコープ)
 * [ディレクティブ](#ディレクティブ)
 * [フィルタ](#フィルタ)
-* [Services](#services)
+* [サービス](#サービス)
 * [AngularJS Patterns](#angularjs-patterns)
 * [Services](#services-1)
   * [Singleton](#singleton)
@@ -224,9 +224,9 @@ function MyCtrl(uppercaseFilter) {
 }
 ```
 
-### Services
+### サービス
 
-Every piece of logic, which doesn't belong to the components described above should be placed inside a service. Usually services encapsulate the domain specific logic, persistence logic, XHR, WebSockets, etc. When the controllers in the application became too "fat" the repetitive code should be placed inside a service.
+上述のコンポーネントに属さない全てのロジックはサービスに格納されるべきです。普通、サービスは問題領域(ドメイン)固有のロジックや、永続化に関わるロジック、XHR、ウェブソケットなどをカプセル化します。アプリケーションの中のコントローラが "肥大化" した際には、何度も利用されるコードをサービスに移し替えるべきです。
 
 ```JavaScript
 myModule.service('Developer', function () {
@@ -240,7 +240,7 @@ myModule.service('Developer', function () {
 });
 ```
 
-The service could be injected inside any component, which supports dependency injection (controllers, other services, filters, directives).
+サービスは依存性の注入を扱えるどのコンポーネント（コントローラ、多のサービス、フィルター、ディレクティブ）にも注入できます。
 
 ```JavaScript
 function MyCtrl(developer) {
