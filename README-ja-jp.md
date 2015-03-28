@@ -12,7 +12,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 * [パーシャル](#パーシャル)
 * [コントローラ](#コントローラ)
 * [スコープ](#スコープ)
-* [Directives](#directives)
+* [ディレクティブ](#ディレクティブ)
 * [Filters](#filters)
 * [Services](#services)
 * [AngularJS Patterns](#angularjs-patterns)
@@ -155,19 +155,19 @@ function ChildCtrl($scope) {
 
 `div#child` は `ChildCtrl` と結びついていますが、 `ChildCtrl` に注入されたスコープは親のスコープ（ `BaseCtrl` に注入されたスコープ ）からプロトタイプ継承をしているので、 `foo` メソッドは `button#parent-method` でアクセス可能になっています。
 
-### Directives
+### ディレクティブ
 
-In AngularJS the directives are the place where all DOM manipulations should be placed. As a rule of thumb, when you have DOM manipulations in your controller you should create a new direcrive or consider refactoring of already existing one, which could handle the required DOM manipulations.
-Each directive has a name and logic associated with it. In the simplest case the directive contains only name and definition of *postLink* function, which encapsulates all the logic required for the directive. In more complex cases the directive could contain a lot of properties such as:
+AngularJSでは全てのDOM操作がなされるべき場所です。目安としては、コントローラがDOM操作を含む場合、新しいディレクティブを作るか、すでにあるディレクティブが必要なDOM操作ができるようにするためのリファクタリングをするべきでしょう。
+全てのディレクティブは名前と関連するロジックを持っています。最もシンプルなケースとしては、ティレクティブは名前と必要なすべてのロジックをカプセル化するための *postLink* 関数を持ちます。少し複雑なケースでは、下記のようなたくさんのプロパティを持ちます:
 
-- template
-- compile function
-- link function
-- etc...
+- テンプレート
+- コンパイル関数
+- リンク関数
+- などなど...
 
-By citing the name of the directives they can be used inside the declarative partials.
+ディレクティブの名前を利用することで、パーシャルの中で利用することができます。
 
-Example:
+例:
 
 ```JavaScript
 myModule.directive('alertButton', function () {
@@ -192,9 +192,9 @@ myModule.directive('alertButton', function () {
 <alert-button content="42">Click me</alert-button>
 ```
 
-In the example above the tag `<alert-button></alert-button>` will be replaced button element. When the user clicks on the button the string `42` will be alerted.
+上記の例では、 `<alert-button></alert-button>` タグはボタンエレメントに置換えられます。ユーザがボタンをクリックした時に、文字列の `42` がアラートとして表示されます。
 
-Since the intent of this paper is not to explain the complete API of AngularJS, we will stop with the directives here.
+このドキュメントの意図はAngularJSの完全なAPIの解説をすることを意図しているわけではないので、ディレクティブの説明はこの辺りでやめておきます。
 
 ### Filters
 
