@@ -17,8 +17,8 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 * [サービス](#サービス)
 * [AngularJSのパターン](#angularjs-patterns)
 * [サービス](#services-1)
-  * [シングルトン](#singleton)
-  * [Factory Method](#factory-method)
+  * [シングルトン](#シングルトン)
+  * [ファクトリ・メソッド](#ファクトリ・メソッド)
   * [Decorator](#decorator)
   * [Facade](#facade)
   * [Proxy](#proxy)
@@ -259,7 +259,7 @@ function MyCtrl(developer) {
 
 #### シングルトン
 
-> シングルトン・パターンはクラスのインスンタンスを１つに制限するデザイン・パターンです。システムを通してアクションを調整するオブジェクトが１つで良い場合に役に立ちます。この考え方はしばしばシステムに対して、オブジェクトを１つにして効率的に稼働させることや、オブジェクトの数を一定の数以下にを制限することに一般化されます。
+>シングルトン・パターンはクラスのインスンタンスを１つに制限するデザイン・パターンです。システムを通してアクションを調整するオブジェクトが１つで良い場合に役に立ちます。この考え方はしばしばシステムに対して、オブジェクトを１つにして効率的に稼働させることや、オブジェクトの数を一定の数以下にを制限することに一般化されます。
 
 下記のUMLダイアグラムはシングルトンのデザイン・パターンを表しています。
 
@@ -309,20 +309,20 @@ function getService(serviceName) {
 
 このトピックに関する更に一歩踏み込んだ議論のために、Google Testing blogのMisko Heveryの [記事](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) を考慮にいれましょう。
 
-#### Factory Method
+#### ファクトリ・メソッド
 
->The factory method pattern is a creational pattern, which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
+>ファクトリ・メソッド・パターンは生成のパターンです。生成のパターンは生成するクラス指定のないオブジェクトを生成する際に生じる問題をうまく扱うためにファクトリ・メソッドを利用します。コンストラクタではなく、インターフェイス（抽象クラス）で指定されているファクトリメソッド、実装クラス（具象クラス）に実装されているファクトリメソッド、また、継承される可能性もあるのですが、ベースクラスに実装されているファクトリメソッドを通してオブジェクトが生成される場合に利用されます。
 
 ![Factory Method](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/factory-method.svg "Fig. 2")
 
-Lets consider the following snippet:
+次のスニペットを考えてみましょう:
 
 ```JavaScript
 myModule.config(function ($provide) {
   $provide.provider('foo', function () {
     var baz = 42;
     return {
-      //Factory method
+      //ファクトリ・メソッド
       $get: function (bar) {
         var baz = bar.baz();
         return {
@@ -335,11 +335,11 @@ myModule.config(function ($provide) {
 
 ```
 
-In the code above we use the `config` callback in order to define new "provider". Provider is an object, which has a method called `$get`. Since in JavaScript we don't have interfaces and the language is duck-typed there is a convention to name the factory method of the providers that way.
+新しい "プロバイダ" を定義するために、上記のコードで `config` コールバックを利用しています。プロバイダは `$get` メソッドを持っているオブジェクトです。JavaScriptでインターフェイスを持たず、ダックタイプされているので、このようにプロバイダのファクトリ・メソッドを名付ける慣例があります。
 
-Each service, filter, directive and controller has a provider (i.e. object which factory method, called `$get`), which is responsible for creating the component's instance.
+サービス、フィルタ、ディレクティブ、コントローラはそれぞれコンポーネントのインスタンスを生成する責務を負うプロバイダ（ `$get` を持つオブジェクト）を持ちます。
 
-We can dig a little bit deeper in AngularJS' implementation:
+AngularJSの実装をもう少し深く探っていくことが出います:
 
 ```JavaScript
 //...
@@ -375,7 +375,7 @@ function invoke(fn, self, locals, serviceName){
     );
   }
   if (!fn.$inject) {
-    // this means that we must be an array.
+    // これは配列でなければいけないことを意味しています
     fn = fn[length];
   }
 
@@ -383,21 +383,21 @@ function invoke(fn, self, locals, serviceName){
 }
 ```
 
-From the example above we can notice how the `$get` method is actually used:
+上記の例から、 `$get` メソッドが実際に利用されていることを知ることができます:
 
 ```JavaScript
 instanceInjector.invoke(provider.$get, provider, undefined, servicename)
 ```
 
-The snippet above calls the `invoke` method of `instanceInjector` with the factory method (i.e. `$get`) of given service, as first argument. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS, which was considered above. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
+上記のスニペットは `instanceInjector` の `invoke` メソッドを最初の引数にサービスのファクトリ・メソッド（ `$get` ）を指定して呼んでいます。 `invoke`メソッドの中では、最初の引数にファクトリメソッドを指定して `annotate` が呼ばれています。アノテートはAngularJSの依存性の注入メカニズムを通して全ての依存性を解決します。全ての依存性の解決ができた時、ファクトリ・メソッドが呼ばれます: `fn.apply(self, args)` 。
 
-If we think in terms of the UML diagram above we can call the provider a "ConcreteCreator" and the actual component, which is being created a "Product".
+上記のUMLダイアグラムの観点から考えると、プロバイダを "ConcreteCreator" と呼ぶことができます。そして、実際のコンポーネントは作られた "Product" となります。
 
-There are a few benefits of using the factory method pattern in this case, because of the indirection it creates. This way the framework can take care of the boilerplates during the instantiation of new components like:
+ファクトリ・メソッドの間接性にファクトリ・メソッドを使ういくつかの利点があります。この方法で、フレームワークは新しいコンポーネントを生成する際の基本的な中身に注意を払うことができます:
 
-- The most appropriate moment, when the component needs to be instantiated
-- Resolving all the dependencies required by the component
-- The number of instances the given component is allowed to have (for services and filters only a single one but multiple for the controllers)
+- コンポーネントがインスタンス化される最も適切なタイミング
+- コンポーネントに必要とされるすべての依存性の解決
+- コンポーネントが持つことを許されているインスタンスの数（サービスとフィルタは１つ。コントローラは複数）
 
 #### Decorator
 
