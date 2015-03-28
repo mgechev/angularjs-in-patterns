@@ -15,9 +15,9 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 * [ディレクティブ](#ディレクティブ)
 * [フィルタ](#フィルタ)
 * [サービス](#サービス)
-* [AngularJS Patterns](#angularjs-patterns)
-* [Services](#services-1)
-  * [Singleton](#singleton)
+* [AngularJSのパターン](#angularjs-patterns)
+* [サービス](#services-1)
+  * [シングルトン](#singleton)
   * [Factory Method](#factory-method)
   * [Decorator](#decorator)
   * [Facade](#facade)
@@ -249,32 +249,32 @@ function MyCtrl(developer) {
 }
 ```
 
-## AngularJS Patterns
+## AngularJSのパターン
 
-In the next a couple of sections, we are going to take a look how the traditional design and architectural patterns are composed in the AngularJS components.
+次の２つのセクションで、伝統的なデザインとアーキテクチャのパターンがAngularJSのコンポーネントの中でどのように構成されているのかを見ていきます。
 
-In the last chapter we are going to take a look at some architectural patterns, which are frequently used in the development of Single-Page Applications with (but not limited to) AngularJS.
+最後の章ではAngularJSに限らずシングル・ページ・アプリケーションで頻繁に使われるアーキテクチャのパターンについて見ていきます。
 
-### Services
+### サービス
 
-#### Singleton
+#### シングルトン
 
->The singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects.
+> シングルトン・パターンはクラスのインスンタンスを１つに制限するデザイン・パターンです。システムを通してアクションを調整するオブジェクトが１つで良い場合に役に立ちます。この考え方はしばしばシステムに対して、オブジェクトを１つにして効率的に稼働させることや、オブジェクトの数を一定の数以下にを制限することに一般化されます。
 
-In the UML diagram bellow is illustrated the singleton design pattern.
+下記のUMLダイアグラムはシングルトンのデザイン・パターンを表しています。
 
 ![Singleton](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/singleton.svg "Fig. 1")
 
-When given dependency is required by any component, AngularJS resolves it using the following algorithm:
+依存性がコンポーネントに必要とされる際に、AngularJSは次のアルゴリズムを使って依存性の解決を行っています:
 
-- Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).
-- If the dependency exists AngularJS pass it as parameter to the component, which requires it.
-- If the dependency does not exists:
-  - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm, for resolving all the dependencies required by the given dependency. This process may lead to circular dependency.
-  - AngularJS caches it inside the hash map mentioned above.
-  - AngularJS passes it as parameter to the component, which requires it.
+- 依存性の名前で語彙のクロージャの中に定義されているハッシュ・マップを検索します（プライベートにアクセスできるようになっています）。
+- 依存性がAngularJSの中に存在する場合は、それを必要としているコンポーネントにパラメタとして渡します。
+- 依存性が存在しない場合は:
+  - AngularJSはプロバイダのファクトリ・メソッド（ `$get` ）を用いてその依存性をインスタンス化します。 依存性のインスタンス化は必要に応じて、同じアルゴリズムを用いて再帰的に行われます。このプロセスは循環依存を起こします。
+  - AngularJSはそのインスタンスを上述のハッシュ・マップにキャッシュします。
+  - AngularJSは必要としているコンポーネントにパラメタとしてそのインスタンスを渡します。
 
-We can take better look at the AngularJS' source code, which implements the method `getService`:
+`getService` メソッドが実装されている部分のソースコードを見たほうが良いでしょう。
 
 ```JavaScript
 function getService(serviceName) {
@@ -300,14 +300,14 @@ function getService(serviceName) {
 }
 ```
 
-We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside its constructor function, we keep the reference inside the singleton manager (stated in the snippet above as `cache`).
+サービスは一度しかインスタンス化されないので、全てのサービスをシングルトンと考えることができます。キャッシュはシングルトンのマネージャと考えることができます。上記のUMLダイアグラムと少し違いがあります。コンストラクタ関数の中のシングルトンオブジェクトにスタティックでプライベートな参照を保つ代わりに、シングルトン・マネージャ（上記のコードの中の `cache` ）の中に参照を保ちます。
 
-This way the services are actually singletons but not implemented through the Singleton pattern, which provides a few advantages over the standard implementation:
+このように、サービスは実際にはシングルトンですが、シングルトン・パターンを通して実装されているわkではありません。これは、一般的な実装に比べていくつかの利点があります。
 
-- It improves the testability of your source code
-- You can control the creation of singleton objects (in our case the IoC container controls it for us, by instantiating the singletons lazy)
+- テストをしやすくします。
+- シングルトンオブジェクトの生成をコントロールできます（私達のケースでは、IoCコンテナがシングルトンを遅延インスタンス化することでコントロールしています）。
 
-For further discussion on this topic Misko Hevery's [article](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) in the Google Testing blog could be considered.
+このトピックに関する更に一歩踏み込んだ議論のために、Google Testing blogのMisko Heveryの [記事](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) を考慮にいれましょう。
 
 #### Factory Method
 
