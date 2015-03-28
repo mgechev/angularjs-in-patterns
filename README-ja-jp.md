@@ -13,7 +13,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 * [コントローラ](#コントローラ)
 * [スコープ](#スコープ)
 * [ディレクティブ](#ディレクティブ)
-* [Filters](#filters)
+* [フィルタ](#フィルタ)
 * [Services](#services)
 * [AngularJS Patterns](#angularjs-patterns)
 * [Services](#services-1)
@@ -196,11 +196,11 @@ myModule.directive('alertButton', function () {
 
 このドキュメントの意図はAngularJSの完全なAPIの解説をすることを意図しているわけではないので、ディレクティブの説明はこの辺りでやめておきます。
 
-### Filters
+### フィルタ
 
-The filters in AngularJS are responsible for encapsulating logic required for formatting data. Usually filters are used inside the partials but they are also accessible in the controllers, directives, *services* and other filters through Dependency Injection.
+AngularJSのフィルタはデータをフォーマットするために必要なロジックをカプセル化する責務を負っています。普通、フィルタはパーシャルの中で利用されますが、コントローラやディレクティブ、 *サービス* 、また依存性の注入を用いて他のフィルタの中で利用することも可能です。
 
-Here is a definition of a sample filter, which changes the given string to uppercase:
+与えられた文字列を全て大文字にするサンプルフィルタの定義です。
 
 ```JavaScript
 myModule.filter('uppercase', function () {
@@ -210,13 +210,13 @@ myModule.filter('uppercase', function () {
 });
 ```
 
-Inside a partial this filter could be used using the Unix's piping syntax:
+パーシャルの中ではUnixのパイプ記法でこのフィルタを使うことができます:
 
 ```HTML
 <div>{{ name | uppercase }}</div>
 ```
 
-Inside a controller the filter could be used as follows:
+コントローラの中では次のように利用します:
 
 ```JavaScript
 function MyCtrl(uppercaseFilter) {
