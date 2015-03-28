@@ -53,27 +53,27 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 
 最後のセクションでは、AngularJSで作られているシングル・ページ・アプリケーションでよく使われているいくつかのアーキテクチャ・パターンを解説します。
 
-## AngularJS overview
+## AngularJSの概要
 
-AngularJS is a JavaScript framework developed by Google. It intends to provide a solid base for the development of CRUD Single-Page Applications (SPA).
-SPA is a web application, which once loaded, does not require full page reload when the user performs any actions with it. This means that all application resources (data, templates, scripts, styles) should be loaded with the initial request or better - the information and resources should be loaded on demand.
-Since most of the CRUD applications has common characteristics and requirements, AngularJS intends to provide the optimal set of them out-of-the-box. A few important features of AngularJS are:
+AngularJSはCRUDなシングル・ページ・アプリケーション（SPA）開発の基盤を提供する目的で作られたGoogle製のJavascriptフレームワークです。
 
-- two-way data binding
-- dependency injection
-- separation of concerns
-- testability
-- abstraction
+SPAとは一度ロードされたら以後ページの全要素を再読込する必要なく、ユーザの操作を受け付けるウェブ・アプリケーションです。これはデータ、テンプレート、スクリプト、スタイルなど全てのリソースを最初のリクエスト時に、または、それが必要になった時にロードすることを意味します。ほとんどすべてのCRUDなアプリケーションは共通の特性と要求を持っているので、AngularJSはそれらのアプリケーションが必要とするものをまとめてすぐに使える最高セットを提供しようとしています。AngularJSのいくつかの重要な特徴は下記のとおりです:
 
-The separation of concerns is achieved by dividing each AngularJS application into separate components, such as:
+- 双方向バインディング
+- 依存性の注入
+- 関心の分離
+- テストの容易性
+- 抽象化
 
-- partials
-- controllers
-- directives
-- services
-- filters
+関心の分離はそれぞれのAngularJSアプリケーションを別々のコンポーネント（下記）に分けることで達成されています。
 
-These components can be grouped inside different modules, which helps to achieve a higher level of abstraction and handle complexity. Each of the components encapsulates a specific piece of the application's logic.
+- パーシャル
+- コントローラ
+- ディレクティブ
+- サービス
+- フィルタ
+
+これらのコンポーネントはそれぞれのモジュールの中でグループ化することができるので、高度な抽象化がやりやすくなりますし、複雑な処理も扱いやすくなっています。それぞれのコンポーネントはアプリケーションの必要なロジックを隠蔽します。
 
 ### Partials
 
