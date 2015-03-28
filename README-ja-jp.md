@@ -8,8 +8,8 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 
 * [要旨](#要旨)
 * [はじめに](#はじめに)
-* [AngularJS overview](#angularjs-overview)
-* [Partials](#partials)
+* [AngularJSの概要](#AngularJSの概要)
+* [パーシャル](#パーシャル)
 * [Controllers](#controllers)
 * [Scope](#scope)
 * [Directives](#directives)
@@ -75,29 +75,29 @@ SPAとは一度ロードされたら以後ページの全要素を再読込す�
 
 これらのコンポーネントはそれぞれのモジュールの中でグループ化することができるので、高度な抽象化がやりやすくなりますし、複雑な処理も扱いやすくなっています。それぞれのコンポーネントはアプリケーションの必要なロジックを隠蔽します。
 
-### Partials
+### パーシャル
 
-The partials are HTML strings. They may contain AngularJS expressions inside the elements or their attributes. One of the distinctions between AngularJS and the others frameworks is the fact that AngularJS' templates are not in an intermediate format, which needs to be turned into HTML (which is the case with mustache.js and handlebars, for example).
+パーシャルはHTMLの文字列です。パーシャルはエレメントまたはアトリビュートの中にAngularJSのエクスプレッションを含むことがあります。AngularJSとその他のフレームワークの違いの１つは、AngularJSのテンプレートがHTMLに変換される前の中間的なフォーマット（例えば、mustache.jsやhandlebarsのようなもの）ではないということです。
 
-Initially each SPA loads `index.html` file. In the case of AngularJS this file contains a set of standard and custom HTML attributes, elements and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, for example through the data binding provided by the framework.
+SPAは最初に `index.html` ファイルを読み込みます。AngularJSの場合、このファイルに標準のHTMLアトリビュート、エレメント、コメントに加えカスタムのものも含みます。この段階で、アプリケーションの設定と準備をします。これに続くユーザのアクションは、例えば、フレームワークによって提供されるデータ・バインディングを通すなどして、アプリケーションの他のパーシャルの読み込みや、状態の変更のみで対応します。
 
-**Sample partial**
+**パーシャルのサンプル**
 
 ```HTML
 <html ng-app>
- <!-- Body tag augmented with ngController directive  -->
+ <!-- BodyタグはngControllerディレクティブによって機能追加されます  -->
  <body ng-controller="MyController">
    <input ng-model="foo" value="bar">
-   <!-- Button tag with ng-click directive, and
-          string expression 'buttonText'
-          wrapped in "{{ }}" markup -->
+   <!-- ng-clickディレクティブ付きのButtonタグと
+          "{{ }}"マークアップで囲われた 'buttonText'
+          エクスプレッションです -->
    <button ng-click="changeFoo()">{{buttonText}}</button>
    <script src="angular.js"></script>
  </body>
 </html>
 ```
 
-With AngularJS expressions partials define what kind of actions should be performed for handling different user interactions. In the example above the value of the attribute `ng-click` states that the method `changeFoo` of the current *scope* will be invoked.
+AngularJSのエクスプレッションでパーシャルはユーザとの対話の中でどのアクションを実行すべきかを定義します。上記の例では、 `ng-click` の値は、現在の *scope* の `changeFoo` メソッドが実行されることを表しています。
 
 ### Controllers
 
