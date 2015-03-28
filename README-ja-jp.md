@@ -41,17 +41,17 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 
 <!--endtoc-->
 
-## Abstract
+## 要旨
 
-One of the best ways to learn something new is to see how the things you already know are used in it.
-This document does not intend to make its readers familiar with the design or architectural patterns; it suggests basic understanding of the concepts of the OOP, design patterns and architectural patterns.
-The goal of this paper is to describe how different software design and architectural patterns are applied in AngularJS or any AngularJS single-page application.
+新しいことを学ぶ際のもっともよい方法の１つとして、既に知っているものがそこでどのように使われているかを観察するという方法があります。
+このドキュメントは読者にデザインやアーキテクチャのパターンに親しんでもらおうとして書かれているものではありませんので、オブジェクト指向やデザイン・パターン、アーキテクチャ・パターンについての基本的な理解をしておくことをおすすめします。
+このドキュメントの目的は、AngularJSやAngularJSのシングル・ページ・アプリケーションにどれだけ様々なソフトウェア・デザインやアーキテクチャのパターンが採用されているかを述べることです。
 
-## Introduction
+## はじめに
 
-The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. The second section lists and describes different design and architectural patterns, which are implemented inside the framework. The patterns are grouped by the AngularJS component they are used in. If some patterns are used inside multiple components it will be explicitly mentioned.
+このドキュメントはAngularJSの概要を簡単に見ていくところから始まります。「AngularJSの概要」ではAngularJSの主なコンポーネントとして、ディレクティブ、フィルタ、コントローラ、サービス、スコープを見ていきます。２番目のセクションでは、フレームワークの内部で利用されている別のデザインとアーキテクチャのパターンを解説していきます。いくつかのコンポーネントで利用されているパターンがあった場合は、言及していきます。
 
-The last section contains a few architectural patterns, which are commonly used inside most of the single-page applications built with AngularJS.
+最後のセクションでは、AngularJSで作られているシングル・ページ・アプリケーションでよく使われているいくつかのアーキテクチャ・パターンを解説します。
 
 ## AngularJS overview
 
