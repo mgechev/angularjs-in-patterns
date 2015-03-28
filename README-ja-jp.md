@@ -11,7 +11,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 * [AngularJSの概要](#AngularJSの概要)
 * [パーシャル](#パーシャル)
 * [コントローラ](#コントローラ)
-* [Scope](#scope)
+* [スコープ](#スコープ)
 * [Directives](#directives)
 * [Filters](#filters)
 * [Services](#services)
@@ -122,13 +122,13 @@ function MyController($scope) {
 
 全てのカスタム・エレメント、コメント、また、クラスは事前に定義されている場合、AngularJSの *ディレクティブ* として認識されます。
 
-### Scope
+### スコープ
 
-In AngularJS scope is a JavaScript object, which is exposed to the partials. The scope could contain different properties - primitives, objects or methods. All methods attached to the scope could be invoked by evaluation of AngularJS expression inside the partials associated with the given scope or direct call of the method by any component, which keeps reference to the scope. By using appropriate *directives*, the data attached to the scope could be binded to the view in such a way that each change in the partial will reflect a scope property and each change of a scope property will reflect the partial.
+AngularJSではスコープはパーシャルに露出したJavaScriptのオブジェクトです。スコープはプリミティブ、オブジェクト、メソッドなど異なるプロパティを含んでいます。スコープに追加された全てのメソッドはスコープと関連付けられたパーシャルの中でAngularJSのエクスプレッションによって評価され実行されます。また、スコープへの参照を持つコンポーネントから直接呼び出されます。適切な *ディレクティブ* を使うことでスコープに追加されたデータはビューにバインディングされ、パーシャルの中の変更がスコープのプロパティに反映されます。また、プロパティの変更がパーシャルに反映されます。
 
-Another important characteristics of the scopes of any AngularJS application is that they are connected into a prototypical chain (except scopes, which are explicitly stated as *isolated*). This way any child scope will be able to invoke methods of its parents since they are properties of its direct or indirect prototype.
+AngularJSアプリケーションのスコープのもう一つの重要な特性は、それがプロトタイプ・チェーンと結びついていることです（ 明示的に *分離* されたものを除きます）。これにより、子のスコープは親のスコープのメソッドを実行することができます。この場合のメソッドは子のスコープの直接、または関節のプロトタイプのプロパティだからです。
 
-Scope inheritance is illustrated in the following example:
+スコープの継承は次の例で説明します:
 
 ```HTML
 <div ng-controller="BaseCtrl">
@@ -153,7 +153,7 @@ function ChildCtrl($scope) {
 }
 ```
 
-With `div#child` is associated `ChildCtrl` but since the scope injected inside `ChildCtrl` inherits prototypically from its parent scope (i.e. the one injected inside `BaseCtrl`) the method `foo` is accessible by `button#parent-method`.
+`div#child` は `ChildCtrl` と結びついていますが、 `ChildCtrl` に注入されたスコープは親のスコープ（ `BaseCtrl` に注入されたスコープ ）からプロトタイプ継承をしているので、 `foo` メソッドは `button#parent-method` でアクセス可能になっています。
 
 ### Directives
 
