@@ -34,8 +34,8 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
     * [コマンド](#コマンド)
   * [コントローラ](#コントローラ-1)
     * [ページ・コントローラ](#ページ・コントローラ)
-  * [Others](#others)
-    * [Module Pattern](#module-pattern)
+  * [その他](#その他)
+    * [モジュール・パターン](#モジュール・パターン)
   * [Data Mapper](#data-mapper)
 * [References](#references)
 
@@ -956,13 +956,13 @@ function ChildCtrl($scope, User) {
 
 `ChildCtrl` は `"Click"` ラベルのあるボタンをクリックするアクションを扱い、また、モデルをスコープに取り付けビューに露出させる責任があります。
 
-### Others
+### その他
 
-#### Module Pattern
+#### モジュール・パターン
 
-This is actually not a design pattern from Gang of Four, neither one from P of EAA. This is a traditional JavaScript pattern, which main goal is to provide encapsulation and privacy.
+これは実際にはGang of FourやP of EAAのデザイン・パターンではありません。これはカプセル化とプライバシーを目的とした伝統的なJavaScriptのパターンです。
 
-Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may have zero or more private members, which are hidden in the local scope of a function. This function returns an object, which exports the public API of the given module:
+モジュール・パターンを利用することで、JavaScriptの関数スコープにおけるプライバシーを達成することができます。それぞれのモジュールは関数のローカルスコープの中に隠されたゼロかプリミティブな番号を持っています。この関数は与えられたモジュールのパブリックAPIを出力するオブジェクトを返します。
 
 ```javascript
 var Page = (function () {
@@ -985,23 +985,23 @@ var Page = (function () {
 }());
 ```
 
-In the example above we have IIFE (Immediately-Invoked Function Expression), which after being called returns an object, with two methods (`setTitle` and `getTitle`). The returned object is being assigned to the `Page` variable.
+上記の例は２つのメソッド( `setTitle` と `getTitle` )を持ったオブジェクトを返すIIFE（Immediately-Invoked Function Expression）を持っています。返却されたオブジェクトは、 `Page` 変数に関連付けられています。
 
-In this case the user of the `Page` object doesn't has direct access to the `title` variable, which is defined inside the local scope of the IIFE.
+このケースでは `Page` オブジェクトのユーザは `title` に直接アクセスするすべを持っていません。 `title` はIIFEのローカルスコープの中に定義されているからです。
 
-The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually achieve) privacy:
+モジュール・パターンはAngularJSでサービスを定義する際にとても有益です。このパターンを使うことで、プライバシーをシミュレート（事実上達成）することができます:
 
 ```javascript
 app.factory('foo', function () {
 
   function privateMember() {
-    //body...
+    //内容...
   }
 
   function publicMember() {
-    //body...
+    //内容...
     privateMember();
-    //body
+    //内容
   }
 
   return {
@@ -1009,6 +1009,8 @@ app.factory('foo', function () {
   };
 });
 ```
+
+`foo` を別のコンポーネントに注入すると、パブリック・メソッドだけにアクセスしてプライベートメソッドを呼ぶ必要がありません。この方法は再利用可能なライブラリを作成する際にとても強力なたすけになります。
 
 Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.
 
