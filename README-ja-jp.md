@@ -541,20 +541,20 @@ function MainCtrl($scope, $resource) {
 
 上記のスニペットが事項された直後、 `$scope` の `user` プロパティは空のオブジェクト（ `{}` ）になります。 `user.name` はundefinedとなり何もレンダリングされません。内部ではAngularJSはこの空のオブジェクトに参照を保っています。サーバがGETリクエストのレスポンスを返すと、AngularJSはサーバから受け取ったデータをオブジェクトに格納します。次の `$digest` ループでAngularJSは `$scope.user` の変更を検知し、ビューの更新に移ります。
 
-#### Active Record
+#### アクティブ・レコード
 
->The Active Record object is an object, which carries both data and behavior. Usually most of the data in these objects is persistent, responsibility of the Active Record object is to take care of the communication with the database in order to create, update, retrieve or delete the data. It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.
+>アクティブ・レコードはデータと振る舞いを持つオブジェクトです。普通、アクティブ・レコード内のほとんどのデータは永続的です。アクティブ・レコード・オブジェクトの責務はデータの生成、更新、取得、削除をするためのデータベースとのやりとりを適切に行うことです。この責務を更に低レベルのオブジェクトに委譲することはありますが、アクティブ・レコード・オブジェクトのインスタンスや静的メソッドの呼び出しはデータベースとのやりとりをもたらします。
 
 ![Active Record](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/active-record.svg "Fig. 7")
 
-AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS' core.
+AngularJSは `$resource` と呼ばれるサービスを定義しています。 AngularJS(1.2+)ではAngularJSのコアの外部モジュールとして配布されています。
 
-According to the AngularJS' documentation `$resource` is:
+AngularJSのドキュメントによると `$resource` は:
 
->A factory which creates a resource object that lets you interact with RESTful server-side data sources.
->The returned resource object has action methods which provide high-level behaviors without the need to interact with the low level $http service.
+>RESTFullサーバ・サイド・データ構造とやりとりするためのリソース・オブジェクトを生成するファクトリ。
+> 返却されたリソース・オブジェクトは低レベルの$httpサービスを直接操作する必要なく、高レベルの振る舞いを提供するアクションを持っています。
 
-Here is how `$resource` could be used:
+`$resource` がどのように使われているかしめします:
 
 ```JavaScript
 var User = $resource('/users/:id'),
@@ -566,23 +566,23 @@ var User = $resource('/users/:id'),
 user.$save();
 ```
 
-The call of `$resource` will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operations.
+`$resource` の呼び出しはモデルインスタンスのコンストラクタ関数を生成します。それぞれのモデルインスタンスはCRUDオペレーションに応じたメソッドを持つことになります。
 
-This way we can use the constructor function and its static methods by:
+このように、コンストラクタ関数と静的メソッドを使います:
 
 ```JavaScript
 User.get({ userid: userid });
 ```
 
-The code above will immediately return an empty object and keep reference to it. Once the response have been successfully returned and parsed, AngularJS will populate this object with the received data (see [proxy](#proxy)).
+上記のコードはすぐに空のオブジェクトを返し、それに対して参照を持ち続けます。レスポンスが成功して、パースされるとAngularJSは受け取ったデータをオブジェクトに格納します（参考: [プロキシ](#プロキシ) ）。
 
-You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
+`$resource` についての詳細は、 [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) や [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource) で確認できます。
 
-Since Martin Fowler states that
+Martin Fowlerがこのように宣言しているように:
 
-> responsibility of the Active Record object is to take care of the communication with the databse in order to create...
+> アクティブ・レコード・オブジェクトの責務はデータの生成、更新、取得、削除をするためのデータベースとのやりとりを適切に行うことです。...
 
-`$resource` does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".
+`$resource` はデータベースではなくRESTfulサービスとのやりとりをするので、アクティブ・レコード・パターンそのままの実装ではありません。そうは言っても、 "アクティブ・レコードのようなRESTFulコミュニケーション" と考えることができます。
 
 #### Intercepting Filters
 
