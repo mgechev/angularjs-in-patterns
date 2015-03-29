@@ -30,7 +30,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
     * [テンプレート・ビュー](#テンプレート・ビュー)
   * [スコープ](#スコープ-1)
     * [オブザーバ](#オブザーバ)
-    * [Chain of Responsibilities](#chain-of-responsibilities)
+    * [チェーン・オブ・レスポンシビリティ](#チェーン・オブ・レスポンシビリティ)
     * [Command](#command)
   * [Controller](#controller-1)
     * [Page Controller](#page-controller)
@@ -824,22 +824,24 @@ function ExampleCtrl($scope) {
 
 JavaScriptコミュニティではこのパターンはパブリッシュ／サブスクライブとして知られています。
 
-#### Chain of Responsibilities
+#### チェーン・オブ・レスポンシビリティ
 
->The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
+>チェーン・オブ・レスポンシビリティ・パターンはコマンド・オブジェクトと続く一連の処理オブジェクトからなるデザイン・パターンです。それぞれの処理オブジェクトは処理が可能なコマンド・オブジェクトを規定するロジックを持っています。残りの部分は次の処理オブジェクトに連鎖的に渡されます。新しい処理オブジェクトを連らの末尾に追加するメカニズムも存在しています。
 
 ![Chain of Responsibilities](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/chain-of-responsibilities.svg "Fig. 5")
 
-As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
+上述のようにAngularJSアプリケーションのスコープはスコープ・チェーンという階層構造を持っています。いくつかのスコープは "分離" しています。 "分離" とは親スコープからプロトタイプ継承していないということを意味しています。しかし、親スコープへは `$parent` プロパティでアクセスできます。
 
-When `$emit` or `$broadcast` are called we can think of the scope chain as event bus, or even more accurately chain of responsibilities. Once the event is triggered it is emitted downwards or upwards (depending on the method, which was called). Each subsequent scope may:
+`$emit` や `$broadcast` が呼ばれた時、スコープ・チェーンをイベント・バスとして、またはより正確に責任の連鎖考えることができます。イベントが起こると、それは（呼ばれたメソッドに応じて）下方向に、または、上方向に伝播します。続くスコープは:
 
-- Handle the event and pass it to the next scope in the chain
-- Handle the event and stop its propagation
-- Pass the event to the next scope in the chain without handling it
-- Stop the event propagation without handling it
+- イベントを処理し、次のスコープに渡す
+- イベントを処理し、そこで伝播を止める
+- イベントを処理せず、次のスコープに渡す
+- イベントを処理せず、そこで伝播を止める
 
-In the example bellow you can see an example in which `ChildCtrl` triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in `ParentCtrl` and the one used in `MainCtrl`) are going to handle the event by logging into the console: `"foo received"`. If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
+下の例では `ChildCtrl` がイベントを発し、スコープ・チェーンの上方向に伝播させるところを確認できます。 親のスコープ( `ParentCtrl` と `MainCtrl` )はコンソールにログを出します: `"foo received"` 。スコープがイベントの終着地点である場合は、イベント・オブジェクトの `stopPropagation` メソッドを呼び出し、コールバックに渡します。
+
+If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
 
 ```JavaScript
 myModule.controller('MainCtrl', function ($scope) {
@@ -859,7 +861,7 @@ myModule.controller('ChildCtrl', function ($scope) {
 });
 ```
 
-The different handlers from the UML diagram above are the different scopes, injected to the controllers.
+上記UMLダイアグラムの別々のハンドラーはそれぞれコントローラに注入された別々のスコープです。
 
 #### Command
 
