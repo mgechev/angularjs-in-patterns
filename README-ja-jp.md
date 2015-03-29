@@ -36,7 +36,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
     * [ページ・コントローラ](#ページ・コントローラ)
   * [その他](#その他)
     * [モジュール・パターン](#モジュール・パターン)
-  * [Data Mapper](#data-mapper)
+  * [データ・マッパ](#データ・マッパ)
 * [References](#references)
 
 <!--endtoc-->
@@ -1014,28 +1014,28 @@ app.factory('foo', function () {
 
 Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.
 
-### Data Mapper
+### データ・マッパ
 
->A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.
+>データ・マッパは永続データ・ストア（リレーショナル・データベースがよく使われる）とイン・メモリ・データ・リプリゼンテーション（ドメイン・レイヤ）との双方向のやりとりをするためのデータ・アクセス・レイヤです。このパターンの目的はイン・メモリ・リプリゼンテーションと永続データ・ストアとマッパそれ自体をそれぞれ独立させることです。
 
 ![Data Mapper](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/data-mapper.svg "Fig. 10")
 
-As the description above states, the data mapper is used for bidirectional transfer of data between a persistent data store and an in memory data representation. Usually our AngularJS application communicates with API server, which is written in any server-side language (Ruby, PHP, Java, JavaScript, etc.).
+上記の図が示すように、データ・マッパは永続データ・ストアとイン・メモリ・データ・リプレゼンテーションの双方向通信をするために利用されています。普通、AngluarJSアプリケーションでは、サーバ・サイドの言語（Ruby, PHP, Java, JavaScriptなど）で書かれたAPIサーバとやりとりします。
 
-Usually, if we have RESTful API `$resource` will help us communicate with the server in Active Record like fashion. Although, in some applications the data entities returned by the server are not in the most appropriate format, which we want to use in the front-end.
+普通、RESTful APIを持っている場合、 `$resource` がアクティブ・レコードのような形でその通信をサポートします。しかし、アプリケーションによってはサーバから返されるデータがフロントエンドで利用するには適切で無いフォーマットで返されることもあります。
 
-For instance, lets assume we have application in which each user has:
+例えば、ユーザが次の要素を持つと想定してみてください:
 
-- name
-- address
-- list of friends
+- 名前
+- 住所
+- 友達リスト
 
-And our API has the methods:
+そして、APIが次のメソッドを持つとします:
 
-- `GET /user/:id` - returns the user's name and the address of given user
-- `GET /friends/:id` - returns the list of friends of given user
+- `GET /user/:id` - ユーザの名前と住所を返します
+- `GET /friends/:id` - ユーザの友達リストを返します
 
-Possible solution is to have two different services, one for the first method and one for the second one. Probably more useful solution would be if we have a single service called `User`, which loads the user's friends when we request the user:
+解決策としては２つの別々のサービスを作ることです。恐らくもう少し有効な解決策は、 `User` という１つのサービスがあった場合に、ユーザをリクエストした際に、ユーザの友達リストも一緒に読み込むことです。
 
 ```javascript
 app.factory('User', function ($q) {
@@ -1058,9 +1058,9 @@ app.factory('User', function ($q) {
 });
 ```
 
-This way we create pseudo-data mapper, which adapts our API according to the SPA requirements.
+この方法でSPAの要求に応じてAPIを適用させた仮のデータ・マッパを作ることができます。
 
-We can use the `User` service by:
+`User` サービスはこのように利用することができます:
 
 ```javascript
 function MainCtrl($scope, User) {
@@ -1071,7 +1071,7 @@ function MainCtrl($scope, User) {
 }
 ```
 
-And the following partial:
+そして、パーシャルがこちらです:
 
 ```html
 <div>
