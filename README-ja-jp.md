@@ -23,7 +23,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
     * [ファサード](#ファサード)
     * [プロキシ](#プロキシ)
     * [アクティブ・レコード](#アクティブ・レコード)
-    * [Intercepting Filters](#intercepting-filters)
+    * [傍受フィルタ](#傍受フィルタ)
   * [Directives](#directives-1)
     * [Composite](#composite)
   * [Interpreter](#interpreter)
@@ -584,19 +584,19 @@ Martin Fowlerがこのように宣言しているように:
 
 `$resource` はデータベースではなくRESTfulサービスとのやりとりをするので、アクティブ・レコード・パターンそのままの実装ではありません。そうは言っても、 "アクティブ・レコードのようなRESTFulコミュニケーション" と考えることができます。
 
-#### Intercepting Filters
+#### 傍受フィルタ
 
->Create a chain of composable filters to implement common pre-processing and post-processing tasks during a Web page request.
+>ウェブページのリクエストの際の共通の事前処理と事後処理タスクを実装するために構成可能なフィルタ・チェーンを作成する
 
 ![Composite](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/intercepting-filters.svg "Fig. 3")
 
-In some cases you need to do some kind of pre and/or post processing of HTTP requests. In the case of the Intercepting Filters you pre/post process given HTTP request/response in order to include logging, security or any other concern, which is influenced by the request body or headers. Basically the Intercepting Filters pattern include a chain of filters, each of which process data in given order. The output of each filter is input of the next one.
+HTTPリクエストの際に、事前処理、または、事後処理、またはその両方をしたい時があります。傍受フィルタを使うと、ログ出力、セキュリティまたリクエストのボディやヘッダによって影響を受ける関心事に対応するために、HTTPリクエストやレスポンスに事前・事後プロセスを追加することができます。基本的に傍受フィルタ・パターンはフィルタのチェーンを含みます。それぞれのフィルタは順番通りにデータを処理します。それぞれのフィルタのアウトプットは次のフィルタのインプットになります。
 
-In AngularJS we have the idea of the Intercepting Filters in `$httpProvider`. `$httpProvider` has an array property called `interceptors`, which contains a list of objects. Each object may have properties called: `request`, `response`, `requestError`, `responseError`.
+AngularJSでは `$httpProvider` で母樹フィルタのアイディアを利用しています。 `$httpProvider` は `interceptors` と呼ばれている配列プロパティを持っています。それぞれのオブジェクトは `リクエスト` , `レスポンス` , `requestError` , `responseError` と呼ばれるプロパティを必要に応じて持ちます。
 
-`requestError` is an interceptor, which gets called when a previous interceptor threw an error or resolved with a rejection, respectively `responseError` is being called when the previous `response` interceptor has thrown an error.
+`requestError` は一つ前のインターセプタがエラーを投げた時や、処理の拒否を行って終了した時に呼び出されるインターセプタです。 `responseError` は、一つ前の　`response` インターセプタがエラーを投げた時に呼び出されます。
 
-Here is a basic example how you can add interceptors using object literal:
+これは、インターセプタをオブジェクト・リテラルで利用する例です:
 
 ```JavaScript
 $httpProvider.interceptors.push(function($q, dependency1, dependency2) {
