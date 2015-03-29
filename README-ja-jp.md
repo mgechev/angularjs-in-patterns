@@ -20,9 +20,9 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
   * [シングルトン](#シングルトン)
   * [ファクトリ・メソッド](#ファクトリ・メソッド)
   * [デコレータ](#デコレータ)
-  * [Facade](#facade)
-  * [Proxy](#proxy)
-  * [Active Record](#active-record)
+  * [ファサード](#ファサード)
+  * [プロキシ](#プロキシ)
+  * [アクティブ・レコード](#アクティブ・レコード)
   * [Intercepting Filters](#intercepting-filters)
 * [Directives](#directives-1)
   * [Composite](#composite)
@@ -440,23 +440,23 @@ myModule.config(function ($provide) {
 
 サード・パーティの機能を変更する必要がある場合特にこのパターンは役に立ちます。複数の似たようなデコレーションが必要となった時（複数のメソッドのパフォーマンス計測、認証、ログ出力など）、複製がたくさんでき、DRYの原則を破ってしまいます。そのような場合には[アスペクト指向プログラミング（AOP）](http://en.wikipedia.org/wiki/Aspect-oriented_programming)を取り入れるとよいでしょう。AngularJSで利用できるAOPフレームワークとしては、分かる範囲では唯一、　[github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop) があります。
 
-#### Facade
+#### ファサード
 
->A facade is an object that provides a simplified interface to a larger body of code, such as a class library. A facade can:
+>ファサードはクラス・ライブラリのような多くのコードにシンプルなインターフェイスを提供するオブジェクトです。ファサードは次のことができます:
 
->1. make a software library easier to use, understand and test, since the facade has convenient methods for common tasks;
+>1. ソフトウェア・ライブラリを理解しやすく、使いやすくします。またテストをしやすくします。ファサードはよく使われるタスクを実行するための使いやすいメソッドを持つからです;
 
->2. make the library more readable, for the same reason;
+>2. 同じ理由から、ライブラリを読みやすくします。
 
->3. reduce dependencies of outside code on the inner workings of a library, since most code uses the facade, thus allowing more flexibility in developing the system;
+>3. 外部のコードのライブラリの処理に対する依存性を減らします。なぜなら、ほとんどのコードはファサードを使うのでシステム開発の際の柔軟性を許容します。
 
->4. wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).
+>4. うまくデザインされていないAPI群を、（タスクが必要とする単位で）よくデザインされたAPIとしてラップします。
 
 ![Facade](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/facade.svg "Fig. 11")
 
-There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you practically create a facade.
+AngularJSにはいくつかのファサードがあります。高レベルのAPIを提供された機能に追加したいとき、実際にファサードを作ることになります。
 
-For example, lets take a look how we can create an `XMLHttpRequest` POST request:
+例えば、 `XMLHttpRequest` のPOSTリクエストをどのように作るか見て行きましょう:
 
 ```JavaScript
 var http = new XMLHttpRequest(),
@@ -475,7 +475,8 @@ http.onreadystatechange = function () {
 }
 http.send(params);
 ```
-But if we want to post this data using the AngularJS' `$http` service we can:
+
+ただ、このデータをポストしたいとき、AngularJSの `$http` サービスを使うことができます:
 
 ```JavaScript
 $http({
@@ -487,7 +488,8 @@ $http({
   alert(response);
 });
 ```
-or we can even:
+
+また、このように書いても同じです:
 
 ```JavaScript
 $http.post('/someUrl', data)
@@ -495,9 +497,10 @@ $http.post('/someUrl', data)
   alert(response);
 });
 ```
-The second option provides pre-configured version, which creates a HTTP POST request to the given URL.
 
-Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service. We will take a further look at this service in [Active Record](#active-record) and [Proxy](#proxy) sections.
+２番目の例は、与えられたURLでHTTP POSTリクエストを作る様に設定されたバージョンです。
+
+更に高レベルの抽象化は `$http` サービスをもとに構築された `$resource` で行うことができます。このサービスに関しては、 [アクティブ・レコード](#アクティブ・レコード) と [プロキシ](#プロキシ) のところでもう少し深く見ていきます。
 
 #### Proxy
 
