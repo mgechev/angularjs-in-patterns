@@ -24,8 +24,8 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
     * [プロキシ](#プロキシ)
     * [アクティブ・レコード](#アクティブ・レコード)
     * [傍受フィルタ](#傍受フィルタ)
-  * [Directives](#directives-1)
-    * [Composite](#composite)
+  * [ディレクティブ](#ディレクティブ-1)
+    * [コンポジット](#コンポジット)
   * [Interpreter](#interpreter)
     * [Template View](#template-view)
   * [Scope](#scope-1)
@@ -611,23 +611,23 @@ $httpProvider.interceptors.push(function($q, dependency1, dependency2) {
 });
 ```
 
-### Directives
+### ディレクティブ
 
-#### Composite
+#### コンポジット
 
->The composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects are to be treated in the same way as a single instance of an object. The intent of a composite is to "compose" objects into tree structures to represent part-whole hierarchies.
+>コンポジット・パターンは分離をするためのデザイン・パターンです。コンポジット・パターンはオブジェクトのまとまりは１つのオブジェクトのインスタンスとして同じように扱われるべきとしています。コンポジットの意図は、複数のオブジェクトを部分と全体の階層構造を表す3つの構造に "構成する" ということです。
 
 ![Composite](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/composite.svg "Fig. 3")
 
-According to the Gang of Four, MVC is nothing more than combination of:
+Gang of Fourによると、MVCは次の組み合わせであるに過ぎないということです:
 
-- Strategy
-- Composite
-- Observer
+- ストラテジ
+- コンポジット
+- オブザーバ
 
-They state that the view is composition of components. In AngularJS the situation is similar. Our views are formed by a composition of directives and DOM elements, on which these directives could be applied.
+これらはビューはコンポーネントのコンポジションであるということを表しています。AngularJSでは状況は似ています。ビューはディレクティブとディレクティブが適用されていることもあるDOM要素のコンポジションです。
 
-Lets look at the following example:
+次の例を見てみましょう:
 
 ```HTML
 <!doctype html>
@@ -656,11 +656,11 @@ myModule.directive('zippy', function () {
 });
 ```
 
-This example defines a simple directive, which is a UI component. The defined component (called "zippy") has header and content. Click on its header toggles the visibility of the content.
+この例はUIコンポーネントとしてのシンプルなディレクティブを定義しています。定義されたコンポーネント（"zippy"）はヘッダとコンテントを持っています。ヘッダをクリックするとコンテントが見え隠れします。
 
-From the first example we can note that the whole DOM tree is a composition of elements. The root component is the `html` element, directly followed by the nested elements `head` and `body` and so on...
+最初の例から、全てのDOM要素の木構造は要素のコンポジションであると気づきます。ルート・コンポーネントは `html` 要素です。そしてそこに、 `head` や `body` などが続きます。
 
-In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives. Theoretically we can nest the components infinitely until we reach a leaf node.
+2番目のJavaScriptの例から、ディレクティブの `template` プロパティは `ng-transclude` ディレクティブが付加されたマークアップを見つけることができます。 `zippy` ディレクティブの中で別のディレクティブである `ng-transclude` を持つことを意味しています。つまり、ディレクティブのコンポジションです。理論上はコンポーネントは末節のノードまで無限にネストすることができます。
 
 ### Interpreter
 
