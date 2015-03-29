@@ -31,7 +31,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
   * [スコープ](#スコープ-1)
     * [オブザーバ](#オブザーバ)
     * [チェーン・オブ・レスポンシビリティ](#チェーン・オブ・レスポンシビリティ)
-    * [Command](#command)
+    * [コマンド](#コマンド)
   * [Controller](#controller-1)
     * [Page Controller](#page-controller)
   * [Others](#others)
@@ -841,8 +841,6 @@ JavaScriptコミュニティではこのパターンはパブリッシュ／サ�
 
 下の例では `ChildCtrl` がイベントを発し、スコープ・チェーンの上方向に伝播させるところを確認できます。 親のスコープ( `ParentCtrl` と `MainCtrl` )はコンソールにログを出します: `"foo received"` 。スコープがイベントの終着地点である場合は、イベント・オブジェクトの `stopPropagation` メソッドを呼び出し、コールバックに渡します。
 
-If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
-
 ```JavaScript
 myModule.controller('MainCtrl', function ($scope) {
   $scope.$on('foo', function () {
@@ -863,31 +861,31 @@ myModule.controller('ChildCtrl', function ($scope) {
 
 上記UMLダイアグラムの別々のハンドラーはそれぞれコントローラに注入された別々のスコープです。
 
-#### Command
+#### コマンド
 
->In object-oriented programming, the command pattern is a behavioral design pattern in which an object is used to represent and encapsulate all the information needed to call a method at a later time. This information includes the method name, the object that owns the method and values for the method parameters.
+>オブジェクト指向プログラミングでは、コマンド・パターンは後々メソッドの呼び出しをする際に必要となる情報をカプセル化した振る舞いのデザイン・パターンです。この情報はメソッド名、メソッドやメソッドパラメータとして利用される値を持つオブジェクトを含みます。
 
 ![Command](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/command.svg "Fig. 11")
 
-Before continuing with the application of the command pattern lets describe how AngularJS implements data binding.
+コマンド・パターンのアプリケーションに進む前に、AngularJSではどのようにデータ・バインディングをしているか説明しましょう。
 
-When we want to bind our model to the view we use the directives `ng-bind` (for single-way data binding) and `ng-model` (for two-way data binding). For example, if we want each change in the model `foo` to reflect the view we can:
+モデルとビューをバインドしたいとき、 `ng-bind` (1方向データ・バインディング)や `ng-model` （双方向データ・バインディング）を使います。例えば、 `foo` モデルの変更をビューに反映させたいとき、このように書くことができます:
 
 ```html
 <span ng-bind="foo"></span>
 ```
 
-Now each time we change the value of `foo` the inner text of the span will be changed. We can achieve the same effect with more complex AngularJS expressions, like:
+`foo` が変更される度に、spanのテキストは変わります。もう少し複雑なAngularJSの式を書くこともできます:
 
 ```html
 <span ng-bind="foo + ' ' + bar | uppercase"></span>
 ```
 
-In the example above the value of the span will be the concatenated uppercased value of `foo` and `bar`. What happens behind the scene?
+このケースでは、spanは大文字化した `foo` と `bar` の組み合わせとなります。裏では何が起こっているのでしょうか？
 
-Each `$scope` has method called `$watch`. When the AngularJS compiler find the directive `ng-bind` it creates a new watcher of the expression `foo + ' ' + bar | uppercase`, i.e. `$scope.$watch("foo + ' ' + bar | uppercase", function () { /* body */ });`. The callback will be triggered each time the value of the expression change. In the current case the callback will update the value of the span.
+`$scope` は `$watch` と呼ばれるメソッドを持っています。AngularJSコンパイラが `ng-bind` を見つけると、 `foo + ' ' + bar | uppercase` 式のwatcherを生成します。具体的には、 `$scope.$watch("foo + ' ' + bar | uppercase", function () { /* body */ });` です。式の値が変わる度に、コールバックが呼ばれます。今回のケースではspanを更新します。
 
-Here are the first a couple of lines of the implementation of `$watch`:
+これは、 `$watch` の実装の最初の行です:
 
 ```javascript
 $watch: function(watchExp, listener, objectEquality) {
@@ -904,7 +902,7 @@ $watch: function(watchExp, listener, objectEquality) {
 //...
 ```
 
-We can think of the `watcher` object as a command. The expression of the command is being evaluated on each [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) loop. Once AngularJS detects change in the expression, it invokes the `listener` function. The `watcher` command encapsulates the whole information required for watching given expression and delegates the execution of the command to the `listener` (the actual receiver). We can think of the `$scope` as the command's `Client` and the `$digest` loop as the command's `Invoker`.
+`watcher` オブジェクトをコマンドと考えることができます。コマンドの式は、 [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest)  ループの度に評価されます.AngularJSが式の変更を検知すると、 `listner` 関数を呼びます。 `watcher` コマンドは式の変更に必要な情報をカプセル化しています。そして、コマンドの実行を `listner` （実際のレシーバ）に委譲します。 `$scope` をコマンドの `Client` 、 `$digest` ループをコマンドの `Invoker` と考えることができます。
 
 ### Controllers
 
