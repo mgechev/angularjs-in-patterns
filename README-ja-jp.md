@@ -28,8 +28,8 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
     * [コンポジット](#コンポジット)
   * [インタープリタ](#インタープリタ)
     * [テンプレート・ビュー](#テンプレート・ビュー)
-  * [Scope](#scope-1)
-    * [Observer](#observer)
+  * [スコープ](#スコープ-1)
+    * [オブザーバ](#オブザーバ)
     * [Chain of Responsibilities](#chain-of-responsibilities)
     * [Command](#command)
   * [Controller](#controller-1)
@@ -786,30 +786,30 @@ $scope.names = ['foo', 'bar', 'baz'];
 
 これは、上記のものと同じ結果を出力します。ここでの主な違いはテンプレートが `script` にラップされていず、HTMLのままであるということです。
 
-### Scope
+### スコープ
 
-#### Observer
+#### オブザーバ
 
->The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. It is mainly used to implement distributed event handling systems.
+>オブザーバはサブジェクトと呼ばれるオブジェクトが依存しているオブザーバのリストを管理し、変更があったらオブザーバのメソッドを呼び出すことで通知するデザイン・パターンです。主に分散したイベント・ハンドリング・システムで利用されます。
 
 ![Observer](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/observer.svg "Fig. 7")
 
-There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them. This allows decoupling between the different scopes, non of the scopes should be aware of the rest of the scopes.
+AngularJSアプリケーションのスコープ間では主に２つの基本的なやりとりの方式があります。一つ目は子スコープが親スコープのメソッドを呼び出すことです。子スコープは親スコープをプロトタイプ継承しているのでこれが可能になります（参考: [スコープ](#スコープ) ）。これは子から親への1方向のコミュニケーションです。時に、親スコープから子スコープのメソッドを呼び出したり、子スコープにイベントの通知を送りたい時があります。AngularJSはこれを実現するための組み込みのオブザーバ・パターンを用意しています。オブザーバ・パターンが必要とされる別のケースとして、複数のスコープがあるイベントに関心があるものの、そのイベントは別スコープにあるため気づけないというものがあります。別々のスコープ間の分離が行われているため、別のスコーぷの変更に気づくことができません。
 
-Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as an observer - an object, which implements the `Observer` interface (in JavaScript the functions are first-class, so we can provide only implementation of the `notify` method):
+それぞれのAngularJSのスコープは `$on` 、 `$emit` 、 `$broadcast` と呼ばれるパブリック・メソッドを持っています。 `$on` メソッドは最初の引数として関心のある項目をとり、２つ目の引数としてコールバックをとります。このコールバックを `Observer`  インターフェイスが実装されたオブザーバと考えることができます（JavaScriptでは関数は第一級オブジェクトなので、ただ、 `notify` メソッドを実装すればよいだけです）:
 
 ```JavaScript
 function ExampleCtrl($scope) {
   $scope.$on('event-name', function handler() {
-    //body
+    //内容
   });
 }
 ```
 
-In this way the current scope "subscribes" to events of type `event-name`. When `event-name` is triggered in any parent or child scope of the given one, `handler` would be called.
+この方法で、現在のスコープは `event-name` のイベントを登録することができます。 `event-name` が親スコープや子スコープで実行された場合、 `handler` が呼ばれます。
 
-The methods `$emit` and `$broadcast` are used for triggering events respectively upwards and downwards through the scope chain.
-For example:
+`$emit` メソッドと `$broadcast` メソッドはそれぞれスコープチェーンの上方向と下方向にイベントを伝播します。
+例えば:
 
 ```JavaScript
 function ExampleCtrl($scope) {
@@ -817,12 +817,12 @@ function ExampleCtrl($scope) {
 }
 ```
 
-The scope in the example above, triggers the event `event-name` to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event `event-name`, would be notified and their handler callback will be invoked.
+上記のスコープは、 `event-name` を上方向に伝播します。 `event-name` を登録している全ての親スコープは通知を受け、登録されているコールバックが実行されます。
 
-Analogical is the case when the method `$broadcast` is called. The only difference is that the event would be transmitted downwards - to all children scopes.
-Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).
+`$broadcast` が呼ばれたときも同様です。違いは、イベントの伝播が下方向（すべての子スコープ）に行くということです。
+それぞれのスコープが複数のコールバックを登録することができます（複数のオブザーバと関連することができます）。
 
-In the JavaScript community this pattern is better known as publish/subscribe.
+JavaScriptコミュニティではこのパターンはパブリッシュ／サブスクライブとして知られています。
 
 #### Chain of Responsibilities
 
