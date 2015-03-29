@@ -15,11 +15,11 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
 * [ディレクティブ](#ディレクティブ)
 * [フィルタ](#フィルタ)
 * [サービス](#サービス)
-* [AngularJSのパターン](#angularjs-patterns)
-* [サービス](#services-1)
+* [AngularJSのパターン](#AngularJSのパターン)
+* [サービス](#サービス-1)
   * [シングルトン](#シングルトン)
   * [ファクトリ・メソッド](#ファクトリ・メソッド)
-  * [Decorator](#decorator)
+  * [デコレータ](#デコレータ)
   * [Facade](#facade)
   * [Proxy](#proxy)
   * [Active Record](#active-record)
@@ -339,7 +339,7 @@ myModule.config(function ($provide) {
 
 サービス、フィルタ、ディレクティブ、コントローラはそれぞれコンポーネントのインスタンスを生成する責務を負うプロバイダ（ `$get` を持つオブジェクト）を持ちます。
 
-AngularJSの実装をもう少し深く探っていくことが出います:
+AngularJSの実装をもう少し深く探っていくことができます:
 
 ```JavaScript
 //...
@@ -399,13 +399,13 @@ instanceInjector.invoke(provider.$get, provider, undefined, servicename)
 - コンポーネントに必要とされるすべての依存性の解決
 - コンポーネントが持つことを許されているインスタンスの数（サービスとフィルタは１つ。コントローラは複数）
 
-#### Decorator
+#### デコレータ
 
->The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
+>デコレータ・パターン（アダプタ・パターンの別名でもあるラッパーとしても知られています。）は個別のオブジェクトに静的であっても動的であっても同じクラスの他のオブジェクトに影響をあたえることなく振る舞いを追加するデザイン・パターンです。
 
 ![Decorator](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/decorator.svg "Fig. 4")
 
-AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
+AngularJSは既に存在するサービスの機能を追加したり、強化するための簡単な方法を提供しています。 `$provide` の `decorator` メソッドを使うことによりカスタムのサービスやサード・パーティで使われているサービスに "ラッパー" を作ることができます:
 
 ```JavaScript
 myModule.controller('MainCtrl', function (foo) {
@@ -434,10 +434,11 @@ myModule.config(function ($provide) {
   });
 });
 ```
-The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument of the constructor function.
-We decorate the service by overriding its method `bar`. The actual decoration is simply extending `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method with the appropriate context.
 
-Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use [aspect-oriented programming](http://en.wikipedia.org/wiki/Aspect-oriented_programming). The only AOP framework for AngularJS I'm aware of could be found at [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop).
+上記の例では `foo` という名の新しいサービスを定義しています。 `config` のコールバックは、最初の引数をデコレートしたいサービス名である `foo` として `$provide.decorator` を呼び出しています。２番目の引数は実際のデコレーションを実装しているファクトリ関数です。 `$delegate` はオリジナルサービス `foo` への参照を持っています。AngularJSの依存性の注入メカニズムを使うことにより、ローカルな依存性への参照はコンストラクタ関数の最初の引数として渡されます。
+`bar` メソッドを上書きすることによってサービスをデコレートします。実際のデコレーションは単に `bar` でもう一つの `console.log ステートメント` - `console.log('Dcorated');` を実行するように拡張することです。その後、オリジナルの 'bar' メソッドを適切な文脈で利用します。
+
+サード・パーティの機能を変更する必要がある場合特にこのパターンは役に立ちます。複数の似たようなデコレーションが必要となった時（複数のメソッドのパフォーマンス計測、認証、ログ出力など）、複製がたくさんでき、DRYの原則を破ってしまいます。そのような場合には[アスペクト指向プログラミング（AOP）](http://en.wikipedia.org/wiki/Aspect-oriented_programming)を取り入れるとよいでしょう。AngularJSで利用できるAOPフレームワークとしては、分かる範囲では唯一、　[github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop) があります。
 
 #### Facade
 
