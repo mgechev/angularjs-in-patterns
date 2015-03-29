@@ -27,7 +27,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
   * [ディレクティブ](#ディレクティブ-1)
     * [コンポジット](#コンポジット)
   * [インタープリタ](#インタープリタ)
-    * [Template View](#template-view)
+    * [テンプレート・ビュー](#テンプレート・ビュー)
   * [Scope](#scope-1)
     * [Observer](#observer)
     * [Chain of Responsibilities](#chain-of-responsibilities)
@@ -732,20 +732,19 @@ AngularJSのサンプルの式です:
 (foo) ? bar : baz | toUpperCase
 ```
 
-#### Template View
+#### テンプレート・ビュー
 
-> Renders information into HTML by embedding markers in an HTML page.
+> ページの中にマーカーを埋め込むことにより情報をHTMLにレンダーします。
 
 ![Template View](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/template-view.svg "Fig. 8")
 
-The dynamic page rendering is not that trivial thing. It is connected with a lot of string concatenations, manipulations and frustration. Far easier way to build your dynamic page is to write your markup and embed little expressions inside it, which are lately evaluated in given context and so the whole template is being compiled to its end format. In our case this format is going to be HTML (or even DOM). This is exactly what the template engines do - they take given DSL, evaluate it in the appropriate context and then turn it into its end format.
+動的なページのレンダリングはそんなに簡単なことではありません。たくさんの文字列の連結や操作やいらいらと結びついています。動的なページを構築するとても簡単な方法はマークアップとちょっとした式をページに書き込んでしまうことです。それはコンテキスト内で評価されテンプレートは最終的な形にコンパイルされます。今回そのフォーマットはHTML(DOM)になります。これはまさにテンプレート・エンジンそのものです - 与えられたDSLを適切なコンテキスト内で評価し、最終的な形に変換します。
 
-Templates are very commonly used especially in the back-end.
-For example, you can embed PHP code inside HTML and create a dynamic page, you can use Smarty or you can use eRuby with Ruby in order to embed Ruby code inside your static pages.
+テンプレートはバックエンド環境ではよく使われています。例えば、Smartyを使ってPHPコードをHTMLに埋め込んで動的なページを作ることができます。RubyではeRubyを使って静的なページにコードを埋め込むことができます。
 
-For JavaScript there are plenty of template engines, such as mustache.js, handlebars, etc. Most of these engines manipulate the template as a string. The template could be located in different places - as static file, which is fetched with AJAX, as `script` embedded inside your view or even inlined into your JavaScript.
+JavaScriptにはmustache.jsやhandlebarsなどたくさんのテンプレートエンジンがあります。これらのエンジンの殆どは文字列としてテンプレートを操作します。テンプレートは別の場所に静的ファイルとして置いてAJAXで取得します。また、 `script` としてビューやJavaScriptの中に埋め込まれます。
 
-For example:
+例えばこのように:
 
 ```html
 <script type="template/mustache">
@@ -756,9 +755,9 @@ For example:
 </script>
 ```
 
-The template engine turns this string into DOM elements by compiling it within a given context. This way all the expressions embedded in the markup are evaluated and replaced by their value.
+テンプレートエンジンはコンテキストの中でコンパイルすることにより文字列をDOM要素に変換します。このように全てのマークアップに埋め込まれている全ての式は評価されそれらの値に変換されます。
 
-For example if we evaluate the template above in the context of the following object: `{ names: ['foo', 'bar', 'baz'] }`, so we will get:
+例えば、上記のテンプレートを次のオブジェクト・コンテキスト `{ names: ['foo', 'bar', 'baz'] }` の状態で評価するとこのような結果を得ることができます:
 
 ```html
 <h2>Names</h2>
@@ -767,10 +766,11 @@ For example if we evaluate the template above in the context of the following ob
   <strong>baz</strong>
 ```
 
-AngularJS templates are actually HTML, they are not in an intermediate format like the traditional templates are.
-What AngularJS compiler does is to traverse the DOM tree and look for already known directives (elements, attributes, classes or even comments). When AngularJS finds any of these directives it invokes the logic associated with them, which may involve evaluation of different expressions in the context of the current scope.
+AngularJSのテンプレートは本物のHTMLです。同等的なテンプレートエンジンがするような中間フォーマットではありません。
 
-For example:
+AngularJSコンパイラはDOMツリーを行き来し、既に知っているディレクティブ（要素、アトリビュート、クラス、コメント）を探すことです。AngularJSがこれらのディレクティブを見つけると、それと関連付けられたロジックを実行します。現在のスコープ・コンテキストの中で別の式を評価することもあります。
+
+例えば:
 
 ```html
 <ul ng-repeat="name in names">
@@ -778,14 +778,13 @@ For example:
 </ul>
 ```
 
-in the context of the scope:
+スコープのコンテキストの中は:
 
 ```javascript
 $scope.names = ['foo', 'bar', 'baz'];
 ```
 
-will produce the same result as the one above. The main difference here is that the template is not wrapped inside a `script` tag but is HTML instead.
-
+これは、上記のものと同じ結果を出力します。ここでの主な違いはテンプレートが `script` にラップされていず、HTMLのままであるということです。
 
 ### Scope
 
