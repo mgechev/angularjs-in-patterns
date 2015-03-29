@@ -476,7 +476,7 @@ http.onreadystatechange = function () {
 http.send(params);
 ```
 
-ただ、このデータをポストしたいとき、AngularJSの `$http` サービスを使うことができます:
+しかし、このデータをポストしたいとき、AngularJSの `$http` サービスを使うことができます:
 
 ```JavaScript
 $http({
@@ -502,21 +502,21 @@ $http.post('/someUrl', data)
 
 更に高レベルの抽象化は `$http` サービスをもとに構築された `$resource` で行うことができます。このサービスに関しては、 [アクティブ・レコード](#アクティブ・レコード) と [プロキシ](#プロキシ) のところでもう少し深く見ていきます。
 
-#### Proxy
+#### プロキシ
 
->A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.
+>プロキシの最も一般的な形は、何か別のものに対するインターフェイスとしての振る舞うクラスの働きです。プロキシは、通信接続、メモリ上の大きなオブジェクト、ファイル、複製するのが不可能だったりコストが掛かり過ぎるその他のリソースなどいろいろなもののインターフェイスになることができます。
 
 ![Proxy](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/proxy.svg "Fig. 9")
 
-We can distinguish three different types of proxy:
+プロキシは3つの種類に分けることができます:
 
-- Virtual Proxy
-- Remote Proxy
-- Protection Proxy
+- バーチャル・プロキシ
+- リモート・プロキシ
+- プロテクション・プロキシ
 
-In this sub-chapter we are going to take a look at AngularJS' implementation of Virtual Proxy.
+この副章では、AngularJSのバーじゃる・プロキシの実装を見ていきます。
 
-In the snippet bellow, there is a call to the `get` method of `$resource` instance, called `User`:
+下記のスニペットでは、 `User` という名の `$resource` インスタンスの `get` メソッドを呼んでいます:
 
 ```JavaScript
 var User = $resource('/users/:id'),
@@ -524,9 +524,9 @@ var User = $resource('/users/:id'),
 console.log(user); //{}
 ```
 
-`console.log` would outputs an empty object. Since the AJAX request, which happens behind the scene, when `User.get` is invoked, is asynchronous, we don't have the actual user when `console.log` is called. Just after `User.get` makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy (a simple placeholder), which would be populated with the actual data once the client receives response by the server.
+`console.log` は空のオブジェクトを出力します。 AJAXリクエストは、 `User.get` が呼ばれた時点で非同期で処理されていて、 `console.log` が呼ばれた時点ではまだ実際のユーザが準備されていないのです。 `User.get` はGETリクエストをし、空のオブジェクトを返しますが、参照は持ち続けています。このオブジェクトをバーチャル・プロキシ（単に、プレースホルダーとも）考えることができます。クライアントがサーバからレスポンスを受け取ると実際のデータが格納されます。
 
-How does this works with AngularJS? Well, lets consider the following snippet:
+これはAngularJSでどのように使われるのでしょうか？ 次のスニペットを考えてみましょう:
 
 ```JavaScript
 function MainCtrl($scope, $resource) {
@@ -538,7 +538,8 @@ function MainCtrl($scope, $resource) {
 ```html
 <span ng-bind="user.name"></span>
 ```
-Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`), which means that `user.name` will be undefined and nothing will be rendered. Internally AngularJS will keep reference to this empty object. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
+
+上記のスニペットが事項された直後、 `$scope` の `user` プロパティは空のオブジェクト（ `{}` ）になります。 `user.name` はundefinedとなり何もレンダリングされません。内部ではAngularJSはこの空のオブジェクトに参照を保っています。サーバがGETリクエストのレスポンスを返すと、AngularJSはサーバから受け取ったデータをオブジェクトに格納します。次の `$digest` ループでAngularJSは `$scope.user` の変更を検知し、ビューの更新に移ります。
 
 #### Active Record
 
