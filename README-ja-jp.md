@@ -32,8 +32,8 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
     * [オブザーバ](#オブザーバ)
     * [チェーン・オブ・レスポンシビリティ](#チェーン・オブ・レスポンシビリティ)
     * [コマンド](#コマンド)
-  * [Controller](#controller-1)
-    * [Page Controller](#page-controller)
+  * [コントローラ](#コントローラ-1)
+    * [ページ・コントローラ](#ページ・コントローラ)
   * [Others](#others)
     * [Module Pattern](#module-pattern)
   * [Data Mapper](#data-mapper)
@@ -904,24 +904,24 @@ $watch: function(watchExp, listener, objectEquality) {
 
 `watcher` オブジェクトをコマンドと考えることができます。コマンドの式は、 [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest)  ループの度に評価されます.AngularJSが式の変更を検知すると、 `listner` 関数を呼びます。 `watcher` コマンドは式の変更に必要な情報をカプセル化しています。そして、コマンドの実行を `listner` （実際のレシーバ）に委譲します。 `$scope` をコマンドの `Client` 、 `$digest` ループをコマンドの `Invoker` と考えることができます。
 
-### Controllers
+### コントローラ
 
-#### Page Controller
+#### ページ・コントローラ
 
->An object that handles a request for a specific page or action on a Web site. Martin Fowler
+>ウェブサイトの特定のページやアクションのリクエストを扱うオブジェクト。 Martin Fowler
 
 ![Page Controller](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/page-controller.svg "Fig. 8")
 
-According to [4](#references) the page controller:
+[4](#references) によると、ページ・コントローラは:
 
->Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code
+>ページ・コントローラ・パターンはページのリクエストを受け、モデルに対して要求されたアクションを実行します。そして、リクエストされたページのための正しいビューを決定します。ビューと関連するコードはロジックと分離します。
 
-Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) page controllers can form a hierarchy. In AngularJS we have controllers, which are with more limited scope of responsibilities. They don't accept user requests, since this is responsibility of the `$route` or `$state` services and the page rendering is responsibility of the directives `ng-view`/`ui-view`.
+ページ毎にたくさんの似たような振る舞いがある（フッタやヘッダのレンダリング、ユーザ・セッションの扱い）ので、ページコントローラは階層構造を持っています。AngularJSでは責任の制限されたコントローラを持っています。このコントローラは  `$route` や `$state` サービスがあるため、ユーザのリクエストを受け付けません。また、ページのレンダリングは `ng-view` や `ui-view` ディレクティブの責任です。
 
-Similarly to the page controllers, AngularJS controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the AngularJS controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.
+ページ・コントローラと同じようにAngularJSのコントローラはユーザのインタラクションを扱いますし、モデルを提供して更新します。モデルはスコープに付けられた場合、ビューに露出します。ユーザのアクションによってビューから呼び出されるメソッドは既にスコープに付けられたものです。ページ・コントローラとAngularJSのコントローラのもう一つの類似点は、階層構造です。これはスコーぷの階層構造に対応しています。このやりかたで、共通のアクションはベース・コントローラに分離することができます。
 
-The controllers in AngularJS are quite similar to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
-Here is an example hierarchy between few controllers:
+AngularJSのコントローラはASP.NET WebFormsのコードにとても良く似ています。これらの責任はほぼ重なります。
+いくつかのコントローラの階層構造の例です:
 
 ```HTML
 <!doctype html>
@@ -952,9 +952,9 @@ function ChildCtrl($scope, User) {
 }
 ```
 
-This example aims to illustrates the most trivial way to reuse logic by using a base controller, anyway in production applications I don't recommend you to put your authorization logic in the controllers. The access to the different routes could be determined on a higher level of abstraction.
+この例ではベース・コントローラを使ってロジックの再利用をするよくある例を示しています。それはそうとして、プロダクション環境で認証ロジックをコントローラで行うことはおすすめしません。別のルートにアクセスするロジックは抽象化した高レベルのところで決められるべきです。
 
-The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
+`ChildCtrl` は `"Click"` ラベルのあるボタンをクリックするアクションを扱い、また、モデルをスコープに取り付けビューに露出させる責任があります。
 
 ### Others
 
