@@ -26,7 +26,7 @@ _このドキュメントは[AngularJS in Patterns](https://github.com/mgechev/a
     * [傍受フィルタ](#傍受フィルタ)
   * [ディレクティブ](#ディレクティブ-1)
     * [コンポジット](#コンポジット)
-  * [Interpreter](#interpreter)
+  * [インタープリタ](#インタープリタ)
     * [Template View](#template-view)
   * [Scope](#scope-1)
     * [Observer](#observer)
@@ -662,32 +662,32 @@ myModule.directive('zippy', function () {
 
 2番目のJavaScriptの例から、ディレクティブの `template` プロパティは `ng-transclude` ディレクティブが付加されたマークアップを見つけることができます。 `zippy` ディレクティブの中で別のディレクティブである `ng-transclude` を持つことを意味しています。つまり、ディレクティブのコンポジションです。理論上はコンポーネントは末節のノードまで無限にネストすることができます。
 
-### Interpreter
+### インタープリタ
 
->In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.
+>コンピュータプログラミングではインタープリタ・パターンはある言語の文をどのように評価するかを決めるデザイン・パターンです。言語に特化したそれぞれのシンボル（オペレータであるかそうでないかは関係なく）に対する分類を持つというのが基本的な考え方です。文のシンタックス・ツリーはコンポジットパターンのインスタンスです。そして、それは分を評価（解釈）する際に使われます。
 
 ![Interpreter](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/interpreter.svg "Fig. 6")
 
-Behind its `$parse` service, AngularJS provides its own implementation of interpreter of a DSL (Domain Specific Language). The used DSL is simplified and modified version of JavaScript.
-The main differences between the JavaScript expressions and AngularJS expressions that AngularJS expressions:
+`$parse` サービスの背後では、AngularJSは独自のDSL（Domain Specific Language）記法のインタープリタを実装しています。DSLはシンプルに変更されたJavaScriptです。
+JavaScript記法とAngularJS機能の主な違いとして、AngularJS記法は:
 
-- may contain filters with UNIX like pipe syntax
-- don't throw any errors
-- don't have any control flow statements (exceptions, loops, if statements although you can use the ternary operator)
-- are evaluated in given context (the context of the current `$scope`)
+- UNIX的なパイプ・シンタックスを含んでいること
+- エラーを投げないこと
+- コントロール・フロー文をもたないこと（オペレータは使えるが、例外、ループ、if文は持たない）
+- 所与のコンテクスト内で評価されること（現在の `$scope` のコンテクスト）
 
-Inside the `$parse` service are defined two main components:
+`$parse` サービスのの内部では２つの主なコンポーネントが定義されています：
 
 ```JavaScript
-//Responsible for converting given string into tokens
+//与えられた文字列をトークンに変換する責務を追う
 var Lexer;
-//Responsible for parsing the tokens and evaluating the expression
+//トークンをパースして式を評価する責務を追う
 var Parser;
 ```
 
-Once given expression have been tokenized it is cached internally, because of performance concerns.
+式がトークン化されると、パフォーマンスのために内部にキャッシュされます。
 
-The terminal expressions in the AngularJS DSL are defined as follows:
+AngularJS DSLではオペレータは下記のように定義されています:
 
 ```JavaScript
 var OPERATORS = {
@@ -720,14 +720,14 @@ var OPERATORS = {
 };
 ```
 
-We can think of the function associated with each terminal as implementation of the `AbstractExpression`'s interface.
+それぞれのオペレータに関連付けられた関数を `AbstractExpression` のインターフェイス実装と考えることができます。
 
-Each `Client` interprets given AngularJS expression in a specific context - specific scope.
+それぞれの `Client` は与えられたAngularJSの式を固有のコンテキスト - 固有のスコープで解釈します。
 
-Few sample AngularJS expressions are:
+AngularJSのサンプルの式です:
 
 ```JavaScript
-// toUpperCase filter is applied to the result of the expression
+// toUpperCase フィルタは式の結果に対して適用されます
 // (foo) ? bar : baz
 (foo) ? bar : baz | toUpperCase
 ```
