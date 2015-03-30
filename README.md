@@ -4,6 +4,7 @@
 
 ## Table of Contents
 
+* [Translations](#translations)
 * [Abstract](#abstract)
 * [Introduction](#introduction)
 * [AngularJS overview](#angularjs-overview)
@@ -38,6 +39,11 @@
 * [References](#references)
 
 <!--endtoc-->
+
+## Translations
+
+- [Japanese Translation](https://github.com/mgechev/angularjs-in-patterns/blob/master/README-ja-jp.md) by [morizotter](https://twitter.com/morizotter)
+- [Russian Translation](http://habrahabr.ru/post/250149/)
 
 ## Abstract
 
