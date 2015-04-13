@@ -58,7 +58,7 @@
     * [Others](#others)
       * [Module Pattern](#module-pattern)
       * [Data Mapper](#data-mapper)
-  * [Angular 2](#angular2)
+  * [Angular 2](#angular-2)
 * [References](#references)
 
 <!--endtoc-->
