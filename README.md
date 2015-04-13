@@ -35,7 +35,7 @@
     * [Page Controller](#page-controller)
   * [Others](#others)
     * [Module Pattern](#module-pattern)
-  * [Data Mapper](#data-mapper)
+    * [Data Mapper](#data-mapper)
 * [References](#references)
 
 <!--endtoc-->
