@@ -247,7 +247,7 @@ myModule.service('Developer', function () {
 The service could be injected inside any component, which supports dependency injection (controllers, other services, filters, directives).
 
 ```JavaScript
-function MyCtrl(developer) {
+function MyCtrl(Developer) {
   var developer = new Developer();
   developer.live();
 }
