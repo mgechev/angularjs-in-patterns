@@ -241,7 +241,7 @@ myModule.service('Developer', function () {
 サービスは依存性の注入を扱えるどのコンポーネント（コントローラ、他のサービス、フィルター、ディレクティブ）にも注入できます。
 
 ```JavaScript
-function MyCtrl(developer) {
+function MyCtrl(Developer) {
   var developer = new Developer();
   developer.live();
 }
