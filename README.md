@@ -794,8 +794,8 @@ will produce the same result as the one above. The main difference here is that 
 
 ![Observer](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/observer.svg "Fig. 7")
 
-## About
-This is an angular factory which reflects the Observer Pattern it works well with the ControllerAs method of working as it can be much more efficient that $scope.$watch and more specific to a unique scope or object than $emit and $broadcast when used correctly. 
+##### About
+Below is an example taken from https://github.com/greglbd/angular-observer-pattern. This is an angular factory which reflects the Observer Pattern it works well with the ControllerAs method of working as it can be much more efficient that $scope.$watch and more specific to a unique scope or object than $emit and $broadcast when used correctly. 
 
 **Use Case:** You would use this pattern to communicate between 2 controllers that use the same model but are not connected in anyway
 
@@ -805,25 +805,35 @@ This is an angular factory which reflects the Observer Pattern it works well wit
 
 ##### Methods
 
-**_observerService.attach = function(callback, event, id)**
-
 function adds a listener to an event with a callback which is stored against the event with it's corresponding id.
+```
+_observerService.attach = function(callback, event, id)
+```
 
-**_observerService.detachById = function(id)**
 
 function removes all occurences of one id from all events in the observer object
+```
+_observerService.detachById = function(id)
+```
 
-**_observerService.detachByEvent = function(event)** __most commonly used and least expensive__
 
 function removes all occurences of the event from the observer Object
+```
+_observerService.detachByEvent = function(event)
+``` 
 
-**_observerService.detachByEventAndId = function(event, id)**
 
 removes all callbacks for an id in a specific event from the observer object
+```
+_observerService.detachByEventAndId = function(event, id)
+```
 
-**_observerService.notify = function(event, parameters)**
 
-notifies all observers of a specific event, can pass a params variable of any type
+Notifies all observers of a specific event, can pass a params variable of any type
+```
+_observerService.notify = function(event, parameters)
+```
+
 
 ##### Controller Example
 Below example shows how to attach, notify and detach an event.
