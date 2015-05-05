@@ -799,10 +799,6 @@ Below is an example taken from https://github.com/greglbd/angular-observer-patte
 
 **Use Case:** You would use this pattern to communicate between 2 controllers that use the same model but are not connected in anyway
 
-##### How to use
-
-**Require, angularJS!**
-
 ##### Methods
 
 function adds a listener to an event with a callback which is stored against the event with it's corresponding id.
