@@ -36,6 +36,7 @@
   * [Others](#others)
     * [Module Pattern](#module-pattern)
     * [Data Mapper](#data-mapper)
+    * [Observer Pattern as an External Service](#observer-pattern-as-an-external-service)
 * [References](#references)
 
 <!--endtoc-->
@@ -794,93 +795,37 @@ will produce the same result as the one above. The main difference here is that 
 
 ![Observer](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/observer.svg "Fig. 7")
 
-##### About
-Below is an example taken from https://github.com/greglbd/angular-observer-pattern. This is an angular factory which reflects the Observer Pattern it works well with the ControllerAs method of working as it can be much more efficient that $scope.$watch and more specific to a unique scope or object than $emit and $broadcast when used correctly. 
+There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them. This allows decoupling between the different scopes, non of the scopes should be aware of the rest of the scopes.
 
-**Use Case:** You would use this pattern to communicate between 2 controllers that use the same model but are not connected in anyway
+Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as an observer - an object, which implements the `Observer` interface (in JavaScript the functions are first-class, so we can provide only implementation of the `notify` method):
 
-##### Methods
-
-function adds a listener to an event with a callback which is stored against the event with it's corresponding id.
-```
-_observerService.attach = function(callback, event, id)
-```
-
-
-function removes all occurences of one id from all events in the observer object
-```
-_observerService.detachById = function(id)
-```
-
-
-function removes all occurences of the event from the observer Object
-```
-_observerService.detachByEvent = function(event)
-``` 
-
-
-removes all callbacks for an id in a specific event from the observer object
-```
-_observerService.detachByEventAndId = function(event, id)
-```
-
-
-Notifies all observers of a specific event, can pass a params variable of any type
-```
-_observerService.notify = function(event, parameters)
-```
-
-
-##### Controller Example
-Below example shows how to attach, notify and detach an event.
-```
-angular.module('app.controllers')
-  .controller('ObserverExample',ObserverExample);
-ObserverExample.$inject= ['ObserverService','$timeout'];
-function ObserverExample(ObserverService, $timeout) {
-    var vm = this;
-    var id = 'vm1';
-    ObserverService.attach(callbackFunction, 'let_me_know', id)
-    
-    function callbackFunction(params){
-        console.log('now i know');
-        ObserverService.detachByEvent('let_me_know')
-    }
-    
-    $timeout(function(){
-        ObserverService.notify('let_me_know');
-    },5000);
+```JavaScript
+function ExampleCtrl($scope) {
+  $scope.$on('event-name', function handler() {
+    //body
+  });
 }
 ```
-Alternative way to remove event
 
-```
-angular.module('app.controllers')
-  .controller('ObserverExample',ObserverExample);
-ObserverExample.$inject= ['ObserverService','$timeout', '$scope'];
-function ObserverExample(ObserverService, $timeout, $scope) {
-    var vm = this;
-    var id = 'vm1';
-    ObserverService.attach(callbackFunction, 'let_me_know', id)
-    
-    function callbackFunction(params){
-        console.log('now i know');
-    }
-    
-    $timeout(function(){
-        ObserverService.notify('let_me_know');
-    },5000);
-    
-    // Cleanup listeners when this controller is destroyed
-    $scope.$on('$destroy', function handler() {
-        ObserverService.detachByEvent('let_me_know')
-    });
+In this way the current scope "subscribes" to events of type `event-name`. When `event-name` is triggered in any parent or child scope of the given one, `handler` would be called.
+
+The methods `$emit` and `$broadcast` are used for triggering events respectively upwards and downwards through the scope chain.
+For example:
+
+```JavaScript
+function ExampleCtrl($scope) {
+  $scope.$emit('event-name', { foo: 'bar' });
 }
 ```
-**Public Repository to get you started**
-https://github.com/greglbd/angular-observer-pattern
+
+The scope in the example above, triggers the event `event-name` to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event `event-name`, would be notified and their handler callback will be invoked.
+
+Analogical is the case when the method `$broadcast` is called. The only difference is that the event would be transmitted downwards - to all children scopes.
+Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).
 
 In the JavaScript community this pattern is better known as publish/subscribe.
+
+For a best practice example see [Observer Pattern as an External Service](#observer-pattern-as-an-external-service)
 
 #### Chain of Responsibilities
 
@@ -1145,6 +1090,94 @@ And the following partial:
   </div>
 </div>
 ```
+
+### Observer Pattern as an External Service
+
+##### About
+Below is an example taken from https://github.com/greglbd/angular-observer-pattern. This is an angular factory which reflects the Observer Pattern.  It works well with the ControllerAs method of working as it can be much more efficient that $scope.$watch and more specific to a unique scope or object than $emit and $broadcast when used correctly. 
+
+**Use Case:** You would use this pattern to communicate between 2 controllers that use the same model but are not connected in anyway
+
+##### Methods
+
+function adds a listener to an event with a callback which is stored against the event with it's corresponding id.
+```
+_observerService.attach = function(callback, event, id)
+```
+
+
+function removes all occurences of one id from all events in the observer object
+```
+_observerService.detachById = function(id)
+```
+
+
+function removes all occurences of the event from the observer Object
+```
+_observerService.detachByEvent = function(event)
+``` 
+
+
+removes all callbacks for an id in a specific event from the observer object
+```
+_observerService.detachByEventAndId = function(event, id)
+```
+
+
+Notifies all observers of a specific event, can pass a params variable of any type
+```
+_observerService.notify = function(event, parameters)
+```
+
+
+##### Controller Example
+Below example shows how to attach, notify and detach an event.
+```javascript
+angular.module('app.controllers')
+  .controller('ObserverExample',ObserverExample);
+ObserverExample.$inject= ['ObserverService','$timeout'];
+function ObserverExample(ObserverService, $timeout) {
+    var vm = this;
+    var id = 'vm1';
+    ObserverService.attach(callbackFunction, 'let_me_know', id)
+    
+    function callbackFunction(params){
+        console.log('now i know');
+        ObserverService.detachByEvent('let_me_know')
+    }
+    
+    $timeout(function(){
+        ObserverService.notify('let_me_know');
+    },5000);
+}
+```
+Alternative way to remove event
+
+```javascript
+angular.module('app.controllers')
+  .controller('ObserverExample',ObserverExample);
+ObserverExample.$inject= ['ObserverService','$timeout', '$scope'];
+function ObserverExample(ObserverService, $timeout, $scope) {
+    var vm = this;
+    var id = 'vm1';
+    ObserverService.attach(callbackFunction, 'let_me_know', id)
+    
+    function callbackFunction(params){
+        console.log('now i know');
+    }
+    
+    $timeout(function(){
+        ObserverService.notify('let_me_know');
+    },5000);
+    
+    // Cleanup listeners when this controller is destroyed
+    $scope.$on('$destroy', function handler() {
+        ObserverService.detachByEvent('let_me_know')
+    });
+}
+```
+**Public Repository to get you started**
+https://github.com/greglbd/angular-observer-pattern
 
 ## References
 
