@@ -14,7 +14,7 @@
   * [Directives](#directives)
   * [Filters](#filters)
   * [Services](#services)
-* [Angular 2 overview](#angular-2-overview)
+* [Angular 2 Overview](#angular-2-overview)
   * [Components](#components)
   * [Services](#services)
   * [Dependency Injection](#dependency-injection)
@@ -270,13 +270,15 @@ function MyCtrl(Developer) {
 }
 ```
 
+## Angular 2 Overview
+
 ## AngularJS in Patterns
 
-In the next a couple of sections, we are going to take a look how the traditional design and architectural patterns are composed in the AngularJS components.
+In the next a couple of sections, we are going to take a look at how the traditional design and architectural patterns are composed in the AngularJS components. The following chapter is devided in two parts - AngularJS 1.x and Angular 2. In the corresponding chapters the patterns will be put in the appropriate context.
 
-In the last chapter we are going to take a look at some architectural patterns, which are frequently used in the development of Single-Page Applications with (but not limited to) AngularJS.
+### AngularJS 1.x
 
-### Services
+#### Services
 
 <!-- include singleton -->
 
@@ -324,7 +326,7 @@ This way the services are actually singletons but not implemented through the Si
 
 For further discussion on this topic Misko Hevery's [article](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) in the Google Testing blog could be considered.
 
-#### Factory Method
+##### Factory Method
 
 <!-- include factory-method -->
 
@@ -412,7 +414,7 @@ There are a few benefits of using the factory method pattern in this case, becau
 - Resolving all the dependencies required by the component
 - The number of instances the given component is allowed to have (for services and filters only a single one but multiple for the controllers)
 
-#### Decorator
+##### Decorator
 
 <!-- include decorator -->
 
@@ -450,7 +452,7 @@ We decorate the service by overriding its method `bar`. The actual decoration is
 
 Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use [aspect-oriented programming](http://en.wikipedia.org/wiki/Aspect-oriented_programming). The only AOP framework for AngularJS I'm aware of could be found at [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop).
 
-#### Facade
+##### Facade
 
 <!-- include facade -->
 
@@ -499,7 +501,7 @@ The second option provides pre-configured version, which creates a HTTP POST req
 
 Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service. We will take a further look at this service in [Active Record](#active-record) and [Proxy](#proxy) sections.
 
-#### Proxy
+##### Proxy
 
 <!-- include proxy -->
 
@@ -535,7 +537,7 @@ function MainCtrl($scope, $resource) {
 ```
 Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`), which means that `user.name` will be undefined and nothing will be rendered. Internally AngularJS will keep reference to this empty object. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
 
-#### Active Record
+##### Active Record
 
 <!-- include active-record -->
 
@@ -576,7 +578,7 @@ Since Martin Fowler states that
 
 `$resource` does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".
 
-#### Intercepting Filters
+##### Intercepting Filters
 
 <!-- include intercepting-filters -->
 
@@ -601,9 +603,9 @@ $httpProvider.interceptors.push(function($q, dependency1, dependency2) {
 });
 ```
 
-### Directives
+#### Directives
 
-#### Composite
+##### Composite
 
 <!-- include composite -->
 
@@ -650,7 +652,7 @@ From the first example we can note that the whole DOM tree is a composition of e
 
 In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives. Theoretically we can nest the components infinitely until we reach a leaf node.
 
-### Interpreter
+#### Interpreter
 
 <!-- include interpreter -->
 
@@ -718,7 +720,7 @@ Few sample AngularJS expressions are:
 (foo) ? bar : baz | toUpperCase
 ```
 
-#### Template View
+##### Template View
 
 <!-- include template-view -->
 
@@ -771,9 +773,9 @@ $scope.names = ['foo', 'bar', 'baz'];
 will produce the same result as the one above. The main difference here is that the template is not wrapped inside a `script` tag but is HTML instead.
 
 
-### Scope
+#### Scope
 
-#### Observer
+##### Observer
 
 <!-- pattern observer -->
 
@@ -807,7 +809,7 @@ Each scope can subscribe to any event with multiple callbacks (i.e. it can assoc
 
 In the JavaScript community this pattern is better known as publish/subscribe.
 
-#### Chain of Responsibilities
+##### Chain of Responsibilities
 
 <!-- include chain-of-responsibilities -->
 
@@ -842,7 +844,7 @@ myModule.controller('ChildCtrl', function ($scope) {
 
 The different handlers from the UML diagram above are the different scopes, injected to the controllers.
 
-#### Command
+##### Command
 
 <!-- include command -->
 
@@ -883,9 +885,9 @@ $watch: function(watchExp, listener, objectEquality) {
 
 We can think of the `watcher` object as a command. The expression of the command is being evaluated on each [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) loop. Once AngularJS detects change in the expression, it invokes the `listener` function. The `watcher` command encapsulates the whole information required for watching given expression and delegates the execution of the command to the `listener` (the actual receiver). We can think of the `$scope` as the command's `Client` and the `$digest` loop as the command's `Invoker`.
 
-### Controllers
+#### Controllers
 
-#### Page Controller
+##### Page Controller
 
 <!-- include page-controller -->
 
@@ -933,9 +935,9 @@ This example aims to illustrates the most trivial way to reuse logic by using a 
 
 The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
 
-### Others
+#### Others
 
-#### Module Pattern
+##### Module Pattern
 
 <!-- include module-pattern -->
 
@@ -962,7 +964,7 @@ app.factory('foo', function () {
 
 Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.
 
-### Data Mapper
+#### Data Mapper
 
 <!-- include data-mapper -->
 
