@@ -299,7 +299,7 @@ class UsersList {
   add(user:User) {
     this.users.push(User);
   }
-  remote(user:User) {
+  remove(user:User) {
     this.users.remove(user);
   }
   fetchAll() {
