@@ -272,6 +272,58 @@ function MyCtrl(Developer) {
 
 ## Angular 2 Overview
 
+Angular 2 is the latest version of the AngularJS framework and it in moment of writing this document its design and development are still in progress. The entire structure of the framework and all the components are reconsidered so there are a lot of changes. Angular 2 is developed in TypeScript it contains minimal set of components compared to AngularJS 1.x so some people think of it more like a library rather than a framework. In the following sections we are going to describe most of these components. Since complete introduction to the framework is out of the scope of this paper, in the resource section there are links to getting started documents and blog posts.
+
+### Components
+
+The main building blocks of all Angular 2 applications are the components. We can think of the Angular 2 components as directives, which render the UI based on some state, stored inside them. This idea might seems quite familiar from ReactJS and basically it is. The main differences between the Angular 2 components and ReactJS are the mechanisms the data-binding is being implemented and the template processing. In Angular 2 the templates are consisted of actual markup, which is being inserted into the DOM and processed recursively based on other components found. However, in ReactJS we define our component using language called JSX, which is later transpiled to explicit JavaScript method calls.
+
+The business logic of your application should be isolated in separate services, outside the actual components.
+
+```javascript
+// example components
+```
+
+### Services
+
+Similarly to AngularJS 1.x, Angular 2 has services, however the syntax for defining them is completely different. In Angular 2 the services are simply TypeScript classes, which could be injected inside other services or components using the dependency injection mechanism of Angular 2. Responsibilities to the services in Angular 2 are to encapsulate the business logic, implement the interaction with remote services and create injectable adapters to browser APIs (for example `localStorage`).
+
+Here is an example of a service, which defines store of users:
+
+```javascript
+class UsersList {
+  users:List<Users>;
+  constructor() {
+    this.users = new List<User>();
+  }
+  add(user:User) {
+    this.users.push(User);
+  }
+  remote(user:User) {
+    this.users.remove(user);
+  }
+  fetchAll() {
+    let xhr = new XHR();
+    return xhr.get('/users')
+    .then((users) => {
+      users.forEach((u) => {
+        this.users.add(new User(u));
+      });
+      return this.users;
+    });
+  }
+  fetch(id:Number) {
+    let xhr = new XHR();
+    return xhr.get(`/users/${id}`)
+    .then((user) => {
+      let u = new User(user);
+      this.users.add(u);
+      return u;
+    });
+  }
+}
+```
+
 ## AngularJS in Patterns
 
 In the next a couple of sections, we are going to take a look at how the traditional design and architectural patterns are composed in the AngularJS components. The following chapter is devided in two parts - AngularJS 1.x and Angular 2. In the corresponding chapters the patterns will be put in the appropriate context.
