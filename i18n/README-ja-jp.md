@@ -34,7 +34,8 @@
     * [ページ・コントローラ](#ページコントローラ)
   * [その他](#その他)
     * [モジュール・パターン](#モジュールパターン)
-  * [データ・マッパ](#データマッパ)
+    * [データ・マッパ](#データマッパ)
+    * [外部サービスとしてのオブザーバパターン](#外部サービスとしてのオブザーバパターン)
 * [References](#references)
 
 <!--endtoc-->
@@ -44,6 +45,11 @@
 新しいことを学ぶ際のもっともよい方法の１つとして、既に知っているものがそこでどのように使われているかを観察するという方法があります。
 このドキュメントは読者にデザインやアーキテクチャのパターンに親しんでもらおうとして書かれているものではありませんので、オブジェクト指向やデザイン・パターン、アーキテクチャ・パターンについての基本的な理解をしておくことをおすすめします。
 このドキュメントの目的は、AngularJSやAngularJSのシングル・ページ・アプリケーションにどれだけ様々なソフトウェア・デザインやアーキテクチャのパターンが採用されているかを述べることです。
+
+## Translations
+
+- [Main](https://mgechev.github.io/angularjs-in-patterns/)
+- [Russian Translation](http://habrahabr.ru/post/250149/)
 
 ## はじめに
 
@@ -822,6 +828,8 @@ function ExampleCtrl($scope) {
 
 JavaScriptコミュニティではこのパターンはパブリッシュ／サブスクライブとして知られています。
 
+ベストプラクティスの一例は [Observer Pattern as an External Service](#observer-pattern-as-an-external-service) を確認して下さい。
+
 #### チェーン・オブ・レスポンシビリティ
 
 >チェーン・オブ・レスポンシビリティ・パターンはコマンド・オブジェクトと続く一連の処理オブジェクトからなるデザイン・パターンです。それぞれの処理オブジェクトは処理が可能なコマンド・オブジェクトを規定するロジックを持っています。残りの部分は次の処理オブジェクトに連鎖的に渡されます。新しい処理オブジェクトを連鎖の末尾に追加するメカニズムも存在しています。
@@ -1084,6 +1092,65 @@ function MainCtrl($scope, User) {
     </ul>
   </div>
 </div>
+```
+
+### 外部サービスとしてのオブザーバパターン
+
+##### 概要
+
+下記の例は[こちら](https://github.com/greglbd/angular-observer-pattern)から持ってきたものです。これはオブザーバパターンを実装したサービスを生成するファクトリです。 正しく使われた場合、`$scope.$watch` より効率的で、$emitや$broadcastよりもスコープやオブジェクトに限定して使えるControllerAsメソッドとよく協調して機能します。
+
+##### コントローラの例
+
+イベントのアタッチ、通知、デタッチの例を示します。
+
+```javascript
+angular.module('app.controllers')
+  .controller('ObserverExample', ObserverExample);
+ObserverExample.$inject= ['ObserverService', '$timeout'];
+
+function ObserverExample(ObserverService, $timeout) {
+  var vm = this;
+  var id = 'vm1';
+
+  ObserverService.attach(callbackFunction, 'let_me_know', id)
+
+  function callbackFunction(params){
+    console.log('now i know');
+    ObserverService.detachByEvent('let_me_know')
+  }
+
+  $timeout(function(){
+    ObserverService.notify('let_me_know');
+  }, 5000);
+}
+```
+
+イベントを削除する別の方法
+
+```javascript
+angular.module('app.controllers')
+  .controller('ObserverExample', ObserverExample);
+ObserverExample.$inject= ['ObserverService', '$timeout', '$scope'];
+
+function ObserverExample(ObserverService, $timeout, $scope) {
+  var vm = this;
+  var id = 'vm1';
+  ObserverService.attach(callbackFunction, 'let_me_know', id)
+
+  function callbackFunction(params){
+    console.log('now i know');
+  }
+
+  $timeout(function(){
+    ObserverService.notify('let_me_know');
+  }, 5000);
+
+  // コントローラが破棄された時にリスナーを外します
+  $scope.$on('$destroy', function handler() {
+    ObserverService.detachByEvent('let_me_know')
+  });
+}
 ```
 
 ## References
