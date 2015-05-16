@@ -35,7 +35,7 @@
   * [その他](#その他)
     * [モジュール・パターン](#モジュールパターン)
     * [データ・マッパ](#データマッパ)
-    * [Observer Pattern as an External Service](#observer-pattern-as-an-external-service)
+    * [外部サービスとしてのオブザーバパターン](#外部サービスとしてのオブザーバパターン)
 * [References](#references)
 
 <!--endtoc-->
@@ -48,7 +48,7 @@
 
 ## Translations
 
-- [Japanese Translation](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ja-jp.md) by [morizotter](https://twitter.com/morizotter)
+- [Main](https://mgechev.github.io/angularjs-in-patterns/)
 - [Russian Translation](http://habrahabr.ru/post/250149/)
 
 ## はじめに
@@ -828,7 +828,7 @@ function ExampleCtrl($scope) {
 
 JavaScriptコミュニティではこのパターンはパブリッシュ／サブスクライブとして知られています。
 
-For a best practice example see [Observer Pattern as an External Service](#observer-pattern-as-an-external-service)
+ベストプラクティスの一例は [Observer Pattern as an External Service](#observer-pattern-as-an-external-service) を確認して下さい。
 
 #### チェーン・オブ・レスポンシビリティ
 
@@ -1094,17 +1094,15 @@ function MainCtrl($scope, User) {
 </div>
 ```
 
-### Observer Pattern as an External Service
+### 外部サービスとしてのオブザーバパターン
 
-##### About
+##### 概要
 
-Below is an example taken from [here](https://github.com/greglbd/angular-observer-pattern). This is an angular factory which creates a service implementing the Observer Pattern.  It works well with the ControllerAs method of working as it can be much more efficient that `$scope.$watch` and more specific to a unique scope or object than $emit and $broadcast when used correctly.
+下記の例は[こちら](https://github.com/greglbd/angular-observer-pattern)から持ってきたものです。これはオブザーバパターンを実装したサービスを生成するファクトリです。 正しく使われた場合、`$scope.$watch` より効率的で、$emitや$broadcastよりもスコープやオブジェクトに限定して使えるControllerAsメソッドとよく協調して機能します。
 
-**Use Case:** You would use this pattern to communicate between 2 controllers that use the same model but are not connected in anyway.
+##### コントローラの例
 
-##### Controller Example
-
-Below example shows how to attach, notify and detach an event.
+イベントのアタッチ、通知、デタッチの例を示します。
 
 ```javascript
 angular.module('app.controllers')
@@ -1127,7 +1125,8 @@ function ObserverExample(ObserverService, $timeout) {
   }, 5000);
 }
 ```
-Alternative way to remove event
+
+イベントを削除する別の方法
 
 ```javascript
 angular.module('app.controllers')
@@ -1147,7 +1146,7 @@ function ObserverExample(ObserverService, $timeout, $scope) {
     ObserverService.notify('let_me_know');
   }, 5000);
 
-  // Cleanup listeners when this controller is destroyed
+  // コントローラが破棄された時にリスナーを外します
   $scope.$on('$destroy', function handler() {
     ObserverService.detachByEvent('let_me_know')
   });
