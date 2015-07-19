@@ -1,1 +1,3 @@
-build/README.pdf
+build/
+node_modules/
+temp/
