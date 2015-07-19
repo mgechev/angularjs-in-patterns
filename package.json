@@ -11,10 +11,22 @@
     "url": "git://github.com/mgechev/angularjs-patterns.git"
   },
   "author": "mgechev",
+  "contributors": [{ 
+    "name" : "Wassim Chegham", 
+    "email" : "maneki.nekko@gmail.com", 
+    "url" : "https://github.com/manekinekko/"
+  }],
   "license": "MIT",
   "gitHead": "2009434a6dfdbe5f06f81253fb853840af753b36",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "markdown-styles": "https://github.com/mgechev/markdown-styles/tarball/master"
+    "glob": "^5.0.14",
+    "gulp": "^3.9.0",
+    "gulp-markdown-pdf": "https://github.com/manekinekko/gulp-markdown-pdf.git#master",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.3",
+    "gulp-rimraf": "^0.1.1",
+    "markdown-styles": "https://github.com/mgechev/markdown-styles/tarball/master",
+    "run-sequence": "^1.1.1"
   }
 }
