@@ -4,40 +4,40 @@
 
 ## Table des matières
 
-* [Traductions](#translations)
-* [Abstract](#abstract)
-* [Introduction](#introduction)
-* [Vue d'ensemble d'AngularJS](#angularjs-overview)
-  * [Les vues partielles](#partials)
-  * [Les contrôleurs](#controllers)
-  * [Le scope](#scope)
-  * [Les directives](#directives)
-  * [Les filtres](#filters)
-  * [Les services](#services)
-* [Les patrons de conception d'AngularJS](#angularjs-patterns)
-  * [Les services](#services-1)
-    * [Singleton](#singleton)
-    * [Factory Method](#factory-method)
-    * [Decorator](#decorator)
-    * [Facade](#facade)
-    * [Proxy](#proxy)
-    * [Active Record](#active-record)
-    * [Intercepting Filters](#intercepting-filters)
-  * [Les directives](#directives-1)
-    * [Composite](#composite)
-  * [Interpreter](#interpreter)
-    * [Template View](#template-view)
-  * [Le scope](#scope-1)
-    * [Observer](#observer)
-    * [Chaîne de responsabilités](#chain-of-responsibilities)
-    * [Command](#command)
-  * [Les contrôlleurs](#controller-1)
-    * [Page Controller](#page-controller)
-  * [Les autres patrons](#others)
-    * [Module Pattern](#module-pattern)
-    * [Data Mapper](#data-mapper)
-    * [Le service en tant que Observer](#observer-pattern-as-an-external-service)
-* [Références](#references)
+- [Traductions](#translations)
+- [Abstract](#abstract)
+- [Introduction](#introduction)
+- [Vue d'ensemble d'AngularJS](#angularjs-overview)
+  - [Les vues partielles](#partials)
+  - [Les contrôleurs](#controllers)
+  - [Le scope](#scope)
+  - [Les directives](#directives)
+  - [Les filtres](#filters)
+  - [Les services](#services)
+- [Les patrons de conception d'AngularJS](#angularjs-patterns)
+  - [Les services](#services-1)
+    - [Singleton](#singleton)
+    - [Factory Method](#factory-method)
+    - [Decorator](#decorator)
+    - [Facade](#facade)
+    - [Proxy](#proxy)
+    - [Active Record](#active-record)
+    - [Intercepting Filters](#intercepting-filters)
+  - [Les directives](#directives-1)
+    - [Composite](#composite)
+  - [Interpreter](#interpreter)
+    - [Template View](#template-view)
+  - [Le scope](#scope-1)
+    - [Observer](#observer)
+    - [Chaîne de responsabilités](#chain-of-responsibilities)
+    - [Command](#command)
+  - [Les contrôlleurs](#controller-1)
+    - [Page Controller](#page-controller)
+  - [Les autres patrons](#others)
+    - [Module Pattern](#module-pattern)
+    - [Data Mapper](#data-mapper)
+    - [Le service en tant que Observer](#observer-pattern-as-an-external-service)
+- [Références](#references)
 
 <!--endtoc-->
 
@@ -50,7 +50,9 @@
 ## Abstract
 
 Parfois, le meilleur moyen d'apprendre une nouvelle technologie est d'essayer de retrouver des concepts que l'on connait déjà, et voir comment ils sont implémentés dans cette technologie.
+
 Ce document n'a pas pour vocation d'expliquer en détails les principes d'architecture logiciels ou de la POO.
+
 Le but de ce papier est de décrire comment les différents patrons de conception logiciel et aussi ceux d’architecture peuvent être implémentés par AngularJS ou n'importe quelle Single Page Application codée avec AngularJS.
 
 ## Introduction
@@ -62,7 +64,9 @@ La dernière section contient quelques patrons d'architecture souvent rencontré
 ## Vue d'ensemble d'AngularJS
 
 AngularJS est un framework JavaScript développé par Google. Il propose de solides bases pour le développement d'application mono-page (Single-Page Application - SPA).
+
 Une SPA est une application qui une fois chargée, ne requiert pas un rechargement total de la page lorsque l'utilisateur interagit avec elle. Cela signifie que toutes les ressources de l'application (données, templates, scripts et styles) devrait être chargées lors de la première requête, voire mieux, à la demande.
+
 Le constat étant que les applications SPA de type CRUD ont des caractéristiques communes, AngularJS fournit de base tout un ensemble de mécanismes et fonctionnalités tels que :
 
 - le binding bi-directionnel
@@ -89,7 +93,7 @@ Initialement, chaque SPA charge le fichier `index.html`. Dans le cas d'AngularJS
 
 **Exemple de vue partielle**
 
-```HTML
+``` HTML
 <html ng-app>
  <!-- La balise body est enrichit avec la directive ng-controller -->
  <body ng-controller="MyController">
@@ -108,7 +112,7 @@ Avec les expressions, les vues partielles définissent quelles actions doivent t
 
 Les contrôleurs d'AngularJS sont des fonctions JavaScript qui gèrent les interactions de l'utilisateur avec l'application web (par exemple, les événements de la souris, des touches claviers...etc), en attachant des méthodes au *scope*. Toues les dépendances externes d'un contrôleur sont fournit via le mécanisme d'ID ou injection de dépendances d'AngularJS. Les contrôleurs ont également pour but de fournir le *modèle* à la vue en attachant des données dans le *scope*. Nous pouvons voir ces données comme des *modèle vue* (*view model*)
 
-```
+``` 
 JavaScript
 function MyController($scope) {
   $scope.buttonText = 'Cliquer moi pour changer foo!';
@@ -120,6 +124,7 @@ function MyController($scope) {
   };
 }
 ```
+
 Par exemple, si nous associons le contrôleur de l'exemple ci-dessus avec la vue de l'exemple dans la section précédente, l'utilisateur va pouvoir interagir avec l'application de différentes manières :
 
 1. Changer la valeur de `foo` en saisissant une valeur dans le champ de saisie. Ceci va immédiatement refléter la valeur de `foo` grâce au mécanisme de biding bi-directionnel.
@@ -135,7 +140,7 @@ Une autre caractéristique très importante des scopes réside dans le fait que 
 
 L'héritage des scopes est illustré dans l'exemple suivant :
 
-```HTML
+``` HTML
 <div ng-controller="BaseCtrl">
   <div id="child" ng-controller="ChildCtrl">
     <button id="parent-method" ng-click="foo()">méthode du parent</button>
@@ -144,7 +149,7 @@ L'héritage des scopes est illustré dans l'exemple suivant :
 </div>
 ```
 
-```JavaScript
+``` 
 function BaseCtrl($scope) {
   $scope.foo = function () {
     alert('Base foo');
@@ -163,6 +168,7 @@ Le contrôleur `ChildCtrl` est associé à l'élément `div#child`, mais puisque
 ### Les directives
 
 Dans AngularJS, les directives sont l'endroit où toutes les manipulations du DOM doivent être implémentées. Lorsque vous devez manipuler le DOM, vous devez créer une directive ou réutiliser celles qui existent.
+
 Chaque directive possède un nom et une logique associée. Dans le cas le plus simple, une directive contient seulement un nom et une définition de la fonction *postLink*, qui encapsule toute la logique requise pour la directive. Pour les cas les plus complexes, une directive peut contenir d'autres propriétés tels que :
 
 - un template
@@ -172,7 +178,7 @@ Chaque directive possède un nom et une logique associée. Dans le cas le plus s
 
 Pour utiliser une directive dans une vue, il suffit de référencer son nom. Par exemple :
 
-```JavaScript
+``` JavaScript
 myModule.directive('alertButton', function () {
   return {
     template: '<button ng-transclude></button>',
@@ -191,7 +197,7 @@ myModule.directive('alertButton', function () {
 });
 ```
 
-```HTML
+``` HTML
 <alert-button content="42">Cliquer moi</alert-button>
 ```
 
@@ -205,7 +211,7 @@ Dans AngularJS, les filtres sont responsables d'encapsuler toute la logique néc
 
 Voici une définition d'un filtre dont le rôle est de transformer une chaîne de caractères en majuscule :
 
-```JavaScript
+``` JavaScript
 myModule.filter('uppercase', function () {
   return function (str) {
     return (str || '').toUpperCase();
@@ -213,25 +219,25 @@ myModule.filter('uppercase', function () {
 });
 ```
 
-Ce filtre peut être utilisé au sein d'une vue en utilisant le symbole `|` d'Unix :
+Ce filtre peut être utilisé au sein d'une vue en utilisant le symbole `|` d'UNIX :
 
-```HTML
+``` HTML
 <div>{{ name | uppercase }}</div>
 ```
 
 Au sein d'un contrôleur, le filtre peut être utilisé de cette façon :
 
-
-```JavaScript
+``` javascript
 function MyCtrl(uppercaseFilter) {
   $scope.name = uppercaseFilter('foo'); //FOO
 }
+```
 
 ### Les services
 
 Dans AngularJS, les services sont responsables d'accueillir la logique métier des composants, la logique de persistance, les appels XHR, WebSockets, etc. Lorsque le contrôleur devient trop `gros`, le code superflu et répétitif devrait être déplacé dans un service.
 
-```JavaScript
+``` javascript
 myModule.service('Developer', function () {
   this.name = 'Foo';
   this.motherLanguage = 'JavaScript';
@@ -245,7 +251,7 @@ myModule.service('Developer', function () {
 
 Le service peut être injecté dans n'importe quel composant, supportant l'injection de dépendances (les contrôleurs, d'autres services, les filtres, les directives).
 
-```JavaScript
+``` JavaScript
 function MyCtrl(Developer) {
   var developer = new Developer();
   developer.live();
@@ -262,7 +268,7 @@ Ensuite, dans le dernier chapitre, nous verrons quels sont les différents patro
 
 #### Le patron Singleton
 
->Le patron Singleton vise à assurer qu'il n'y a toujours qu'une seule instance d'un objet en fournissant une interface pour la manipuler. C'est un des patrons les plus simples. L'objet qui ne doit exister qu'en une seule instance comporte une méthode pour obtenir cette unique instance et un mécanisme pour empêcher la création d'autres instances. 
+> Le patron Singleton vise à assurer qu'il n'y a toujours qu'une seule instance d'un objet en fournissant une interface pour la manipuler. C'est un des patrons les plus simples. L'objet qui ne doit exister qu'en une seule instance comporte une méthode pour obtenir cette unique instance et un mécanisme pour empêcher la création d'autres instances. 
 
 Ce patron est illustré dans le diagramme UML ci-dessous :
 
@@ -279,7 +285,7 @@ Lorsqu'une dépendance doit être injectée par AngularJS dans un composant, voi
 
 Voici un aperçu du code source d'AngularJS, de la méthode `getService` :
 
-```JavaScript
+``` JavaScript
 function getService(serviceName) {
   if (cache.hasOwnProperty(serviceName)) {
     if (cache[serviceName] === INSTANTIATING) {
@@ -310,17 +316,17 @@ De cette manière, les services sont réellement des singletons mais ne sont pas
 - améliore la testabilité de votre code source
 - vous pouvez contrôler la création des objets singletons (dans notre cas, le conteneur IoC (Inversion de Contrôle) le contrôle pour nous, en instanciant le singleton).
 
-Si vous voulez en savoir plus, vous pouvez lire l'[article](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) de Misko Hevery.
+Si vous voulez en savoir plus, je vous invite à lire l'[article](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) de Misko Hevery.
 
 #### Factory Method
 
->Le patron Factory Method fournit une interface pour créer un objet qui laisse la possibilité aux sous-classes de décider quel type d'objet créer. Ce patron est utilisé lorsque la classe d'un objet n'est pas connue au moment de la compilation. Une méthode pour créer un objet factory method est définie dans une classe abstraite, et implémentée dans les différentes sous-classes. La factory method peut également comporter une implémentation par défaut.
+> Le patron Factory Method fournit une interface pour créer un objet qui laisse la possibilité aux sous-classes de décider quel type d'objet créer. Ce patron est utilisé lorsque la classe d'un objet n'est pas connue au moment de la compilation. Une méthode pour créer un objet factory method est définie dans une classe abstraite, et implémentée dans les différentes sous-classes. La factory method peut également comporter une implémentation par défaut.
 
 ![Factory Method](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/factory-method.svg "Fig. 2")
 
 Considérons le code suivant :
 
-```JavaScript
+``` JavaScript
 myModule.config(function ($provide) {
   $provide.provider('foo', function () {
     var baz = 42;
@@ -344,7 +350,7 @@ Chaque service, filtre ou contrôleur possède un "provider" qui est responsable
 
 Jetons un oeil sur l'implémentation d'AngularJS :
 
-```JavaScript
+``` JavaScript
 //...
 
 createInternalInjector(instanceCache, function(servicename) {
@@ -388,7 +394,7 @@ function invoke(fn, self, locals, serviceName){
 
 D'après ce code, nous remarquons que la méthode `$get` est utilisé à ce niveau :
 
-```JavaScript
+``` JavaScript
 instanceInjector.invoke(provider.$get, provider, undefined, servicename)
 ```
 
@@ -404,14 +410,13 @@ Utiliser le patron Factory Method offre des avantages dans notre cas grâce à l
 
 #### Decorator
 
->Ce patron permet d'attacher dynamiquement des responsabilités à un objet. Une alternative à l'héritage. Ce patron est inspiré des poupées russes. Un objet peut être caché à l'intérieur d'un autre objet décorateur qui lui rajoutera des fonctionnalités, l'ensemble peut être décoré avec un autre objet qui lui ajoute des fonctionnalités et ainsi de suite. Cette technique nécessite que l'objet décoré et ses décorateurs implémentent la même interface, qui est typiquement définie par une classe abstraite.
+> Ce patron permet d'attacher dynamiquement des responsabilités à un objet. Une alternative à l'héritage. Ce patron est inspiré des poupées russes. Un objet peut être caché à l'intérieur d'un autre objet décorateur qui lui rajoutera des fonctionnalités, l'ensemble peut être décoré avec un autre objet qui lui ajoute des fonctionnalités et ainsi de suite. Cette technique nécessite que l'objet décoré et ses décorateurs implémentent la même interface, qui est typiquement définie par une classe abstraite.
 
 ![Decorator](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/decorator.svg "Fig. 4")
 
 AngularJS fournit de base un moyen d'étendre et d'enrichir les fonctionnalités des services existants. En utilisant la méthode `decorator` de l'objet `$provider`, il est possible de créer des "wrapper" de n'importe quel service définit ou fournit par un module tiers :
 
-
-```JavaScript
+``` JavaScript
 myModule.controller('MainCtrl', function (foo) {
   foo.bar();
 });
@@ -445,15 +450,12 @@ Ce patron est utile si nous souhaitons modifier le comportement des services tie
 
 #### Facade
 
->Ce patron fournit une interface unifiée sur un ensemble d'interfaces d'un système. Il est utilisé pour réaliser des interfaces de programmation. Si un sous-système comporte plusieurs composants qui doivent être utilisés dans un ordre précis, une classe façade sera mise à disposition, et permettra de contrôler l'ordre des opérations et de cacher les détails techniques des sous-systèmes. Une façade peut :
-
->1. rendre une librairie plus simple à utiliser et à tester.
-
->2. rendre une librairie plus simple à comprendre.
-
->3. offrir une meilleure flexibilité dans le développement de la librairie.
-
->4. englober une collection d'API mal conçues en une seule API bien conçue (en foncton des tâches).
+> Ce patron fournit une interface unifiée sur un ensemble d'interfaces d'un système. Il est utilisé pour réaliser des interfaces de programmation. Si un sous-système comporte plusieurs composants qui doivent être utilisés dans un ordre précis, une classe façade sera mise à disposition, et permettra de contrôler l'ordre des opérations et de cacher les détails techniques des sous-systèmes. Une façade peut :
+> 
+> 1. rendre une librairie plus simple à utiliser et à tester.
+> 2. rendre une librairie plus simple à comprendre.
+> 3. offrir une meilleure flexibilité dans le développement de la librairie.
+> 4. englober une collection d'API mal conçues en une seule API bien conçue (en foncton des tâches).
 
 ![Facade](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/facade.svg "Fig. 11")
 
@@ -461,27 +463,28 @@ Il existe peut de façades dans AngularJS. A chaque fois que vous voulez fournir
 
 Par exemple, regardons comment créer une requête POST avec `XMLHttpRequest` :
 
- ```JavaScript
+``` JavaScript
 var http = new XMLHttpRequest(),
-    url = '/example/new',
-    params = encodeURIComponent(data);
+
+url = '/example/new',
+params = encodeURIComponent(data);
 http.open("POST", url, true);
 
 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 http.setRequestHeader("Content-length", params.length);
 http.setRequestHeader("Connection", "close");
-
 http.onreadystatechange = function () {
   if(http.readyState == 4 && http.status == 200) {
-    alert(http.responseText);
+	alert(http.responseText);
   }
 }
+
 http.send(params);
 ```
 
 Voici la même chose en utilisant le service `$http` d'AngularJS :
 
-```JavaScript
+``` javascript
 $http({
   method: 'POST',
   url: '/example/new',
@@ -491,9 +494,10 @@ $http({
   alert(response);
 });
 ```
+
 ou encore :
 
-```JavaScript
+``` JavaScript
 $http.post('/someUrl', data)
 .then(function (response) {
   alert(response);
@@ -506,7 +510,7 @@ Le service `$resource` d'AngularJS est un service construit autour de `$http` et
 
 #### Proxy
 
->Ce patron est un substitut d'un objet, qui permet de contrôler l'utilisation de ce dernier. Un proxy est un objet destiné à protéger un autre objet. Le proxy a la même interface que l'objet à protéger. Il peut être créé par exemple pour permettre d’accéder à distance à un objet (via un middleware). Un proxy, dans sa forme la plus simple, ne protège rien du tout et transmet tous les appels de méthode à l'objet cible.
+> Ce patron est un substitut d'un objet, qui permet de contrôler l'utilisation de ce dernier. Un proxy est un objet destiné à protéger un autre objet. Le proxy a la même interface que l'objet à protéger. Il peut être créé par exemple pour permettre d’accéder à distance à un objet (via un middleware). Un proxy, dans sa forme la plus simple, ne protège rien du tout et transmet tous les appels de méthode à l'objet cible.
 
 ![Proxy](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/proxy.svg "Fig. 9")
 
@@ -520,7 +524,7 @@ Dans cette section, nous allons parler de l'implémentation du proxy virtuel dan
 
 Dans le code suivant, il y a un appel vers la méthode `get` de l'instance `$resource` référencée par `User` :
 
-```JavaScript
+``` JavaScript
 var User = $resource('/users/:id'),
     user = User.get({ id: 42 });
 console.log(user); // {}
@@ -530,36 +534,36 @@ L'appel de `console.log` affiche un objet vide. La requête AJAX, qui est émise
 
 Comment cela fonctionne dans AngularJS? Considérons le code suivant :
 
-
-```JavaScript
+``` JavaScript
 function MainCtrl($scope, $resource) {
   var User = $resource('/users/:id'),
   $scope.user = User.get({ id: 42 });
 }
 ```
 
-```html
+``` html
 <span ng-bind="user.name"></span>
 ```
 
->**Pro tip** : Il n'est pas conseillé d'utiliser `$resource` directement dans un contrôleur. Préférez le mettre dans une factory ou un service !
+> **Pro tip** : Il n'est pas conseillé d'utiliser `$resource` directement dans un contrôleur. Préférez le mettre dans une factory ou un service !
 
 Lorsque ce code s'exécute, la propriété `user` de l'objet `$scope` est initialement vide (`{}`), ce qui signifie que `user.name` sera `undefined` et rien ne sera rendu dans la vue. En interne, AngularJS garde une référence de cet objet vide. Lorsque le serveur répond à la requête GET, AngularJS met à jour l'objet avec les données reçues. Lors de l'itération suivante de la boucle du `$digest`, AngularJS détecte des changements dans l'objet `$scope.user`, ce qui déclenche le rafraichissement de la vue.
 
 #### Enregistrement Actif (Active Record)
 
->Active Record est une approche pour lire les données d'une base de données. Les attributs d'une table ou d'une vue sont encapsulés dans une classe. Ainsi l'objet, instance de la classe, est lié à un tuple de la base. L'objet Active Record encapsule donc les données ainsi que le comportement.
+> Active Record est une approche pour lire les données d'une base de données. Les attributs d'une table ou d'une vue sont encapsulés dans une classe. Ainsi l'objet, instance de la classe, est lié à un tuple de la base. L'objet Active Record encapsule donc les données ainsi que le comportement.
 
 ![Active Record](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/active-record.svg "Fig. 7")
 
 AngularJS définit un service nommé `$resource` distribué dans un module additionnel. D'après la [documentation](https://docs.angularjs.org/api/ngResource/service/$resource) d'AngularJS du service `$resource` :
 
->Une factory pour la création d'objet permettant une interaction avec les données des sources RESTful.
->L'objet retourné possède des méthodes d'action offrant une abstraction très haut niveau et ne nécessitant pas une interaction avec le service `$http`.
+> Une factory pour la création d'objet permettant une interaction avec les données des sources RESTful.
+> 
+> L'objet retourné possède des méthodes d'action offrant une abstraction très haut niveau et ne nécessitant pas une interaction avec le service `$http`.
 
 Voici comment le service `$resource` peut être utilisé :
 
-```JavaScript
+``` JavaScript
 var User = $resource('/users/:id'),
     user = new User({
       name: 'foo',
@@ -573,7 +577,7 @@ l'appel à `$resource` retourne un constructeur permettant d'instancier des obje
 
 Le constructeur possède également des méthodes statiques équivalentes aux méthodes d'instances :
 
-```JavaScript
+``` JavaScript
 var user = User.get({ userid: userid });
 ```
 
@@ -585,7 +589,7 @@ Vous pouvez trouver plus de détails concernant les pouvoirs du service `$resour
 
 #### Intercepting Filters
 
->Créé une chaîne de filtres composables afin d'implémenter des tâches de pré-processing et post-processing récurrentes lors de l'émission des requêtes.
+> Créé une chaîne de filtres composables afin d'implémenter des tâches de pré-processing et post-processing récurrentes lors de l'émission des requêtes.
 
 ![Composite](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/intercepting-filters.svg "Fig. 3")
 
@@ -597,7 +601,7 @@ L'objet `requestError` est un intercepteur qui est appelé lorsque l'intercepteu
 
 Voici un exemple basique :
 
-```JavaScript
+``` JavaScript
 $httpProvider.interceptors.push(function($q, dependency1, dependency2) {
   return {
    'request': function(config) {
@@ -614,15 +618,224 @@ $httpProvider.interceptors.push(function($q, dependency1, dependency2) {
 
 #### Composite
 
+> Ce patron permet de composer une hiérarchie d'objets, et de manipuler de la même manière un élément unique, une branche, ou l'ensemble de l'arbre. Il permet en particulier de créer des objets complexes en reliant différents objets selon une structure en arbre. 
+
+![Composite](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/composite.svg "Fig. 3")
+
+D'après le Gang of Four ([GoF](http://c2.com/cgi/wiki?GangOfFour)), le patron MVC n'est rien de plus que la combinaison de :
+
+- Strategy
+- Composite
+- Observer
+
+Ils explique que la vue est la composition de plusieurs composants. Dans AnguarlJS, nous sommes dans ce cas de figure. Les vues sont formées grâce à la composition des directives et les éléments DOM.
+
+Voyons cet exemple :
+
+``` HTML
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <zippy title="Zippy">
+      Zippy!
+    </zippy>
+  </body>
+</html>
+```
+
+``` JavaScript
+myModule.directive('zippy', function () {
+  return {
+    restrict: 'E',
+    template: '<div><div class="header"></div><div class="content" ng-transclude></div></div>',
+    link: function (scope, el) {
+      el.find('.header').click(function () {
+        el.find('.content').toggle();
+      });
+    }
+  }
+});
+```
+
+Dans cet exemple, nous avons définit une simple directive, qui se trouve être un composant de type UI. Ce composant appelé "zippy" possède un entête `div.header` et un contenu `div.content`.
+
+A partir du premier exemple, nous pouvons remarquer que tout l'arbre DOM est la composition de plusieurs éléments. L'élément racine est `html`, suivi juste après par `head`, ensuite `body`… etc.
+
+Dans le second exemple JavaScript, la propriété `template` de la directive contient une directive `ng-transclude` (sous forme d'attribut). Ceci signifie qu'à l'intérieur de la directive `zippy` nous avons une autre directive nommée `ng-transclude`. Autrement-dit, une composition de directive.
+
 #### Interpreter
 
+> Le patron comporte deux composants centraux: le contexte et l'expression ainsi que des objets qui sont des représentations d'éléments de grammaire d'un langage de programmation. Le patron est utilisé pour transformer une expression écrite dans un certain langage programmation - un texte source - en quelque chose de manipulable par programmation: Le code source est écrit conformément à une ou plusieurs règles de grammaire, et un objet est créé pour chaque utilisation d'une règles de grammaire. L'objet interpreter est responsable de transformer le texte source en objets.
+
+![Interpreter](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/interpreter.svg "Fig. 6")
+
+Grâce au service `$parse`, AngularJS propose son propre implémentation d'une DSL (Domain Specific Language). Cette DSL est une version très simplifiée du langage JavaScript.
+
+Voici les spécificités des expressions AngularJS :
+
+- elles peuvent contenir des filtre via la syntaxe `pipe` (à la manière d'UNIX)
+- ne déclenche pas d'exceptions
+- ne contient aucune structure de contrôle (même s'il est possible d'utiliser l'opérateur ternaire)
+- sont évaluée dans le contexte du `$scope` de la vue
+
+Dans l'implémentation du service `$parse`, sont définis deux composants :
+
+``` JavaScript
+//Responsable de convertir des caractères en token
+var Lexer;
+//Responsable d'interpréter les token et d'évaluder les expressions
+var Parser;
+```
+
+Lorsqu'une expression a été transformée en `token`, elle est mise en cache pour des raisons de performance.
+
+Les symboles terminaux dans la DSL AngularJS sont définis comme ceci :
+
+``` JavaScript
+var OPERATORS = {
+  /* jshint bitwise : false */
+  'null':function(){return null;},
+  'true':function(){return true;},
+  'false':function(){return false;},
+  undefined:noop,
+  '+':function(self, locals, a,b){
+        //...
+      },
+  '*':function(self, locals, a,b){return a(self, locals)*b(self, locals);},
+  '/':function(self, locals, a,b){return a(self, locals)/b(self, locals);},
+  '%':function(self, locals, a,b){return a(self, locals)%b(self, locals);},
+  '^':function(self, locals, a,b){return a(self, locals)^b(self, locals);},
+  '=':noop,
+  '===':function(self, locals, a, b){return a(self, locals)===b(self, locals);},
+  '!==':function(self, locals, a, b){return a(self, locals)!==b(self, locals);},
+  '==':function(self, locals, a,b){return a(self, locals)==b(self, locals);},
+  '!=':function(self, locals, a,b){return a(self, locals)!=b(self, locals);},
+  '<':function(self, locals, a,b){return a(self, locals)<b(self, locals);},
+  '>':function(self, locals, a,b){return a(self, locals)>b(self, locals);},
+  '<=':function(self, locals, a,b){return a(self, locals)<=b(self, locals);},
+  '>=':function(self, locals, a,b){return a(self, locals)>=b(self, locals);},
+  '&&':function(self, locals, a,b){return a(self, locals)&&b(self, locals);},
+  '||':function(self, locals, a,b){return a(self, locals)||b(self, locals);},
+  '&':function(self, locals, a,b){return a(self, locals)&b(self, locals);},
+  '|':function(self, locals, a,b){return b(self, locals)(self, locals, a(self, locals));},
+  '!':function(self, locals, a){return !a(self, locals);}
+};
+```
+
+Nous pouvons considérer chaque fonction associée à un symbole comme étant une implémentation de l'interface `AbstractExpression`.
+
+Chaque `Client` interprète une expression AngularJS donnée dans un contexte spécifique.
+
+Voici quelques exemples d'expressions AngularJS :
+
+``` JavaScript
+// le filtre toUpperCase est appliqué au résultat de l'expression :
+// (foo) ? bar : baz
+(foo) ? bar : baz | toUpperCase
+```
+
 #### Template View
+
+> Affiche un rendu dans l'HTML, basé sur des marqueurs dans le code HTML.
+
+![Template View](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/template-view.svg "Fig. 8")
+
+La gestion du rendu dynamic d’une page n’est pas chose facile. Il est souvent question de beaucoup de manipulation de chaîne de caractères. Pour simplifier cette procédure, il est souvent plus simple d’incorporer des expressions dans notre HTML, ces expressions sont évaluées dans un contexte donné et tout le template est ensuite compilé vers le format final. Dans notre cas, ce format est HTML voire le DOM. C’est ce que font les moteurs de templating - ils prennent une DSL, l’évalue dans un contexte donné puis la transforme en un format souhaité.
+
+Les templates sont historiquement associés aux technologies back-end.  Par exemple, vous pouvez embarquer du code PHP dans une page HTML pour créer une page dynamique, en utilisant un moteur de templating, tel que Smarty.
+
+En ce qui concerne JavaScript, il existe pléthore de moteurs de templating, les plus connus sont mustache.js et handlerbars. Ces moteurs manipulent souvent les templates sous format texte. Ces templates peuvent être mis directement dans la page statique, dans une balise `script` avec un type spécifique, récupéré depuis le serveur via `XHR` ou encore mis directement dans du JavaScript.
+
+Par exemple :
+
+``` html
+<script type="template/mustache">
+  <h2>Names</h2>
+  {{#names}}
+    <strong>{{name}}</strong>
+  {{/names}}
+</script>
+```
+
+Le moteur de templating transforme ce texte (le contenu de la balise `script`) en éléments DOM en les compilant dans un contexte donné. Par exemple, si ce contenu est évalué dans le contexte suivant : `{ names: ['foo', 'bar', 'baz'] }` nous obtenant ceci :
+
+``` html
+<h2>Names</h2>
+  <strong>foo</strong>
+  <strong>bar</strong>
+  <strong>baz</strong>
+```
+
+En AngularJS, les templates n’ont pas besoin d’être compilés ; ils ne sont pas dans un format intermédiaire comme le template précédent. Ce que fait le compilateur AngularJS, il traverse l’arbre DOM à la recherche de directives connues (éléments, attributs, classes CSS ou encore des commentaires). Lorsqu’il rencontre l’une de ces directives, il invoque le code associé ce qui déclenche l’évaluation des différentes expressions dans le contexte courant.
+
+Par exemple :
+
+``` html
+<ul ng-repeat="name in myCtrl.names">
+  <li>{{name}}</li>
+</ul>
+```
+
+L’évaluation de la directive `ng-reapeat`dans le contexte suivant : 
+
+``` javascript
+myCtrl.names = ['foo', 'bar', 'baz'];
+```
+
+produit le même résultat que précédemment :
+
+``` html
+<h2>Names</h2>
+  <strong>foo</strong>
+  <strong>bar</strong>
+  <strong>baz</strong>
+```
 
 ### Scope
 
 #### Observer
 
+> Ce patron établit une relation un à plusieurs entre des objets, où lorsqu'un objet change, plusieurs autres objets sont avisés du changement. Dans ce patron, un objet *le sujet* tient une liste des objets dépendants *les observateurs* qui seront avertis des modifications apportées au *sujet*. Quand une modification est apportée, le sujet emmet un message aux différents observateurs.
+
+![Observer](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/observer.svg "Fig. 7")
+
+Il existe deux façon pour communiquer entre les scopes (ou les contrôleurs) dans une application AngularJS. La première consiste à appeler les méthodes des parents depuis les scopes enfants. Ceci est rendu possible car le scope enfant hérite du prototype du scope parent, comme expliqué dans les sections précédentes (voir la section sur le [Scope](#scope)) ; Cette première façon de faire autorise un sens de communication : de l’enfant vers le parent. Cependant, il est souvent nécessaire d’appeler des méthodes d’un scope enfant, ou notifier un scope enfant suite à un événement déclenché dans le contexte du parent. AngularJS propose de base un patron Observer, qui permet ce genre de communication.
+
+Un autre cas d’usage de ce patron : lorsque plusieurs scopes sont concernés par un certain événement, qui est déclenché dans un autre contexte. Ceci permet en effet de découpler les scopes.
+
+Chaque `$scope` dans AngularJS possède trois méthodes : `$on`, `$emit`et `$broadcast`. La méthode `$on`accepte un topic et une fonction de callback. Cette callback peut être considérée comme un `observer`, un objet implémentant l’interface `Observer`:
+
+``` javascript
+function ExampleCtrl($scope) {
+  $scope.$on('event-name', function handler() {
+    //body
+  });
+}
+```
+
+De cette manière, le `$scope`courant souscrit à un événement de type `event-name`. Lorsque cet événement est déclenché à n’importe quel niveau du `$scope` courant, que ce soit au niveau de ses parents ou ses enfants, la fonction `handler sera invoquée.
+
+Les méthodes `$emit`et `$broadcast`sont utilisées pour déclencher et propager les événements, vers `$scope` parents pour `$emit`et `$scope`enfants pour `$broadcast`. Voici un exemple :
+
+``` javascript
+function ExampleCtrl($scope) {
+  $scope.$emit('event-name', { foo: 'bar' });
+}
+```
+
+Dans cet exemple, le `$scope`déclenche l’événement `event-name`et le propage vers tous les `$scope`parents. Ce qui signifie que chaque `$scope`parent ayant souscrit à `event-name` sera notifié et sa fonction `handler` sera appelée. La méthode `$broadcast`fonctionne de la même manière, à la différence près qu’elle propage l’événement vers tous les `$scope`enfants.
+
+Chaque `$scope`a la possibilité de souscrire plusieurs actions à un même événement. Dit autrement, il peut associer plusieurs observer à un même événement.
+
+Ce patron est également connu sous le nom de publish/subscribe (ou producteur/consommateur).
+
+Pour les bonnes pratiques concernant ce patron, voir [Le patron Observer en tant que Service externe](#observer-pattern-as-an-external-service)
+
 #### Chain of Responsibilities
+
+
 
 #### Command
 
@@ -651,7 +864,6 @@ $httpProvider.interceptors.push(function($q, dependency1, dependency2) {
 5. [Patterns of Enterprise Application Architecture (P of EAA)](http://martinfowler.com/books/eaa.html)
 6. [Using Dependancy Injection to Avoid Singletons](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html)
 7. [Why would one use the Publish/Subscribe pattern (in JS/jQuery)?](https://stackoverflow.com/questions/13512949/why-would-one-use-the-publish-subscribe-pattern-in-js-jquery)
-
 
 
 
