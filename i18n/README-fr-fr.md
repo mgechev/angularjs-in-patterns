@@ -112,8 +112,7 @@ Avec les expressions, les vues partielles définissent quelles actions doivent t
 
 Les contrôleurs d'AngularJS sont des fonctions JavaScript qui gèrent les interactions de l'utilisateur avec l'application web (par exemple, les événements de la souris, des touches claviers...etc), en attachant des méthodes au *scope*. Toues les dépendances externes d'un contrôleur sont fournit via le mécanisme d'ID ou injection de dépendances d'AngularJS. Les contrôleurs ont également pour but de fournir le *modèle* à la vue en attachant des données dans le *scope*. Nous pouvons voir ces données comme des *modèle vue* (*view model*)
 
-``` 
-JavaScript
+``` JavaScript
 function MyController($scope) {
   $scope.buttonText = 'Cliquer moi pour changer foo!';
   $scope.foo = 42;
@@ -149,7 +148,7 @@ L'héritage des scopes est illustré dans l'exemple suivant :
 </div>
 ```
 
-``` 
+``` javascript
 function BaseCtrl($scope) {
   $scope.foo = function () {
     alert('Base foo');
