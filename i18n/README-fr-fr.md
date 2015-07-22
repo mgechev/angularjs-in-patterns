@@ -1,43 +1,49 @@
-# Les patrons de conception avec AngularJS 1.x
-
-<!--toc-->
+# Les patrons de conception avec AngularJS
 
 ## Table des matières
 
-- [Traductions](#translations)
-- [Abstract](#abstract)
-- [Introduction](#introduction)
-- [Vue d'ensemble d'AngularJS](#angularjs-overview)
-  - [Les vues partielles](#partials)
-  - [Les contrôleurs](#controllers)
-  - [Le scope](#scope)
-  - [Les directives](#directives)
-  - [Les filtres](#filters)
-  - [Les services](#services)
-- [Les patrons de conception d'AngularJS](#angularjs-patterns)
-  - [Les services](#services-1)
-    - [Singleton](#singleton)
-    - [Factory Method](#factory-method)
-    - [Decorator](#decorator)
-    - [Facade](#facade)
-    - [Proxy](#proxy)
-    - [Active Record](#active-record)
-    - [Intercepting Filters](#intercepting-filters)
-  - [Les directives](#directives-1)
-    - [Composite](#composite)
-  - [Interpreter](#interpreter)
-    - [Template View](#template-view)
-  - [Le scope](#scope-1)
-    - [Observer](#observer)
-    - [Chaîne de responsabilités](#chain-of-responsibilities)
-    - [Command](#command)
-  - [Les contrôlleurs](#controller-1)
-    - [Page Controller](#page-controller)
-  - [Les autres patrons](#others)
-    - [Module Pattern](#module-pattern)
-    - [Data Mapper](#data-mapper)
-    - [Le service en tant que Observer](#observer-pattern-as-an-external-service)
-- [Références](#references)
+<!--toc-->
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+* [Traductions](#traductions)
+* [Abstract](#abstract)
+* [Introduction](#introduction)
+* [Vue d'ensemble d'AngularJS](#vue-densemble-dangularjs)
+  * [Les vues partielles](#les-vues-partielles)
+  * [Les contrôleurs](#les-contr%C3%B4leurs)
+  * [Le scope](#le-scope)
+  * [Les directives](#les-directives)
+  * [Les filtres](#les-filtres)
+  * [Les services](#les-services)
+* [Les patrons de conception d'AngularJS](#les-patrons-de-conception-dangularjs)
+  * [Les services](#les-services-1)
+    * [Le patron Singleton](#le-patron-singleton)
+    * [Factory Method](#factory-method)
+    * [Decorator](#decorator)
+    * [Facade](#facade)
+    * [Proxy](#proxy)
+    * [Enregistrement Actif (Active Record)](#enregistrement-actif-active-record)
+    * [Intercepting Filters](#intercepting-filters)
+  * [Les directives](#les-directives-1)
+    * [Composite](#composite)
+  * [Interpreter](#interpreter)
+    * [Template View](#template-view)
+  * [Scope](#scope)
+    * [Observer](#observer)
+    * [Chaîne de responsabilité](#cha%C3%AEne-de-responsabilit%C3%A9)
+    * [Command](#command)
+  * [Controllers](#controllers)
+    * [Contrôleur de page](#contr%C3%B4leur-de-page)
+  * [Others](#others)
+    * [Module Pattern](#module-pattern)
+    * [Data Mapper](#data-mapper)
+    * [Le patron Observer grâce à un Service Commun](#le-patron-observer-gr%C3%A2ce-%C3%A0-un-service-commun)
+* [References](#references)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 <!--endtoc-->
 
@@ -257,7 +263,7 @@ function MyCtrl(Developer) {
 }
 ```
 
-## AngularJS Patterns
+## Les patrons de conception d'AngularJS
 
 Dans les sections suivantes, nous allons voir comment les patrons de conception traditionnels sont utilisés dans les composants d'AngularJS.
 
@@ -474,7 +480,7 @@ http.setRequestHeader("Content-length", params.length);
 http.setRequestHeader("Connection", "close");
 http.onreadystatechange = function () {
   if(http.readyState == 4 && http.status == 200) {
-	alert(http.responseText);
+    alert(http.responseText);
   }
 }
 
@@ -664,7 +670,7 @@ A partir du premier exemple, nous pouvons remarquer que tout l'arbre DOM est la 
 
 Dans le second exemple JavaScript, la propriété `template` de la directive contient une directive `ng-transclude` (sous forme d'attribut). Ceci signifie qu'à l'intérieur de la directive `zippy` nous avons une autre directive nommée `ng-transclude`. Autrement-dit, une composition de directive.
 
-#### Interpreter
+### Interpreter
 
 > Le patron comporte deux composants centraux: le contexte et l'expression ainsi que des objets qui sont des représentations d'éléments de grammaire d'un langage de programmation. Le patron est utilisé pour transformer une expression écrite dans un certain langage programmation - un texte source - en quelque chose de manipulable par programmation: Le code source est écrit conformément à une ou plusieurs règles de grammaire, et un objet est créé pour chaque utilisation d'une règles de grammaire. L'objet interpreter est responsable de transformer le texte source en objets.
 
@@ -999,7 +1005,7 @@ var Page = (function () {
     setTitle: setTitle,
     getTitle: getTitle
   };
-  
+
 }());
 ```
 
@@ -1046,7 +1052,7 @@ Prenons par exemple ce cas de figure, supposons que l’on dispose d’un modèl
 
 Voici l’API exposant les ressources suivantes :
 
-- `GET /users/:id` : retourne le nom et l’adresse d’un utilisateur.
+- `GET /users/:id` : retourne le nom et l’adresse d’un utilisateur.
 - `GET /friends/:id` : retourne la liste d’amis d’un utilisateur.
 
 Une première solution naïve consisterait à avoir deux services, un pour la première ressource et une autre pour la seconde. Mais ce serait mieux si nous avions qu’un seul et unique service, `User `par exemple :
@@ -1103,8 +1109,6 @@ Et la vue :
 </div>
 ```
 
-
-
 ### Le patron Observer grâce à un Service Commun
 
 L’exemple de code a été récupéré depuis [ce projet](https://github.com/greglbd/angular-observer-pattern). Cet une factorie AngularJS qui créé un service implémentant le patron Observer. Ce patron fonctionne très bien avec la syntaxe `ControllerAs` et sert comme une alternative à `$scope.$watch()`ou encore `$scope.emit()`et `$scope.broadcast()`.
@@ -1115,7 +1119,7 @@ Voici un exemple démontrant comment attacher, notifier et détacher un événem
 
 ``` javascript
 angular.module('app.controllers')
-	.controller('ObserverExample', ObserverExample);
+  .controller('ObserverExample', ObserverExample);
 
 ObserverExample.$inject= ['ObserverService', '$timeout'];
 
@@ -1174,27 +1178,3 @@ function ObserverExample(ObserverService, $timeout, $scope) {
 5. [Patterns of Enterprise Application Architecture (P of EAA)](http://martinfowler.com/books/eaa.html)
 6. [Using Dependancy Injection to Avoid Singletons](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html)
 7. [Why would one use the Publish/Subscribe pattern (in JS/jQuery)?](https://stackoverflow.com/questions/13512949/why-would-one-use-the-publish-subscribe-pattern-in-js-jquery)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-(WIP...)
