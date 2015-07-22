@@ -833,31 +833,342 @@ Ce patron est également connu sous le nom de publish/subscribe (ou producteur/c
 
 Pour les bonnes pratiques concernant ce patron, voir [Le patron Observer en tant que Service externe](#observer-pattern-as-an-external-service)
 
-#### Chain of Responsibilities
+#### Chaîne de responsabilité
 
+> le patron de conception Chaîne de responsabilité permet à un nombre quelconque de classes d'essayer de répondre à une requête sans connaître les possibilités des autres classes sur cette requête.
 
+![Chain of Responsibilities](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/chain-of-responsibilities.svg "Fig. 5")
+
+Comme cité précédemment, les `$scopes`dans AngularJS forment une hiérarchie connue sous le nom de chaîne de scope. Certains d’entre eux peut être isolés, ce qui signifie qu’ils n’héritent pas des prototypes de leurs parents ; cependant, chaque `$scope`connait son parent direct grâce à la propriétés `$parent`qu'il contient.
+
+Lorsque les méthode `$emit`et `$broadcast`sont appelées, les `$scope`deviennent alors comme un bus d’événement, ou plus précisément, une chaine de responsabilité. Une fois l’événement est a été déclenché, que ce soit vers les parents ou les enfants, chaque `$scope`peut :
+
+- traiter l’événement et le passer au `$scope`suivant dans la chaîne.
+- traiter l’événement et stopper sa propagation.
+- passer directement l’événement au `$scope`suivant sans le traiter.
+- stopper directement la propagation de l’événement.
+
+Dans l’exemple suivant, nous pouvons constater que `ChildCtrl` déclenche un événement, qui est propager vers le haut de la chaîne. Chaque `$scope`parent - celui créé par `ParentCtrl` et l’autre créé par `MainCtrl`- traite l’événement en affichant dans la console `"foo received"`. Si un `$scope`considère qu’il doit stopper la propagation de cet événement, il doit appeler la méthode `stopPropagation()`sur l’événement en question. 
+
+Voici l’exemple de code :
+
+``` JavaScript
+myModule.controller('MainCtrl', function ($scope) {
+  $scope.$on('foo', function () {
+    console.log('foo received');
+  });
+});
+
+myModule.controller('ParentCtrl', function ($scope) {
+  $scope.$on('foo', function (e) {
+    console.log('foo received');
+  });
+});
+
+myModule.controller('ChildCtrl', function ($scope) {
+  $scope.$emit('foo');
+});
+```
+
+Les `Handler`figurant dans le diagramme UML correspondent aux différents `$scope`injectés dans les contrôleurs.
 
 #### Command
 
+> Ce patron emboîte une demande dans un objet, permettant de paramétrer, mettre en file d'attente, journaliser et annuler des demandes.
+
+![Command](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/command.svg "Fig. 11")
+
+
+
+Avant de rentrer dans les expliquation de ce patron de conception, étudions comment AngularJS implémente le `data biding`(ou liaison de données).
+
+Pour associer un modèle à une vue, nous utilisons la directive `ng-bind`, pour une liaison uni-directionnelle, et `ng-model`pour une liaison bi-directionnelle. Par exemple, si nous souhaitons que tous les changements du modèle soient reflétés dans la vue automatiquement :
+
+``` html
+<span ng-bind="foo"></span>
+```
+
+A chaque fois que le modèle `foo` subit un changement, le contenu de la balise `span` sera mis à jour **automagiquement**. Voici un exemple avec une expression AngularJS :
+
+``` html
+<span ng-bind="foo + ' ' + bar | uppercase"></span>
+```
+
+Dans cet exemple, le contenu de la balise `span` sera le résultat de la concaténation des valeurs des modèles `foo`et `bar`. Mais que ce passe-t-il sous le capot ? Que fait AngularJS réellement ?
+
+Chaque `$scope`possède une méthode `$watch`. Lorsque le compilateur d'AngularJS traverse le DOM est rencontre une directive `ng-bind`, il créé un observateur (`watcher`) basé sur l’expression rencontrée : ion `foo + ' ' + bar | uppercase` comme ceci :
+
+``` Javascript
+$scope.$watch("foo + ' ' + bar | uppercase", function update() { /* body */ });
+```
+
+La callback `update`sera déclenchée à chaque fois que la valeur de l’expression vient à changer. Dans notre exemple, la callback met à jour le contenu de la balise `span`.
+
+Voici un aperçu du début de l’implémentation de la méthode `$watch`:
+
+``` javascript
+$watch: function(watchExp, listener, objectEquality) {
+  var scope = this,
+      get = compileToFn(watchExp, 'watch'),
+      array = scope.$$watchers,
+      watcher = {
+        fn: listener,
+        last: initWatchVal,
+        get: get,
+        exp: watchExp,
+        eq: !!objectEquality
+      };
+//...
+```
+
+Nous pouvons considérer l’objet `watcher` comme une commande. L’expression de la commande est évaluée à chaque itération de la boucle de digestion ou [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest). Lorsque AngularJS détecte un changement dans l’expression, la fonction `listener` est invoquée. La commande `watcher `encapsule tout le nécessaire pour observer une expression donnée, et déléguer l’exécution de la commande à la fonction `listener`, le `receiver` dans le diagramme UML. Le `$scope`quant à lui est l’équivalent du `Client` et la boucle de `$digest`est le `Invoker`.
+
 ### Controllers
 
-#### Page Controller
+#### Contrôleur de page
+
+> Un objet qui traite la requête d’une page ou une action. — [Martin Fowler](https://en.wikipedia.org/wiki/Martin_Fowler)
+
+![Page Controller](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/page-controller.svg "Fig. 8")
+
+D’après le point [4](#references) un contrôleur de page est :
+
+> Le patron de conception Contrôleur de page, ou Page Controller, accepte une entrée depuis la requête, invoque l’action demandée d’un modèle, puis détermine la vue à utiliser pour la construction de la page finale.
+
+Il peut exister une certaine hiérarchie au sein des contrôleurs de page, puisqu’une page peut être construite en assemblant plusieurs blocs, tels que les headers, les footers, les blocs d’informations de session, etc. Dans AngularJS, nous avons des contrôleurs, mais avec beaucoup moins de responsabilités. Ils ne traitent pas les requêtes des utilisateurs, c’est la responsabilité des services  `$router`ou `$state`et le rendu de la page est à la charge des directives `ng-view`ou `ui-view`.
+
+De la même manière que les Contrôleurs de page, les contrôleurs d’angulaires traite les interactions des utilisateurs, expose et mettent à jour les modèles. Le modèle est exposé à la vue, lorsqu’il est attaché au `$scope`; et toutes les méthodes invoquées dans les vues, en réponse aux interactions de l’utilisateur, sont également attachées au `$scope`. Une autre similitude avec les Contrôleurs de page, se situe au niveau de la hiérarchie qu’ils forment. Ces hiérarchie correspond à celle formée par la chaine des `$scope`. Ainsi, il est possible d’isoler des actions dans certains contrôleurs, ceux situés tout en haut de la chaîne. 
+
+Voici un exemple illustrant cette hiérarchie :
+
+``` HTML
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body ng-controller="MainCtrl">
+    <div ng-controller="ChildCtrl">
+      <span>{{user.name}}</span>
+      <button ng-click="click()">Click</button>
+    </div>
+  </body>
+</html>
+```
+
+``` JavaScript
+function MainCtrl($scope, $location, User) {
+  if (!User.isAuthenticated()) {
+    $location.path('/unauthenticated');
+  }
+}
+
+function ChildCtrl($scope, User) {
+  $scope.click = function () {
+    alert('Cliqué !');
+  };
+  $scope.user = User.get('123abc');
+}
+```
+
+Cet exemple (à ne pas utiliser dans un code en production !) a pour but d’illustrer l’utilisation d’un contrôleur de base `MainCtrl` dans lequel nous isolons la logique qui sera utilisée par les sous-contrôleur. Le contrôleur `ChildCtrl` est responsable de gérer les actions de l’utilisateur tel que la gestion des cliques sur le bouton, ainsi que d’exposer le modèle `user`à la vue en l’attachant au `$scope`. 
 
 ### Others
 
 #### Module Pattern
 
+Ce patron de conception ne figure ni dans le catalogue des [Gang of Four](http://c2.com/cgi/wiki?CategoryPattern), ni dans celui du [P of EAA](http://www.martinfowler.com/eaaCatalog/index.html). Par contre, c’est un patron de conception classique en JavaScript, dont le rôle est d’apporter une certaine forme d’encapsulation.
+
+En se basant sur le patron Module, il est possible de tirer avantage de la puissance des fermetures ([`closure`](http://wassimchegham.com/blog/javascript-pour-les-jedis-episode-2-attaque-des-closures-ou-fermetures)) et de la portée lexicale qui limite la visibilité des variables aux fonctions dans lesquelles elle ont été déclarées.
+
+Chaque module peut avoir zéro ou plusieurs membres privés, accessible uniquement dans la portée locale de la function. Cette fonction retourne un objet qui expose une API publique du module en question. Voici un exemple :
+
+``` javascript
+var Page = (function () {
+
+  var title;
+
+  function setTitle(t) {
+    document.title = t;
+    title = t;
+  }
+
+  function getTitle() {
+    return title;
+  }
+
+  return {
+    setTitle: setTitle,
+    getTitle: getTitle
+  };
+  
+}());
+```
+
+Dans cet exemple, nous avons déclaré une IIFE (Immediately-Invoked Function Expression), une fonction auto-invoquée qui, une fois invoquée retourne un objet avec deux méthodes : `setTitle()` et `getTitle()`. Cet objet est ensuite affecté à la variable `Page`.
+
+L’entité manipulant la variable `Page`n’a pas accès à la variable `title` par exemple, qui est définit dans la IIFE.
+
+Ce patron est également très intéressant lorsque nous devons définir des services en AngularJS. Nous pouvons rendre privée, une partie de la logique :
+
+``` javascript
+app.factory('foo', function () {
+
+  function privateMember() {
+    //body...
+  }
+
+  function publicMember() {
+    //body...
+    privateMember();
+    //body
+  }
+
+  return {
+    publicMember: publicMember
+  };
+});
+```
+
+Une fois le service `foo` injecté dans un composant,  il ne nous sera pas possible d’utiliser directement les méthodes privées, mais uniquement celles exposées par l’objet retourné. Cette solution est extrêmement puissante surtout si nous développons une librairie.
+
 ### Data Mapper
 
-### Observer Pattern as an External Service
+> Un Data Mapper est une couche d’accès au données qui réalise un transfert bi-directionnel entre la persistence de données (souvent une base relationnelle) et une représentation des données en mémoire (la couche métier). Le but de ce patron est de garder ces deux couches indépendantes les unes des autres, ainsi que du Data Mapper lui-même.
 
-##### About
+![Data Mapper](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/data-mapper.svg "Fig. 10")
 
-##### Controller Example
+Comme cité dans la définition, le Data Mapper est utilisé pour le transfert bi-directionnel de données entre la couche de persistence et la couche métier. Dans AngularJS, l’application communique avec un serveur exposant une API RESTFul. AngularJS propose le service `$resource`qui permet de communiquer avec le serveur dans un style [Active Record](#active-record). Souvent, les entités retournées par l’API ne correspondent toujours pas formatées de la façon qui nous arrange pour être directement exploitées.
+
+Prenons par exemple ce cas de figure, supposons que l’on dispose d’un modèle `User` avec les attributs suivants :
+
+- un nom.
+- une adresse.
+- une luiste d'amis
+
+Voici l’API exposant les ressources suivantes :
+
+- `GET /users/:id` : retourne le nom et l’adresse d’un utilisateur.
+- `GET /friends/:id` : retourne la liste d’amis d’un utilisateur.
+
+Une première solution naïve consisterait à avoir deux services, un pour la première ressource et une autre pour la seconde. Mais ce serait mieux si nous avions qu’un seul et unique service, `User `par exemple :
+
+``` javascript
+app.factory('User', function ($q) {
+
+  function User(name, address, friends) {
+    this.name = name;
+    this.address = address;
+    this.friends = friends;
+  }
+
+  User.get = function (params) {
+    var user = $http.get('/users/' + params.id),
+        friends = $http.get('/friends/' + params.id);
+    $q.all([user, friends])
+    .then(function (user, friends) {
+      return new User(user.name, user.address, friends);
+    });
+  };
+  return User;
+});
+```
+
+Avec cette solution, nous avons crée un pseudo Data Mapper, qui a pour rôle d’adapter l’API en fonction des contraintes de notre SPA.
+
+Nous pouvons utiliser le service `User` comme ceci :
+
+``` javascript
+function MainCtrl($scope, User) {
+  User.get({ id: 1 }).then(function (data) {
+    $scope.user = data;
+  });
+}
+```
+
+Et la vue :
+
+``` html
+<div>
+  <div>
+    Name: {{user.name}}
+  </div>
+  <div>
+    Address: {{user.address}}
+  </div>
+  <div>
+    Friends with ids:
+    <ul>
+      <li ng-repeat="friend in user.friends">{{friend}}</li>
+    </ul>
+  </div>
+</div>
+```
+
+
+
+### Le patron Observer grâce à un Service Commun
+
+L’exemple de code a été récupéré depuis [ce projet](https://github.com/greglbd/angular-observer-pattern). Cet une factorie AngularJS qui créé un service implémentant le patron Observer. Ce patron fonctionne très bien avec la syntaxe `ControllerAs` et sert comme une alternative à `$scope.$watch()`ou encore `$scope.emit()`et `$scope.broadcast()`.
+
+Ce patron est utilisé pour faire communiquer plusieurs contrôleurs utilisant le même modèle.
+
+Voici un exemple démontrant comment attacher, notifier et détacher un événement grâce un Service Commun :
+
+``` javascript
+angular.module('app.controllers')
+	.controller('ObserverExample', ObserverExample);
+
+ObserverExample.$inject= ['ObserverService', '$timeout'];
+
+function ObserverExample(ObserverService, $timeout) {
+  var vm = this;
+  var id = 'vm1';
+
+  ObserverService.attach(callbackFunction, 'let_me_know', id)
+
+  function callbackFunction(params){
+    console.log('now i know');
+    ObserverService.detachByEvent('let_me_know')
+  }
+
+  $timeout(function(){
+    ObserverService.notify('let_me_know');
+  }, 5000);
+}
+```
+
+Alternative way to remove event
+
+``` javascript
+angular.module('app.controllers')
+  .controller('ObserverExample', ObserverExample);
+ObserverExample.$inject= ['ObserverService', '$timeout', '$scope'];
+
+function ObserverExample(ObserverService, $timeout, $scope) {
+  var vm = this;
+  var id = 'vm1';
+  ObserverService.attach(callbackFunction, 'let_me_know', id)
+
+  function callbackFunction(params){
+    console.log('now i know');
+  }
+
+  $timeout(function(){
+    ObserverService.notify('let_me_know');
+  }, 5000);
+
+  // Cleanup listeners when this controller is destroyed
+  $scope.$on('$destroy', function handler() {
+    ObserverService.detachByEvent('let_me_know')
+  });
+}
+```
+
+
 
 ## References
 
-1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is wikipedia.
+1. [Wikipedia](https://en.wikipedia.org/wiki). Toutes les définition des patrons de conception viennent de Wikipedia.
 2. [AngularJS' documentation](https://docs.angularjs.org)
 3. [AngularJS' git repository](https://github.com/angular/angular.js)
 4. [Page Controller](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
