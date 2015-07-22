@@ -1,43 +1,51 @@
-# Les patrons de conception avec AngularJS 1.x
-
-<!--toc-->
+# Les patrons de conception avec AngularJS
 
 ## Table des matières
 
-- [Traductions](#translations)
+<!--toc-->
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Traductions](#traductions)
 - [Abstract](#abstract)
 - [Introduction](#introduction)
-- [Vue d'ensemble d'AngularJS](#angularjs-overview)
-  - [Les vues partielles](#partials)
-  - [Les contrôleurs](#controllers)
-  - [Le scope](#scope)
-  - [Les directives](#directives)
-  - [Les filtres](#filters)
-  - [Les services](#services)
-- [Les patrons de conception d'AngularJS](#angularjs-patterns)
-  - [Les services](#services-1)
-    - [Singleton](#singleton)
+- [Vue d'ensemble d'AngularJS](#vue-densemble-dangularjs)
+  - [Les vues partielles](#les-vues-partielles)
+  - [Les contrôleurs](#les-contr%C3%B4leurs)
+  - [Le scope](#le-scope)
+  - [Les directives](#les-directives)
+  - [Les filtres](#les-filtres)
+  - [Les services](#les-services)
+- [Les patrons de conception d'AngularJS](#les-patrons-de-conception-dangularjs)
+  - [Les services](#les-services-1)
+    - [Le patron Singleton](#le-patron-singleton)
     - [Factory Method](#factory-method)
     - [Decorator](#decorator)
     - [Facade](#facade)
     - [Proxy](#proxy)
-    - [Active Record](#active-record)
+    - [Enregistrement Actif (Active Record)](#enregistrement-actif-active-record)
     - [Intercepting Filters](#intercepting-filters)
-  - [Les directives](#directives-1)
+  - [Les directives](#les-directives-1)
     - [Composite](#composite)
-  - [Interpreter](#interpreter)
+    - [Interpreter](#interpreter)
     - [Template View](#template-view)
-  - [Le scope](#scope-1)
+- [Names](#names)
+- [Names](#names-1)
+  - [Scope](#scope)
     - [Observer](#observer)
-    - [Chaîne de responsabilités](#chain-of-responsibilities)
+    - [Chaîne de responsabilité](#cha%C3%AEne-de-responsabilit%C3%A9)
     - [Command](#command)
-  - [Les contrôlleurs](#controller-1)
-    - [Page Controller](#page-controller)
-  - [Les autres patrons](#others)
+  - [Controllers](#controllers)
+    - [Contrôleur de page](#contr%C3%B4leur-de-page)
+  - [Others](#others)
     - [Module Pattern](#module-pattern)
-    - [Data Mapper](#data-mapper)
-    - [Le service en tant que Observer](#observer-pattern-as-an-external-service)
-- [Références](#references)
+  - [Data Mapper](#data-mapper)
+  - [Le patron Observer grâce à un Service Commun](#le-patron-observer-gr%C3%A2ce-%C3%A0-un-service-commun)
+- [References](#references)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 <!--endtoc-->
 
@@ -257,7 +265,7 @@ function MyCtrl(Developer) {
 }
 ```
 
-## AngularJS Patterns
+## Les patrons de conception d'AngularJS
 
 Dans les sections suivantes, nous allons voir comment les patrons de conception traditionnels sont utilisés dans les composants d'AngularJS.
 
@@ -474,7 +482,7 @@ http.setRequestHeader("Content-length", params.length);
 http.setRequestHeader("Connection", "close");
 http.onreadystatechange = function () {
   if(http.readyState == 4 && http.status == 200) {
-	alert(http.responseText);
+    alert(http.responseText);
   }
 }
 
@@ -999,7 +1007,7 @@ var Page = (function () {
     setTitle: setTitle,
     getTitle: getTitle
   };
-  
+
 }());
 ```
 
@@ -1115,7 +1123,7 @@ Voici un exemple démontrant comment attacher, notifier et détacher un événem
 
 ``` javascript
 angular.module('app.controllers')
-	.controller('ObserverExample', ObserverExample);
+  .controller('ObserverExample', ObserverExample);
 
 ObserverExample.$inject= ['ObserverService', '$timeout'];
 
