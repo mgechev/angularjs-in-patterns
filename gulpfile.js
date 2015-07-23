@@ -23,22 +23,22 @@ function genericTask(lang){
     }
 
     return gulp.src(files)
-        .pipe(markdownpdf({
-          cwd: path.resolve('./temp/'),
-          layout: 'github'
-        }))
-        .on('error', function(err){
-            gutil.log(gutil.colors.red('doc task failed'), err);
-        })
-        .pipe(rename(function (path) {
-          var lang = 'ENG';
-          if(path.basename.indexOf('-') >= 0){
-            lang = path.basename.replace('README-', '').toUpperCase();
-          }
-          path.basename = TITLE + ' ('+lang+')';
-          path.extname = '.pdf'
-        }))
-        .pipe(gulp.dest('./build/'));
+      .pipe(markdownpdf({
+        cwd: path.resolve('./temp/'),
+        layout: 'github'
+      }))
+      .on('error', function(err){
+        gutil.log(gutil.colors.red('doc task failed'), err);
+      })
+      .pipe(rename(function (path) {
+        var lang = 'ENG';
+        if(path.basename.indexOf('-') >= 0){
+          lang = path.basename.replace('README-', '').toUpperCase();
+        }
+        path.basename = TITLE + ' ('+lang+')';
+        path.extname = '.pdf'
+      }))
+      .pipe(gulp.dest('./build/'));
   });
 
 }
@@ -64,15 +64,14 @@ gulp.task('default', function(cb){
 
 gulp.task('copy:md', function(){
   return gulp.src(['README.md', 'i18n/README-*.md'])
+    // @todo I have no idea where should the TOC go?!
+    // for now, let's keep the TOC content and remove these markers
+    .pipe(replace('<!--toc-->', ''))
+    .pipe(replace('<!--endtoc-->', ''))
 
-      // @todo I have no idea where should the TOC go?!
-      // for now, let's keep the TOC content and remove these markers
-      .pipe(replace('<!--toc-->', ''))
-      .pipe(replace('<!--endtoc-->', ''))
-
-      // preapre the image paths for the renderer
-      .pipe(replace(/https:\/\/rawgit.com\/mgechev\/angularjs-in-patterns\/master\/images/g, '.'))
-      .pipe(gulp.dest('./temp/'));
+    // preapre the image paths for the renderer
+    .pipe(replace(/https:\/\/rawgit.com\/mgechev\/angularjs-in-patterns\/master\/images/g, '.'))
+    .pipe(gulp.dest('./temp/'));
 });
 
 gulp.task('copy:images', function(){
