@@ -41,8 +41,9 @@
         <div id="content" class="post"><h1 id="angularjs-in-patterns">AngularJS in Patterns</h1>
 <h2 id="translations">Translations</h2>
 <ul class="list">
-<li><a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/README-ja-jp.md">Japanese Translation</a> by <a href="https://twitter.com/morizotter">morizotter</a></li>
+<li><a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ja-jp.md">Japanese Translation</a> by <a href="https://twitter.com/morizotter">morizotter</a></li>
 <li><a href="http://habrahabr.ru/post/250149/">Russian Translation</a></li>
+<li><a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md">French Translation</a> by <a href="https://github.com/manekinekko">manekinekko</a></li>
 </ul>
 <h2 id="abstract">Abstract</h2>
 <p>One of the best ways to learn something new is to see how the things you already know are used in it.
@@ -172,7 +173,7 @@ Each directive has a name and logic associated with it. In the simplest case the
     }
   };
 });</code></pre><p>The service could be injected inside any component, which supports dependency injection (controllers, other services, filters, directives).</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyCtrl</span><span class="hljs-params">(developer)</span> </span>{
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyCtrl</span><span class="hljs-params">(Developer)</span> </span>{
   <span class="hljs-keyword">var</span> developer = <span class="hljs-keyword">new</span> Developer();
   developer.live();
 }</code></pre><h2 id="angularjs-patterns">AngularJS Patterns</h2>
@@ -572,6 +573,7 @@ For example:</p>
 <p>Analogical is the case when the method <code>$broadcast</code> is called. The only difference is that the event would be transmitted downwards - to all children scopes.
 Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).</p>
 <p>In the JavaScript community this pattern is better known as publish/subscribe.</p>
+<p>For a best practice example see <a href="#observer-pattern-as-an-external-service">Observer Pattern as an External Service</a></p>
 <h4 id="chain-of-responsibilities">Chain of Responsibilities</h4>
 <blockquote>
 <p>The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.</p>
@@ -758,7 +760,53 @@ Here is an example hierarchy between few controllers:</p>
       <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">ng-repeat</span>=<span class="hljs-value">"friend in user.friends"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">friend</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></span></code></pre><h2 id="references">References</h2>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></span></code></pre><h3 id="observer-pattern-as-an-external-service">Observer Pattern as an External Service</h3>
+<h5 id="about">About</h5>
+<p>Below is an example taken from <a href="https://github.com/greglbd/angular-observer-pattern">here</a>. This is an angular factory which creates a service implementing the Observer Pattern.  It works well with the ControllerAs method of working as it can be much more efficient that <code>$scope.$watch</code> and more specific to a unique scope or object than $emit and $broadcast when used correctly.</p>
+<p><strong>Use Case:</strong> You would use this pattern to communicate between 2 controllers that use the same model but are not connected in anyway.</p>
+<h5 id="controller-example">Controller Example</h5>
+<p>Below example shows how to attach, notify and detach an event.</p>
+<pre class="hljs"><code>angular.module(<span class="hljs-string">'app.controllers'</span>)
+  .controller(<span class="hljs-string">'ObserverExample'</span>, ObserverExample);
+ObserverExample.<span class="hljs-variable">$inject</span>= [<span class="hljs-string">'ObserverService'</span>, <span class="hljs-string">'$timeout'</span>];
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ObserverExample</span><span class="hljs-params">(ObserverService, <span class="hljs-variable">$timeout</span>)</span> </span>{
+  <span class="hljs-keyword">var</span> vm = this;
+  <span class="hljs-keyword">var</span> id = <span class="hljs-string">'vm1'</span>;
+
+  ObserverService.attach(callbackFunction, <span class="hljs-string">'let_me_know'</span>, id)
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callbackFunction</span><span class="hljs-params">(params)</span></span>{
+    console.log(<span class="hljs-string">'now i know'</span>);
+    ObserverService.detachByEvent(<span class="hljs-string">'let_me_know'</span>)
+  }
+
+  <span class="hljs-variable">$timeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    ObserverService.notify(<span class="hljs-string">'let_me_know'</span>);
+  }, <span class="hljs-number">5000</span>);
+}</code></pre><p>Alternative way to remove event</p>
+<pre class="hljs"><code>angular.module(<span class="hljs-string">'app.controllers'</span>)
+  .controller(<span class="hljs-string">'ObserverExample'</span>, ObserverExample);
+ObserverExample.<span class="hljs-variable">$inject</span>= [<span class="hljs-string">'ObserverService'</span>, <span class="hljs-string">'$timeout'</span>, <span class="hljs-string">'$scope'</span>];
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ObserverExample</span><span class="hljs-params">(ObserverService, <span class="hljs-variable">$timeout</span>, <span class="hljs-variable">$scope</span>)</span> </span>{
+  <span class="hljs-keyword">var</span> vm = this;
+  <span class="hljs-keyword">var</span> id = <span class="hljs-string">'vm1'</span>;
+  ObserverService.attach(callbackFunction, <span class="hljs-string">'let_me_know'</span>, id)
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callbackFunction</span><span class="hljs-params">(params)</span></span>{
+    console.log(<span class="hljs-string">'now i know'</span>);
+  }
+
+  <span class="hljs-variable">$timeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    ObserverService.notify(<span class="hljs-string">'let_me_know'</span>);
+  }, <span class="hljs-number">5000</span>);
+
+  <span class="hljs-comment">// Cleanup listeners when this controller is destroyed</span>
+  <span class="hljs-variable">$scope</span>.<span class="hljs-variable">$on</span>(<span class="hljs-string">'$destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handler</span><span class="hljs-params">()</span> </span>{
+    ObserverService.detachByEvent(<span class="hljs-string">'let_me_know'</span>)
+  });
+}</code></pre><h2 id="references">References</h2>
 <ol class="list">
 <li><a href="https://en.wikipedia.org/wiki">Wikipedia</a>. The source of all brief descriptions of the design patterns is wikipedia.</li>
 <li><a href="https://docs.angularjs.org">AngularJS&#39; documentation</a></li>
@@ -806,6 +854,9 @@ Here is an example hierarchy between few controllers:</p>
     <li><a href="#others" class="heading heading-3">Others</a></li>
     <li><a href="#module-pattern" class="heading heading-4">Module Pattern</a></li>
     <li><a href="#data-mapper" class="heading heading-3">Data Mapper</a></li>
+    <li><a href="#observer-pattern-as-an-external-service" class="heading heading-3">Observer Pattern as an External Service</a></li>
+    <li><a href="#about" class="heading heading-5">About</a></li>
+    <li><a href="#controller-example" class="heading heading-5">Controller Example</a></li>
     <li><a href="#references" class="heading heading-2">References</a></li>
 </ul>
     </div>
