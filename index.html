@@ -1,871 +1,1259 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <title>AngularJS in Patterns</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <style type="text/css">
-    @font-face {
-      font-family: 'Droid Sans';
-      font-style: normal;
-      font-weight: normal;
-      src: local('Droid Sans'), local('DroidSans'), url('DroidSans.woff') format('woff');
-    }
-    </style>
-    <link href='//fonts.googleapis.com/css?family=Andika|Cantarell:400,700,400italic' rel='stylesheet' type='text/css' />
-    <link href='//fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css' />
-    <script src="assets/jquery-1.6.1.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="assets/style.css"/>
-    <link type="text/css" rel="stylesheet" href="assets/assert.css"/>
-    <link type="text/css" rel="stylesheet" href="assets/prettify.css"/>
-    <link type="text/css" rel="stylesheet" href="assets/hljs-github.min.css"/>
-
-    <script type="text/javascript" src="assets/prettify.js"></script>
-    <!-- Script runner -->
-    <script type="text/javascript" src="assets/runner.js"></script>
+    <meta charset="UTF-8">
+    <title>AngularJS in Patterns by mgechev</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-<body>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">AngularJS in Patterns</h1>
+      <h2 class="project-tagline">&quot;AngularJS in Patterns&quot; provides different look into AngularJS. It contains information where different design patterns are used inside the framework or any AngularJS application.</h2>
+      <a href="https://github.com/mgechev/angularjs-in-patterns" class="btn">View on GitHub</a>
+      <a href="https://github.com/mgechev/angularjs-in-patterns/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/mgechev/angularjs-in-patterns/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-<a href="https://github.com/mgechev/angularjs-in-patterns"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+    <section class="main-content">
+      <h1>
+<a id="angularjs-in-patterns" class="anchor" href="#angularjs-in-patterns" aria-hidden="true"><span class="octicon octicon-link"></span></a>AngularJS in Patterns</h1>
 
-  <div id="wrapper">
-    <div id="header">
-    </div>
-    <div class="clear">
-      <hr>
-    </div>
 
-     <!-- Main -->
 
-    <div id="main">
-      <div id="container">
-        <div id="content" class="post"><h1 id="angularjs-in-patterns">AngularJS in Patterns</h1>
-<h2 id="translations">Translations</h2>
-<ul class="list">
-<li><a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ja-jp.md">Japanese Translation</a> by <a href="https://twitter.com/morizotter">morizotter</a></li>
-<li><a href="http://habrahabr.ru/post/250149/">Russian Translation</a></li>
-<li><a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md">French Translation</a> by <a href="https://github.com/manekinekko">manekinekko</a></li>
+<h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
+
+<ul>
+<li><a href="#translations">Translations</a></li>
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li>
+<a href="#angularjs-overview">AngularJS overview</a>
+
+<ul>
+<li><a href="#partials">Partials</a></li>
+<li><a href="#controllers">Controllers</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#directives">Directives</a></li>
+<li><a href="#filters">Filters</a></li>
+<li><a href="#services">Services</a></li>
 </ul>
-<h2 id="abstract">Abstract</h2>
+</li>
+<li>
+<a href="#angularjs-patterns">AngularJS Patterns</a>
+
+<ul>
+<li>
+<a href="#services-1">Services</a>
+
+<ul>
+<li><a href="#singleton">Singleton</a></li>
+<li><a href="#factory-method">Factory Method</a></li>
+<li><a href="#decorator">Decorator</a></li>
+<li><a href="#facade">Facade</a></li>
+<li><a href="#proxy">Proxy</a></li>
+<li><a href="#active-record">Active Record</a></li>
+<li><a href="#intercepting-filters">Intercepting Filters</a></li>
+</ul>
+</li>
+<li>
+<a href="#directives-1">Directives</a>
+
+<ul>
+<li><a href="#composite">Composite</a></li>
+</ul>
+</li>
+<li>
+<a href="#interpreter">Interpreter</a>
+
+<ul>
+<li><a href="#template-view">Template View</a></li>
+</ul>
+</li>
+<li>
+<a href="#scope-1">Scope</a>
+
+<ul>
+<li><a href="#observer">Observer</a></li>
+<li><a href="#chain-of-responsibilities">Chain of Responsibilities</a></li>
+<li><a href="#command">Command</a></li>
+</ul>
+</li>
+<li>
+<a href="#controller-1">Controller</a>
+
+<ul>
+<li><a href="#page-controller">Page Controller</a></li>
+</ul>
+</li>
+<li>
+<a href="#others">Others</a>
+
+<ul>
+<li><a href="#module-pattern">Module Pattern</a></li>
+<li><a href="#data-mapper">Data Mapper</a></li>
+<li><a href="#observer-pattern-as-an-external-service">Observer Pattern as an External Service</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#references">References</a></li>
+</ul>
+
+
+
+<h2>
+<a id="translations" class="anchor" href="#translations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Translations</h2>
+
+<ul>
+<li>
+<a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ja-jp.md">Japanese Translation</a> by <a href="https://twitter.com/morizotter">morizotter</a>
+</li>
+<li><a href="http://habrahabr.ru/post/250149/">Russian Translation</a></li>
+<li>
+<a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md">French Translation</a> by <a href="https://github.com/manekinekko">manekinekko</a>
+</li>
+</ul>
+
+<h2>
+<a id="abstract" class="anchor" href="#abstract" aria-hidden="true"><span class="octicon octicon-link"></span></a>Abstract</h2>
+
 <p>One of the best ways to learn something new is to see how the things you already know are used in it.
 This document does not intend to make its readers familiar with the design or architectural patterns; it suggests basic understanding of the concepts of the OOP, design patterns and architectural patterns.
 The goal of this paper is to describe how different software design and architectural patterns are applied in AngularJS or any AngularJS single-page application.</p>
-<h2 id="introduction">Introduction</h2>
+
+<h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
+
 <p>The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. The second section lists and describes different design and architectural patterns, which are implemented inside the framework. The patterns are grouped by the AngularJS component they are used in. If some patterns are used inside multiple components it will be explicitly mentioned.</p>
+
 <p>The last section contains a few architectural patterns, which are commonly used inside most of the single-page applications built with AngularJS.</p>
-<h2 id="angularjs-overview">AngularJS overview</h2>
+
+<h2>
+<a id="angularjs-overview" class="anchor" href="#angularjs-overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>AngularJS overview</h2>
+
 <p>AngularJS is a JavaScript framework developed by Google. It intends to provide a solid base for the development of CRUD Single-Page Applications (SPA).
 SPA is a web application, which once loaded, does not require full page reload when the user performs any actions with it. This means that all application resources (data, templates, scripts, styles) should be loaded with the initial request or better - the information and resources should be loaded on demand.
 Since most of the CRUD applications has common characteristics and requirements, AngularJS intends to provide the optimal set of them out-of-the-box. A few important features of AngularJS are:</p>
-<ul class="list">
+
+<ul>
 <li>two-way data binding</li>
 <li>dependency injection</li>
 <li>separation of concerns</li>
 <li>testability</li>
 <li>abstraction</li>
 </ul>
+
 <p>The separation of concerns is achieved by dividing each AngularJS application into separate components, such as:</p>
-<ul class="list">
+
+<ul>
 <li>partials</li>
 <li>controllers</li>
 <li>directives</li>
 <li>services</li>
 <li>filters</li>
 </ul>
-<p>These components can be grouped inside different modules, which helps to achieve a higher level of abstraction and handle complexity. Each of the components encapsulates a specific piece of the application&#39;s logic.</p>
-<h3 id="partials">Partials</h3>
-<p>The partials are HTML strings. They may contain AngularJS expressions inside the elements or their attributes. One of the distinctions between AngularJS and the others frameworks is the fact that AngularJS&#39; templates are not in an intermediate format, which needs to be turned into HTML (which is the case with mustache.js and handlebars, for example).</p>
-<p>Initially each SPA loads <code>index.html</code> file. In the case of AngularJS this file contains a set of standard and custom HTML attributes, elements and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, for example through the data binding provided by the framework.</p>
-<p><strong>Sample partial</strong></p>
-<pre class="hljs"><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">ng-app</span>&gt;</span>
- <span class="hljs-comment">&lt;!-- Body tag augmented with ngController directive  --&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">ng-controller</span>=<span class="hljs-value">"MyController"</span>&gt;</span>
-   <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">ng-model</span>=<span class="hljs-value">"foo"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"bar"</span>&gt;</span>
-   <span class="hljs-comment">&lt;!-- Button tag with ng-click directive, and
-          string expression 'buttonText'
-          wrapped in "</span></span><span class="hljs-expression">{{ }}</span><span class="xml"><span class="hljs-comment">" markup --&gt;</span>
-   <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">ng-click</span>=<span class="hljs-value">"changeFoo()"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">buttonText</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-   <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"angular.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
- <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></span></code></pre><p>With AngularJS expressions partials define what kind of actions should be performed for handling different user interactions. In the example above the value of the attribute <code>ng-click</code> states that the method <code>changeFoo</code> of the current <em>scope</em> will be invoked.</p>
-<h3 id="controllers">Controllers</h3>
-<p>The AngularJS controllers are JavaScript functions, which help handling the user interactions with the web application (for example mouse events, keyboard events, etc.), by attaching methods to the <em>scope</em>. All required external, for the controllers, components are provided through the Dependency Injection mechanism of AngularJS. The controllers are also responsible for providing the <em>model</em> to the partials by attaching data to the <em>scope</em>. We can think of this data as <em>view model</em>.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyController</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-variable">$scope</span>.buttonText = <span class="hljs-string">'Click me to change foo!'</span>;
-  <span class="hljs-variable">$scope</span>.foo = <span class="hljs-number">42</span>;
 
-  <span class="hljs-variable">$scope</span>.changeFoo = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-    <span class="hljs-variable">$scope</span>.foo += <span class="hljs-number">1</span>;
-    alert(<span class="hljs-string">'Foo changed'</span>);
+<p>These components can be grouped inside different modules, which helps to achieve a higher level of abstraction and handle complexity. Each of the components encapsulates a specific piece of the application's logic.</p>
+
+<h3>
+<a id="partials" class="anchor" href="#partials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Partials</h3>
+
+<p>The partials are HTML strings. They may contain AngularJS expressions inside the elements or their attributes. One of the distinctions between AngularJS and the others frameworks is the fact that AngularJS' templates are not in an intermediate format, which needs to be turned into HTML (which is the case with mustache.js and handlebars, for example).</p>
+
+<p>Initially each SPA loads <code>index.html</code> file. In the case of AngularJS this file contains a set of standard and custom HTML attributes, elements and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, for example through the data binding provided by the framework.</p>
+
+<p><strong>Sample partial</strong></p>
+
+<div class="highlight highlight-HTML"><pre>&lt;<span class="pl-ent">html</span> <span class="pl-e">ng-app</span>&gt;
+ <span class="pl-c">&lt;!-- Body tag augmented with ngController directive  --&gt;</span>
+ &lt;<span class="pl-ent">body</span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>MyController<span class="pl-pds">"</span></span>&gt;
+   &lt;<span class="pl-ent">input</span> <span class="pl-e">ng-model</span>=<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>&gt;
+   <span class="pl-c">&lt;!-- Button tag with ng-click directive, and</span>
+<span class="pl-c">          string expression 'buttonText'</span>
+<span class="pl-c">          wrapped in "{{ }}" markup --&gt;</span>
+   &lt;<span class="pl-ent">button</span> <span class="pl-e">ng-click</span>=<span class="pl-s"><span class="pl-pds">"</span>changeFoo()<span class="pl-pds">"</span></span>&gt;{{buttonText}}&lt;/<span class="pl-ent">button</span>&gt;
+<span class="pl-s1">   &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>angular.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</span>
+ &lt;/<span class="pl-ent">body</span>&gt;
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+
+<p>With AngularJS expressions partials define what kind of actions should be performed for handling different user interactions. In the example above the value of the attribute <code>ng-click</code> states that the method <code>changeFoo</code> of the current <em>scope</em> will be invoked.</p>
+
+<h3>
+<a id="controllers" class="anchor" href="#controllers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Controllers</h3>
+
+<p>The AngularJS controllers are JavaScript functions, which help handling the user interactions with the web application (for example mouse events, keyboard events, etc.), by attaching methods to the <em>scope</em>. All required external, for the controllers, components are provided through the Dependency Injection mechanism of AngularJS. The controllers are also responsible for providing the <em>model</em> to the partials by attaching data to the <em>scope</em>. We can think of this data as <em>view model</em>.</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MyController</span>(<span class="pl-smi">$scope</span>) {
+  $scope.<span class="pl-c1">buttonText</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Click me to change foo!<span class="pl-pds">'</span></span>;
+  $scope.<span class="pl-c1">foo</span> <span class="pl-k">=</span> <span class="pl-c1">42</span>;
+
+  <span class="pl-c1">$scope</span>.<span class="pl-en">changeFoo</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    $scope.<span class="pl-c1">foo</span> <span class="pl-k">+=</span> <span class="pl-c1">1</span>;
+    <span class="pl-c1">alert</span>(<span class="pl-s"><span class="pl-pds">'</span>Foo changed<span class="pl-pds">'</span></span>);
   };
-}</code></pre><p>For example, if we wire the sample controller above with the partial provided in the previous section the user will be able to interact with the application in few different ways.</p>
-<ol class="list">
+}</pre></div>
+
+<p>For example, if we wire the sample controller above with the partial provided in the previous section the user will be able to interact with the application in few different ways.</p>
+
+<ol>
 <li>Change the value of <code>foo</code> by typing in the input box. This will immediately reflect the value of <code>foo</code> because of the two-way data binding.</li>
 <li>Change the value of <code>foo</code> by clicking the button, which will be labeled <code>Click me to change foo!</code>.</li>
 </ol>
+
 <p>All the custom elements, attributes, comments or classes could be recognized as AngularJS <em>directives</em> if they are previously defined as ones.</p>
-<h3 id="scope">Scope</h3>
+
+<h3>
+<a id="scope" class="anchor" href="#scope" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scope</h3>
+
 <p>In AngularJS scope is a JavaScript object, which is exposed to the partials. The scope could contain different properties - primitives, objects or methods. All methods attached to the scope could be invoked by evaluation of AngularJS expression inside the partials associated with the given scope or direct call of the method by any component, which keeps reference to the scope. By using appropriate <em>directives</em>, the data attached to the scope could be binded to the view in such a way that each change in the partial will reflect a scope property and each change of a scope property will reflect the partial.</p>
+
 <p>Another important characteristics of the scopes of any AngularJS application is that they are connected into a prototypical chain (except scopes, which are explicitly stated as <em>isolated</em>). This way any child scope will be able to invoke methods of its parents since they are properties of its direct or indirect prototype.</p>
+
 <p>Scope inheritance is illustrated in the following example:</p>
-<pre class="hljs"><code>&lt;<span class="hljs-keyword">div</span> ng-controller=<span class="hljs-string">"BaseCtrl"</span>&gt;
-  &lt;<span class="hljs-keyword">div</span> id=<span class="hljs-string">"child"</span> ng-controller=<span class="hljs-string">"ChildCtrl"</span>&gt;
-    &lt;button id=<span class="hljs-string">"parent-method"</span> ng-click=<span class="hljs-string">"foo()"</span>&gt;<span class="hljs-type">Parent</span> <span class="hljs-keyword">method</span>&lt;/button&gt;
-    &lt;button ng-click=<span class="hljs-string">"bar()"</span>&gt;<span class="hljs-type">Child</span> <span class="hljs-keyword">method</span>&lt;/button&gt;
-  &lt;/<span class="hljs-keyword">div</span>&gt;
-&lt;/<span class="hljs-keyword">div</span>&gt;</code></pre><pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">BaseCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-variable">$scope</span>.foo = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-    alert(<span class="hljs-string">'Base foo'</span>);
+
+<div class="highlight highlight-HTML"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>BaseCtrl<span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>child<span class="pl-pds">"</span></span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>ChildCtrl<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">button</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>parent-method<span class="pl-pds">"</span></span> <span class="pl-e">ng-click</span>=<span class="pl-s"><span class="pl-pds">"</span>foo()<span class="pl-pds">"</span></span>&gt;Parent method&lt;/<span class="pl-ent">button</span>&gt;
+    &lt;<span class="pl-ent">button</span> <span class="pl-e">ng-click</span>=<span class="pl-s"><span class="pl-pds">"</span>bar()<span class="pl-pds">"</span></span>&gt;Child method&lt;/<span class="pl-ent">button</span>&gt;
+  &lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">BaseCtrl</span>(<span class="pl-smi">$scope</span>) {
+  <span class="pl-c1">$scope</span>.<span class="pl-en">foo</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-c1">alert</span>(<span class="pl-s"><span class="pl-pds">'</span>Base foo<span class="pl-pds">'</span></span>);
   };
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ChildCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-variable">$scope</span>.bar = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-    alert(<span class="hljs-string">'Child bar'</span>);
+<span class="pl-k">function</span> <span class="pl-en">ChildCtrl</span>(<span class="pl-smi">$scope</span>) {
+  <span class="pl-c1">$scope</span>.<span class="pl-en">bar</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-c1">alert</span>(<span class="pl-s"><span class="pl-pds">'</span>Child bar<span class="pl-pds">'</span></span>);
   };
-}</code></pre><p>With <code>div#child</code> is associated <code>ChildCtrl</code> but since the scope injected inside <code>ChildCtrl</code> inherits prototypically from its parent scope (i.e. the one injected inside <code>BaseCtrl</code>) the method <code>foo</code> is accessible by <code>button#parent-method</code>.</p>
-<h3 id="directives">Directives</h3>
-<p>In AngularJS the directives are the place where all DOM manipulations should be placed. As a rule of thumb, when you have DOM manipulations in your controller you should create a new direcrive or consider refactoring of already existing one, which could handle the required DOM manipulations.
+}</pre></div>
+
+<p>With <code>div#child</code> is associated <code>ChildCtrl</code> but since the scope injected inside <code>ChildCtrl</code> inherits prototypically from its parent scope (i.e. the one injected inside <code>BaseCtrl</code>) the method <code>foo</code> is accessible by <code>button#parent-method</code>.</p>
+
+<h3>
+<a id="directives" class="anchor" href="#directives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Directives</h3>
+
+<p>In AngularJS the directives are the place where all DOM manipulations should be placed. As a rule of thumb, when you have DOM manipulations in your controller you should create a new directive or consider refactoring of already existing one, which could handle the required DOM manipulations.
 Each directive has a name and logic associated with it. In the simplest case the directive contains only name and definition of <em>postLink</em> function, which encapsulates all the logic required for the directive. In more complex cases the directive could contain a lot of properties such as:</p>
-<ul class="list">
+
+<ul>
 <li>template</li>
 <li>compile function</li>
 <li>link function</li>
 <li>etc...</li>
 </ul>
+
 <p>By citing the name of the directives they can be used inside the declarative partials.</p>
+
 <p>Example:</p>
-<pre class="hljs"><code>myModule.directive(<span class="hljs-string">'alertButton'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-  <span class="hljs-keyword">return</span> {
-    template: <span class="hljs-string">'&lt;button ng-transclude&gt;&lt;/button&gt;'</span>,
-    scope: {
-      content: <span class="hljs-string">'@'</span>
+
+<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">directive</span>(<span class="pl-s"><span class="pl-pds">'</span>alertButton<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-k">return</span> {
+    template<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;button ng-transclude&gt;&lt;/button&gt;<span class="pl-pds">'</span></span>,
+    scope<span class="pl-k">:</span> {
+      content<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>@<span class="pl-pds">'</span></span>
     },
-    replace: <span class="hljs-literal">true</span>,
-    restrict: <span class="hljs-string">'E'</span>,
-    transclude: <span class="hljs-literal">true</span>,
-    link: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(scope, el)</span> </span>{
-      el.click(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-        alert(scope.content);
+    replace<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+    restrict<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>E<span class="pl-pds">'</span></span>,
+    transclude<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+    <span class="pl-en">link</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">scope</span>, <span class="pl-smi">el</span>) {
+      el.<span class="pl-c1">click</span>(<span class="pl-k">function</span> () {
+        <span class="pl-c1">alert</span>(scope.<span class="pl-c1">content</span>);
       });
     }
   };
-});</code></pre><pre class="hljs"><code>&lt;alert-<span class="hljs-tag">button</span> <span class="hljs-attribute">content</span>=<span class="hljs-string">"42"</span>&gt;Click me&lt;/alert-button&gt;</code></pre><p>In the example above the tag <code>&lt;alert-button&gt;&lt;/alert-button&gt;</code> will be replaced button element. When the user clicks on the button the string <code>42</code> will be alerted.</p>
+});</pre></div>
+
+<div class="highlight highlight-HTML"><pre>&lt;<span class="pl-ent">alert</span><span class="pl-e">-button</span> <span class="pl-e">content</span>=<span class="pl-s"><span class="pl-pds">"</span>42<span class="pl-pds">"</span></span>&gt;Click me&lt;/<span class="pl-ent">alert</span><span class="pl-e">-button</span>&gt;</pre></div>
+
+<p>In the example above the tag <code>&lt;alert-button&gt;&lt;/alert-button&gt;</code> will be replaced button element. When the user clicks on the button the string <code>42</code> will be alerted.</p>
+
 <p>Since the intent of this paper is not to explain the complete API of AngularJS, we will stop with the directives here.</p>
-<h3 id="filters">Filters</h3>
+
+<h3>
+<a id="filters" class="anchor" href="#filters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Filters</h3>
+
 <p>The filters in AngularJS are responsible for encapsulating logic required for formatting data. Usually filters are used inside the partials but they are also accessible in the controllers, directives, <em>services</em> and other filters through Dependency Injection.</p>
+
 <p>Here is a definition of a sample filter, which changes the given string to uppercase:</p>
-<pre class="hljs"><code>myModule.filter(<span class="hljs-string">'uppercase'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
-    <span class="hljs-keyword">return</span> (str || <span class="hljs-string">''</span>).toUpperCase();
+
+<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">filter</span>(<span class="pl-s"><span class="pl-pds">'</span>uppercase<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-k">return</span> <span class="pl-k">function</span> (<span class="pl-smi">str</span>) {
+    <span class="pl-k">return</span> (str <span class="pl-k">||</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>).<span class="pl-c1">toUpperCase</span>();
   };
-});</code></pre><p>Inside a partial this filter could be used using the Unix&#39;s piping syntax:</p>
-<pre class="hljs"><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span></span><span class="hljs-expression">{{ <span class="hljs-variable">name</span> | <span class="hljs-variable">uppercase</span> }}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></span></code></pre><p>Inside a controller the filter could be used as follows:</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyCtrl</span><span class="hljs-params">(uppercaseFilter)</span> </span>{
-  <span class="hljs-variable">$scope</span>.name = uppercaseFilter(<span class="hljs-string">'foo'</span>); <span class="hljs-comment">//FOO</span>
-}</code></pre><h3 id="services">Services</h3>
-<p>Every piece of logic, which doesn&#39;t belong to the components described above should be placed inside a service. Usually services encapsulate the domain specific logic, persistence logic, XHR, WebSockets, etc. When the controllers in the application became too &quot;fat&quot; the repetitive code should be placed inside a service.</p>
-<pre class="hljs"><code>myModule.service(<span class="hljs-string">'Developer'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-  <span class="hljs-keyword">this</span>.name = <span class="hljs-string">'Foo'</span>;
-  <span class="hljs-keyword">this</span>.motherLanguage = <span class="hljs-string">'JavaScript'</span>;
-  <span class="hljs-keyword">this</span>.live = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
-      <span class="hljs-keyword">this</span>.code();
+});</pre></div>
+
+<p>Inside a partial this filter could be used using the Unix's piping syntax:</p>
+
+<div class="highlight highlight-HTML"><pre>&lt;<span class="pl-ent">div</span>&gt;{{ name | uppercase }}&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<p>Inside a controller the filter could be used as follows:</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MyCtrl</span>(<span class="pl-smi">uppercaseFilter</span>) {
+  $scope.<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-c1">uppercaseFilter</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>); <span class="pl-c">//FOO</span>
+}</pre></div>
+
+<h3>
+<a id="services" class="anchor" href="#services" aria-hidden="true"><span class="octicon octicon-link"></span></a>Services</h3>
+
+<p>Every piece of logic, which doesn't belong to the components described above should be placed inside a service. Usually services encapsulate the domain specific logic, persistence logic, XHR, WebSockets, etc. When the controllers in the application became too "fat" the repetitive code should be placed inside a service.</p>
+
+<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">service</span>(<span class="pl-s"><span class="pl-pds">'</span>Developer<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-v">this</span>.<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Foo<span class="pl-pds">'</span></span>;
+  <span class="pl-v">this</span>.<span class="pl-c1">motherLanguage</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>JavaScript<span class="pl-pds">'</span></span>;
+  <span class="pl-c1">this</span>.<span class="pl-en">live</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-k">while</span> (<span class="pl-c1">true</span>) {
+      <span class="pl-v">this</span>.<span class="pl-c1">code</span>();
     }
   };
-});</code></pre><p>The service could be injected inside any component, which supports dependency injection (controllers, other services, filters, directives).</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyCtrl</span><span class="hljs-params">(Developer)</span> </span>{
-  <span class="hljs-keyword">var</span> developer = <span class="hljs-keyword">new</span> Developer();
-  developer.live();
-}</code></pre><h2 id="angularjs-patterns">AngularJS Patterns</h2>
+});</pre></div>
+
+<p>The service could be injected inside any component, which supports dependency injection (controllers, other services, filters, directives).</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MyCtrl</span>(<span class="pl-smi">Developer</span>) {
+  <span class="pl-k">var</span> developer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Developer</span>();
+  developer.<span class="pl-c1">live</span>();
+}</pre></div>
+
+<h2>
+<a id="angularjs-patterns" class="anchor" href="#angularjs-patterns" aria-hidden="true"><span class="octicon octicon-link"></span></a>AngularJS Patterns</h2>
+
 <p>In the next a couple of sections, we are going to take a look how the traditional design and architectural patterns are composed in the AngularJS components.</p>
+
 <p>In the last chapter we are going to take a look at some architectural patterns, which are frequently used in the development of Single-Page Applications with (but not limited to) AngularJS.</p>
-<h3 id="services">Services</h3>
-<h4 id="singleton">Singleton</h4>
+
+<h3>
+<a id="services-1" class="anchor" href="#services-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Services</h3>
+
+<h4>
+<a id="singleton" class="anchor" href="#singleton" aria-hidden="true"><span class="octicon octicon-link"></span></a>Singleton</h4>
+
 <blockquote>
 <p>The singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects.</p>
 </blockquote>
+
 <p>In the UML diagram bellow is illustrated the singleton design pattern.</p>
-<p class="img-container"><img src="./singleton.svg" alt="Singleton" title="Fig. 1"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/singleton.svg" alt="Singleton" title="Fig. 1"></p>
+
 <p>When given dependency is required by any component, AngularJS resolves it using the following algorithm:</p>
-<ul class="list">
+
+<ul>
 <li>Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).</li>
 <li>If the dependency exists AngularJS pass it as parameter to the component, which requires it.</li>
-<li>If the dependency does not exists:<ul class="list">
+<li>If the dependency does not exists:
+
+<ul>
 <li>AngularJS instantiate it by calling the factory method of its provider (i.e. <code>$get</code>). Note that instantiating the dependency may require recursive call to the same algorithm, for resolving all the dependencies required by the given dependency. This process may lead to circular dependency.</li>
 <li>AngularJS caches it inside the hash map mentioned above.</li>
 <li>AngularJS passes it as parameter to the component, which requires it.</li>
 </ul>
 </li>
 </ul>
-<p>We can take better look at the AngularJS&#39; source code, which implements the method <code>getService</code>:</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getService</span><span class="hljs-params">(serviceName)</span> </span>{
-  <span class="hljs-keyword">if</span> (cache.hasOwnProperty(serviceName)) {
-    <span class="hljs-keyword">if</span> (cache[serviceName] === INSTANTIATING) {
-      <span class="hljs-keyword">throw</span> $injectorMinErr(<span class="hljs-string">'cdep'</span>, <span class="hljs-string">'Circular dependency found: {0}'</span>, path.join(<span class="hljs-string">' &lt;- '</span>));
+
+<p>We can take better look at the AngularJS' source code, which implements the method <code>getService</code>:</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">getService</span>(<span class="pl-smi">serviceName</span>) {
+  <span class="pl-k">if</span> (cache.<span class="pl-c1">hasOwnProperty</span>(serviceName)) {
+    <span class="pl-k">if</span> (cache[serviceName] <span class="pl-k">===</span> <span class="pl-c1">INSTANTIATING</span>) {
+      <span class="pl-k">throw</span> $<span class="pl-c1">injectorMinErr</span>(<span class="pl-s"><span class="pl-pds">'</span>cdep<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Circular dependency found: {0}<span class="pl-pds">'</span></span>, path.<span class="pl-c1">join</span>(<span class="pl-s"><span class="pl-pds">'</span> &lt;- <span class="pl-pds">'</span></span>));
     }
-    <span class="hljs-keyword">return</span> cache[serviceName];
-  } <span class="hljs-keyword">else</span> {
-    <span class="hljs-keyword">try</span> {
-      path.unshift(serviceName);
-      cache[serviceName] = INSTANTIATING;
-      <span class="hljs-keyword">return</span> cache[serviceName] = factory(serviceName);
-    } <span class="hljs-keyword">catch</span> (err) {
-      <span class="hljs-keyword">if</span> (cache[serviceName] === INSTANTIATING) {
-        <span class="hljs-keyword">delete</span> cache[serviceName];
+    <span class="pl-k">return</span> cache[serviceName];
+  } <span class="pl-k">else</span> {
+    <span class="pl-k">try</span> {
+      path.<span class="pl-c1">unshift</span>(serviceName);
+      cache[serviceName] <span class="pl-k">=</span> <span class="pl-c1">INSTANTIATING</span>;
+      <span class="pl-k">return</span> cache[serviceName] <span class="pl-k">=</span> <span class="pl-c1">factory</span>(serviceName);
+    } <span class="pl-k">catch</span> (err) {
+      <span class="pl-k">if</span> (cache[serviceName] <span class="pl-k">===</span> <span class="pl-c1">INSTANTIATING</span>) {
+        <span class="pl-k">delete</span> cache[serviceName];
       }
-      <span class="hljs-keyword">throw</span> err;
-    } <span class="hljs-keyword">finally</span> {
-      path.shift();
+      <span class="pl-k">throw</span> err;
+    } <span class="pl-k">finally</span> {
+      path.<span class="pl-c1">shift</span>();
     }
   }
-}</code></pre><p>We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside its constructor function, we keep the reference inside the singleton manager (stated in the snippet above as <code>cache</code>).</p>
+}</pre></div>
+
+<p>We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside its constructor function, we keep the reference inside the singleton manager (stated in the snippet above as <code>cache</code>).</p>
+
 <p>This way the services are actually singletons but not implemented through the Singleton pattern, which provides a few advantages over the standard implementation:</p>
-<ul class="list">
+
+<ul>
 <li>It improves the testability of your source code</li>
 <li>You can control the creation of singleton objects (in our case the IoC container controls it for us, by instantiating the singletons lazy)</li>
 </ul>
-<p>For further discussion on this topic Misko Hevery&#39;s <a href="http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html">article</a> in the Google Testing blog could be considered.</p>
-<h4 id="factory-method">Factory Method</h4>
+
+<p>For further discussion on this topic Misko Hevery's <a href="http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html">article</a> in the Google Testing blog could be considered.</p>
+
+<h4>
+<a id="factory-method" class="anchor" href="#factory-method" aria-hidden="true"><span class="octicon octicon-link"></span></a>Factory Method</h4>
+
 <blockquote>
 <p>The factory method pattern is a creational pattern, which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.</p>
 </blockquote>
-<p class="img-container"><img src="./factory-method.svg" alt="Factory Method" title="Fig. 2"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/factory-method.svg" alt="Factory Method" title="Fig. 2"></p>
+
 <p>Lets consider the following snippet:</p>
-<pre class="hljs"><code>myModule.config(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$provide</span>)</span> </span>{
-  <span class="hljs-variable">$provide</span>.provider(<span class="hljs-string">'foo'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-    <span class="hljs-keyword">var</span> baz = <span class="hljs-number">42</span>;
-    <span class="hljs-keyword">return</span> {
-      <span class="hljs-comment">//Factory method</span>
-      <span class="hljs-variable">$get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bar)</span> </span>{
-        <span class="hljs-keyword">var</span> baz = bar.baz();
-        <span class="hljs-keyword">return</span> {
-          baz: baz
+
+<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">config</span>(<span class="pl-k">function</span> (<span class="pl-smi">$provide</span>) {
+  $provide.<span class="pl-c1">provider</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-k">var</span> baz <span class="pl-k">=</span> <span class="pl-c1">42</span>;
+    <span class="pl-k">return</span> {
+      <span class="pl-c">//Factory method</span>
+      $<span class="pl-en">get</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">bar</span>) {
+        <span class="pl-k">var</span> baz <span class="pl-k">=</span> bar.<span class="pl-c1">baz</span>();
+        <span class="pl-k">return</span> {
+          baz<span class="pl-k">:</span> baz
         };
       }
     };
   });
-});</code></pre><p>In the code above we use the <code>config</code> callback in order to define new &quot;provider&quot;. Provider is an object, which has a method called <code>$get</code>. Since in JavaScript we don&#39;t have interfaces and the language is duck-typed there is a convention to name the factory method of the providers that way.</p>
-<p>Each service, filter, directive and controller has a provider (i.e. object which factory method, called <code>$get</code>), which is responsible for creating the component&#39;s instance.</p>
-<p>We can dig a little bit deeper in AngularJS&#39; implementation:</p>
-<pre class="hljs"><code>//<span class="hljs-keyword">...</span>
+});
+</pre></div>
 
-createInternalInjector(instanceCache, <span class="hljs-keyword">function</span>(servicename) {
-  var provider = providerInjector.get(servicename + providerSuffix);
-  <span class="hljs-keyword">return</span> instanceInjector.invoke(provider.$get, provider, undefined, servicename);
+<p>In the code above we use the <code>config</code> callback in order to define new "provider". Provider is an object, which has a method called <code>$get</code>. Since in JavaScript we don't have interfaces and the language is duck-typed there is a convention to name the factory method of the providers that way.</p>
+
+<p>Each service, filter, directive and controller has a provider (i.e. object which factory method, called <code>$get</code>), which is responsible for creating the component's instance.</p>
+
+<p>We can dig a little bit deeper in AngularJS' implementation:</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-c">//...</span>
+
+<span class="pl-c1">createInternalInjector</span>(instanceCache, <span class="pl-k">function</span>(<span class="pl-smi">servicename</span>) {
+  <span class="pl-k">var</span> provider <span class="pl-k">=</span> providerInjector.<span class="pl-c1">get</span>(servicename <span class="pl-k">+</span> providerSuffix);
+  <span class="pl-k">return</span> instanceInjector.<span class="pl-c1">invoke</span>(provider.$get, provider, <span class="pl-c1">undefined</span>, servicename);
 }, strictDi));
 
-//<span class="hljs-keyword">...</span>
+<span class="pl-c">//...</span>
 
-<span class="hljs-keyword">function</span> invoke(fn, self, locals, serviceName){
-  <span class="hljs-keyword">if</span> (typeof locals === <span class="hljs-string">'string'</span>) {
-    serviceName = locals;
-    locals = null;
+<span class="pl-k">function</span> <span class="pl-en">invoke</span>(<span class="pl-smi">fn</span>, <span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">serviceName</span>){
+  <span class="pl-k">if</span> (<span class="pl-k">typeof</span> locals <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>string<span class="pl-pds">'</span></span>) {
+    serviceName <span class="pl-k">=</span> locals;
+    locals <span class="pl-k">=</span> <span class="pl-c1">null</span>;
   }
 
-  var args = [],
-      $inject = annotate(fn, strictDi, serviceName),
+  <span class="pl-k">var</span> args <span class="pl-k">=</span> [],
+      $inject <span class="pl-k">=</span> <span class="pl-c1">annotate</span>(fn, strictDi, serviceName),
       length, i,
       key;
 
-  <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, length = $inject.length; i &lt; length; i++) {
-    key = $inject[i];
-    <span class="hljs-keyword">if</span> (typeof key !== <span class="hljs-string">'string'</span>) {
-      throw $injectorMinErr(<span class="hljs-string">'itkn'</span>,
-              <span class="hljs-string">'Incorrect injection token! Expected service name as string, got {0}'</span>, key);
+  <span class="pl-k">for</span>(i <span class="pl-k">=</span> <span class="pl-c1">0</span>, length <span class="pl-k">=</span> $inject.<span class="pl-c1">length</span>; i <span class="pl-k">&lt;</span> length; i<span class="pl-k">++</span>) {
+    key <span class="pl-k">=</span> $inject[i];
+    <span class="pl-k">if</span> (<span class="pl-k">typeof</span> key <span class="pl-k">!==</span> <span class="pl-s"><span class="pl-pds">'</span>string<span class="pl-pds">'</span></span>) {
+      <span class="pl-k">throw</span> $<span class="pl-c1">injectorMinErr</span>(<span class="pl-s"><span class="pl-pds">'</span>itkn<span class="pl-pds">'</span></span>,
+              <span class="pl-s"><span class="pl-pds">'</span>Incorrect injection token! Expected service name as string, got {0}<span class="pl-pds">'</span></span>, key);
     }
-    args.push(
-      locals &amp;&amp; locals.hasOwnProperty(key)
-      ? locals[key]
-      : getService(key)
+    args.<span class="pl-c1">push</span>(
+      locals <span class="pl-k">&amp;&amp;</span> locals.<span class="pl-c1">hasOwnProperty</span>(key)
+      <span class="pl-k">?</span> locals[key]
+      <span class="pl-k">:</span> <span class="pl-c1">getService</span>(key)
     );
   }
-  <span class="hljs-keyword">if</span> (!fn.$inject) {
-    // this means that we must be an array.
-    fn = fn[length];
+  <span class="pl-k">if</span> (<span class="pl-k">!</span>fn.$inject) {
+    <span class="pl-c">// this means that we must be an array.</span>
+    fn <span class="pl-k">=</span> fn[length];
   }
 
-  <span class="hljs-keyword">return</span> fn.apply(self, args);
-}</code></pre><p>From the example above we can notice how the <code>$get</code> method is actually used:</p>
-<pre class="hljs"><code>instanceInjector.<span class="hljs-function"><span class="hljs-title">invoke</span><span class="hljs-params">(provider.<span class="hljs-variable">$get</span>, provider, undefined, servicename)</span></span></code></pre><p>The snippet above calls the <code>invoke</code> method of <code>instanceInjector</code> with the factory method (i.e. <code>$get</code>) of given service, as first argument. Inside <code>invoke</code>&#39;s body <code>annotate</code> is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS, which was considered above. When all dependencies are resolved the factory method is being called: <code>fn.apply(self, args)</code>.</p>
-<p>If we think in terms of the UML diagram above we can call the provider a &quot;ConcreteCreator&quot; and the actual component, which is being created a &quot;Product&quot;.</p>
+  <span class="pl-k">return</span> fn.<span class="pl-c1">apply</span>(self, args);
+}</pre></div>
+
+<p>From the example above we can notice how the <code>$get</code> method is actually used:</p>
+
+<div class="highlight highlight-JavaScript"><pre>instanceInjector.<span class="pl-c1">invoke</span>(provider.$get, provider, <span class="pl-c1">undefined</span>, servicename)</pre></div>
+
+<p>The snippet above calls the <code>invoke</code> method of <code>instanceInjector</code> with the factory method (i.e. <code>$get</code>) of given service, as first argument. Inside <code>invoke</code>'s body <code>annotate</code> is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS, which was considered above. When all dependencies are resolved the factory method is being called: <code>fn.apply(self, args)</code>.</p>
+
+<p>If we think in terms of the UML diagram above we can call the provider a "ConcreteCreator" and the actual component, which is being created a "Product".</p>
+
 <p>There are a few benefits of using the factory method pattern in this case, because of the indirection it creates. This way the framework can take care of the boilerplates during the instantiation of new components like:</p>
-<ul class="list">
+
+<ul>
 <li>The most appropriate moment, when the component needs to be instantiated</li>
 <li>Resolving all the dependencies required by the component</li>
 <li>The number of instances the given component is allowed to have (for services and filters only a single one but multiple for the controllers)</li>
 </ul>
-<h4 id="decorator">Decorator</h4>
+
+<h4>
+<a id="decorator" class="anchor" href="#decorator" aria-hidden="true"><span class="octicon octicon-link"></span></a>Decorator</h4>
+
 <blockquote>
 <p>The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.</p>
 </blockquote>
-<p class="img-container"><img src="./decorator.svg" alt="Decorator" title="Fig. 4"></p>
-<p>AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method <code>decorator</code> of <code>$provide</code> you can create &quot;wrapper&quot; of any service you have previously defined or used by a third-party:</p>
-<pre class="hljs"><code>myModule.controller(<span class="hljs-string">'MainCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(foo)</span> </span>{
-  foo.bar();
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/decorator.svg" alt="Decorator" title="Fig. 4"></p>
+
+<p>AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method <code>decorator</code> of <code>$provide</code> you can create "wrapper" of any service you have previously defined or used by a third-party:</p>
+
+<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>MainCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">foo</span>) {
+  foo.<span class="pl-c1">bar</span>();
 });
 
-myModule.factory(<span class="hljs-string">'foo'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-  <span class="hljs-keyword">return</span> {
-    bar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-      console.log(<span class="hljs-string">'I\'m bar'</span>);
+myModule.<span class="pl-c1">factory</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-k">return</span> {
+    <span class="pl-en">bar</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
+      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>I<span class="pl-cce">\'</span>m bar<span class="pl-pds">'</span></span>);
     },
-    baz: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-      console.log(<span class="hljs-string">'I\'m baz'</span>);
+    <span class="pl-en">baz</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
+      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>I<span class="pl-cce">\'</span>m baz<span class="pl-pds">'</span></span>);
     }
   };
 });
 
-myModule.config(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$provide</span>)</span> </span>{
-  <span class="hljs-variable">$provide</span>.decorator(<span class="hljs-string">'foo'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$delegate</span>)</span> </span>{
-    <span class="hljs-keyword">var</span> barBackup = <span class="hljs-variable">$delegate</span>.bar;
-    <span class="hljs-variable">$delegate</span>.bar = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-      console.log(<span class="hljs-string">'Decorated'</span>);
-      barBackup.apply(<span class="hljs-variable">$delegate</span>, arguments);
+myModule.<span class="pl-c1">config</span>(<span class="pl-k">function</span> (<span class="pl-smi">$provide</span>) {
+  $provide.<span class="pl-c1">decorator</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$delegate</span>) {
+    <span class="pl-k">var</span> barBackup <span class="pl-k">=</span> $delegate.<span class="pl-c1">bar</span>;
+    <span class="pl-c1">$delegate</span>.<span class="pl-en">bar</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>Decorated<span class="pl-pds">'</span></span>);
+      barBackup.<span class="pl-c1">apply</span>($delegate, arguments);
     };
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$delegate</span>;
+    <span class="pl-k">return</span> $delegate;
   });
-});</code></pre><p>The example above defines new service called <code>foo</code>. In the <code>config</code> callback is called the method <code>$provide.decorator</code> with first argument <code>&quot;foo&quot;</code>, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. <code>$delegate</code> keeps reference to the original service <code>foo</code>. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument of the constructor function.
-We decorate the service by overriding its method <code>bar</code>. The actual decoration is simply extending <code>bar</code> by invoking one more <code>console.log statement</code> - <code>console.log(&#39;Decorated&#39;);</code> and after that call the original <code>bar</code> method with the appropriate context.</p>
-<p>Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use <a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming">aspect-oriented programming</a>. The only AOP framework for AngularJS I&#39;m aware of could be found at <a href="https://github.com/mgechev/angular-aop">github.com/mgechev/angular-aop</a>.</p>
-<h4 id="facade">Facade</h4>
+});</pre></div>
+
+<p>The example above defines new service called <code>foo</code>. In the <code>config</code> callback is called the method <code>$provide.decorator</code> with first argument <code>"foo"</code>, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. <code>$delegate</code> keeps reference to the original service <code>foo</code>. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument of the constructor function.
+We decorate the service by overriding its method <code>bar</code>. The actual decoration is simply extending <code>bar</code> by invoking one more <code>console.log statement</code> - <code>console.log('Decorated');</code> and after that call the original <code>bar</code> method with the appropriate context.</p>
+
+<p>Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use <a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming">aspect-oriented programming</a>. The only AOP framework for AngularJS I'm aware of could be found at <a href="https://github.com/mgechev/angular-aop">github.com/mgechev/angular-aop</a>.</p>
+
+<h4>
+<a id="facade" class="anchor" href="#facade" aria-hidden="true"><span class="octicon octicon-link"></span></a>Facade</h4>
+
 <blockquote>
 <p>A facade is an object that provides a simplified interface to a larger body of code, such as a class library. A facade can:</p>
-<ol class="list">
-<li><p>make a software library easier to use, understand and test, since the facade has convenient methods for common tasks;</p>
-</li>
-<li><p>make the library more readable, for the same reason;</p>
-</li>
-<li><p>reduce dependencies of outside code on the inner workings of a library, since most code uses the facade, thus allowing more flexibility in developing the system;</p>
-</li>
-<li><p>wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).</p>
-</li>
+
+<ol>
+<li><p>make a software library easier to use, understand and test, since the facade has convenient methods for common tasks;</p></li>
+<li><p>make the library more readable, for the same reason;</p></li>
+<li><p>reduce dependencies of outside code on the inner workings of a library, since most code uses the facade, thus allowing more flexibility in developing the system;</p></li>
+<li><p>wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).</p></li>
 </ol>
 </blockquote>
-<p class="img-container"><img src="./facade.svg" alt="Facade" title="Fig. 11"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/facade.svg" alt="Facade" title="Fig. 11"></p>
+
 <p>There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you practically create a facade.</p>
+
 <p>For example, lets take a look how we can create an <code>XMLHttpRequest</code> POST request:</p>
-<pre class="hljs"><code>var <span class="hljs-keyword">http</span> = new XMLHttpRequest(),
-    url = <span class="hljs-string">'/example/new'</span>,
-    params = encodeURIComponent(data);
-<span class="hljs-keyword">http</span>.<span class="hljs-keyword">open</span>(<span class="hljs-string">"POST"</span>, url, true);
 
-<span class="hljs-keyword">http</span>.setRequestHeader(<span class="hljs-string">"Content-type"</span>, <span class="hljs-string">"application/x-www-form-urlencoded"</span>);
-<span class="hljs-keyword">http</span>.setRequestHeader(<span class="hljs-string">"Content-length"</span>, params.length);
-<span class="hljs-keyword">http</span>.setRequestHeader(<span class="hljs-string">"Connection"</span>, <span class="hljs-string">"close"</span>);
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">var</span> http <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">XMLHttpRequest</span>(),
+    url <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>/example/new<span class="pl-pds">'</span></span>,
+    params <span class="pl-k">=</span> <span class="pl-c1">encodeURIComponent</span>(data);
+http.<span class="pl-c1">open</span>(<span class="pl-s"><span class="pl-pds">"</span>POST<span class="pl-pds">"</span></span>, url, <span class="pl-c1">true</span>);
 
-<span class="hljs-keyword">http</span>.onreadystatechange = function () {
-  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">http</span>.readyState == <span class="hljs-number">4</span> &amp;&amp; <span class="hljs-keyword">http</span>.status == <span class="hljs-number">200</span>) {
-    alert(<span class="hljs-keyword">http</span>.responseText);
+http.<span class="pl-c1">setRequestHeader</span>(<span class="pl-s"><span class="pl-pds">"</span>Content-type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>application/x-www-form-urlencoded<span class="pl-pds">"</span></span>);
+http.<span class="pl-c1">setRequestHeader</span>(<span class="pl-s"><span class="pl-pds">"</span>Content-length<span class="pl-pds">"</span></span>, params.<span class="pl-c1">length</span>);
+http.<span class="pl-c1">setRequestHeader</span>(<span class="pl-s"><span class="pl-pds">"</span>Connection<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>close<span class="pl-pds">"</span></span>);
+
+<span class="pl-c1">http</span>.<span class="pl-en">onreadystatechange</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+  <span class="pl-k">if</span>(http.<span class="pl-c1">readyState</span> <span class="pl-k">==</span> <span class="pl-c1">4</span> <span class="pl-k">&amp;&amp;</span> http.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">200</span>) {
+    <span class="pl-c1">alert</span>(http.<span class="pl-c1">responseText</span>);
   }
 }
-<span class="hljs-keyword">http</span>.send(params);</code></pre><p>But if we want to post this data using the AngularJS&#39; <code>$http</code> service we can:</p>
-<pre class="hljs"><code>$http({
-  <span class="hljs-keyword">method</span>: '<span class="hljs-type">POST</span>',
-  url: '/example/new',
-  data: data
+http.<span class="pl-c1">send</span>(params);</pre></div>
+
+<p>But if we want to post this data using the AngularJS' <code>$http</code> service we can:</p>
+
+<div class="highlight highlight-JavaScript"><pre>$<span class="pl-c1">http</span>({
+  method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>POST<span class="pl-pds">'</span></span>,
+  url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/example/new<span class="pl-pds">'</span></span>,
+  data<span class="pl-k">:</span> data
 })
-.then(function (response) {
-  alert(response);
-});</code></pre><p>or we can even:</p>
-<pre class="hljs"><code>$http.post(<span class="hljs-string">'/someUrl'</span>, data)
-.<span class="hljs-keyword">then</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(response)</span></span> {
-  alert(response);
-});</code></pre><p>The second option provides pre-configured version, which creates a HTTP POST request to the given URL.</p>
+.<span class="pl-c1">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">response</span>) {
+  <span class="pl-c1">alert</span>(response);
+});</pre></div>
+
+<p>or we can even:</p>
+
+<div class="highlight highlight-JavaScript"><pre>$http.<span class="pl-c1">post</span>(<span class="pl-s"><span class="pl-pds">'</span>/someUrl<span class="pl-pds">'</span></span>, data)
+.<span class="pl-c1">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">response</span>) {
+  <span class="pl-c1">alert</span>(response);
+});</pre></div>
+
+<p>The second option provides pre-configured version, which creates a HTTP POST request to the given URL.</p>
+
 <p>Even higher level of abstraction is being created by <code>$resource</code>, which is build over the <code>$http</code> service. We will take a further look at this service in <a href="#active-record">Active Record</a> and <a href="#proxy">Proxy</a> sections.</p>
-<h4 id="proxy">Proxy</h4>
+
+<h4>
+<a id="proxy" class="anchor" href="#proxy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Proxy</h4>
+
 <blockquote>
 <p>A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.</p>
 </blockquote>
-<p class="img-container"><img src="./proxy.svg" alt="Proxy" title="Fig. 9"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/proxy.svg" alt="Proxy" title="Fig. 9"></p>
+
 <p>We can distinguish three different types of proxy:</p>
-<ul class="list">
+
+<ul>
 <li>Virtual Proxy</li>
 <li>Remote Proxy</li>
 <li>Protection Proxy</li>
 </ul>
-<p>In this sub-chapter we are going to take a look at AngularJS&#39; implementation of Virtual Proxy.</p>
+
+<p>In this sub-chapter we are going to take a look at AngularJS' implementation of Virtual Proxy.</p>
+
 <p>In the snippet bellow, there is a call to the <code>get</code> method of <code>$resource</code> instance, called <code>User</code>:</p>
-<pre class="hljs"><code><span class="hljs-built_in">var</span> User <span class="hljs-subst">=</span> <span class="hljs-variable">$resource</span>(<span class="hljs-string">'/users/:id'</span>),
-    user <span class="hljs-subst">=</span> User<span class="hljs-built_in">.</span>get({ id: <span class="hljs-number">42</span> });
-console<span class="hljs-built_in">.</span><span class="hljs-keyword">log</span>(user); <span class="hljs-comment">//{}</span></code></pre><p><code>console.log</code> would outputs an empty object. Since the AJAX request, which happens behind the scene, when <code>User.get</code> is invoked, is asynchronous, we don&#39;t have the actual user when <code>console.log</code> is called. Just after <code>User.get</code> makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy (a simple placeholder), which would be populated with the actual data once the client receives response by the server.</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">var</span> User <span class="pl-k">=</span> $<span class="pl-c1">resource</span>(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
+    user <span class="pl-k">=</span> User.<span class="pl-c1">get</span>({ id<span class="pl-k">:</span> <span class="pl-c1">42</span> });
+<span class="pl-en">console</span><span class="pl-c1">.log</span>(user); <span class="pl-c">//{}</span></pre></div>
+
+<p><code>console.log</code> would outputs an empty object. Since the AJAX request, which happens behind the scene, when <code>User.get</code> is invoked, is asynchronous, we don't have the actual user when <code>console.log</code> is called. Just after <code>User.get</code> makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy (a simple placeholder), which would be populated with the actual data once the client receives response by the server.</p>
+
 <p>How does this works with AngularJS? Well, lets consider the following snippet:</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MainCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>, <span class="hljs-variable">$resource</span>)</span> </span>{
-  <span class="hljs-keyword">var</span> User = <span class="hljs-variable">$resource</span>(<span class="hljs-string">'/users/:id'</span>),
-  <span class="hljs-variable">$scope</span>.user = User.get({ id: <span class="hljs-number">42</span> });
-}</code></pre><pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">ng-bind</span>=<span class="hljs-value">"user.name"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span></code></pre><p>Initially when the snippet above executes, the property <code>user</code> of the <code>$scope</code> object will be with value an empty object (<code>{}</code>), which means that <code>user.name</code> will be undefined and nothing will be rendered. Internally AngularJS will keep reference to this empty object. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next <code>$digest</code> loop AngularJS will detect change in <code>$scope.user</code>, which will lead to update of the view.</p>
-<h4 id="active-record">Active Record</h4>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">$resource</span>) {
+  <span class="pl-k">var</span> User <span class="pl-k">=</span> $<span class="pl-c1">resource</span>(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
+  $scope.<span class="pl-c1">user</span> <span class="pl-k">=</span> User.<span class="pl-c1">get</span>({ id<span class="pl-k">:</span> <span class="pl-c1">42</span> });
+}</pre></div>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>user.name<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
+
+<p>Initially when the snippet above executes, the property <code>user</code> of the <code>$scope</code> object will be with value an empty object (<code>{}</code>), which means that <code>user.name</code> will be undefined and nothing will be rendered. Internally AngularJS will keep reference to this empty object. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next <code>$digest</code> loop AngularJS will detect change in <code>$scope.user</code>, which will lead to update of the view.</p>
+
+<h4>
+<a id="active-record" class="anchor" href="#active-record" aria-hidden="true"><span class="octicon octicon-link"></span></a>Active Record</h4>
+
 <blockquote>
 <p>The Active Record object is an object, which carries both data and behavior. Usually most of the data in these objects is persistent, responsibility of the Active Record object is to take care of the communication with the database in order to create, update, retrieve or delete the data. It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.</p>
 </blockquote>
-<p class="img-container"><img src="./active-record.svg" alt="Active Record" title="Fig. 7"></p>
-<p>AngularJS defines a service called <code>$resource</code>. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS&#39; core.</p>
-<p>According to the AngularJS&#39; documentation <code>$resource</code> is:</p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/active-record.svg" alt="Active Record" title="Fig. 7"></p>
+
+<p>AngularJS defines a service called <code>$resource</code>. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS' core.</p>
+
+<p>According to the AngularJS' documentation <code>$resource</code> is:</p>
+
 <blockquote>
 <p>A factory which creates a resource object that lets you interact with RESTful server-side data sources.
 The returned resource object has action methods which provide high-level behaviors without the need to interact with the low level $http service.</p>
 </blockquote>
+
 <p>Here is how <code>$resource</code> could be used:</p>
-<pre class="hljs"><code><span class="hljs-built_in">var</span> User <span class="hljs-subst">=</span> <span class="hljs-variable">$resource</span>(<span class="hljs-string">'/users/:id'</span>),
-    user <span class="hljs-subst">=</span> <span class="hljs-literal">new</span> User({
-      name: <span class="hljs-string">'foo'</span>,
-      age : <span class="hljs-number">42</span>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">var</span> User <span class="pl-k">=</span> $<span class="pl-c1">resource</span>(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
+    user <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">User</span>({
+      name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>,
+      age <span class="pl-k">:</span> <span class="pl-c1">42</span>
     });
 
-user<span class="hljs-built_in">.</span><span class="hljs-variable">$save</span>();</code></pre><p>The call of <code>$resource</code> will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operations.</p>
+user.$<span class="pl-c1">save</span>();</pre></div>
+
+<p>The call of <code>$resource</code> will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operations.</p>
+
 <p>This way we can use the constructor function and its static methods by:</p>
-<pre class="hljs"><code><span class="hljs-tag">User</span><span class="hljs-class">.get</span>({ <span class="hljs-attribute">userid</span>: userid });</code></pre><p>The code above will immediately return an empty object and keep reference to it. Once the response have been successfully returned and parsed, AngularJS will populate this object with the received data (see <a href="#proxy">proxy</a>).</p>
-<p>You can find more details for <code>$resource</code> <a href="http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/">The magic of $resource</a> and <a href="https://docs.angularjs.org/api/ngResource/service/$resource">AngularJS&#39; documentation</a>.</p>
+
+<div class="highlight highlight-JavaScript"><pre>User.<span class="pl-c1">get</span>({ userid<span class="pl-k">:</span> userid });</pre></div>
+
+<p>The code above will immediately return an empty object and keep reference to it. Once the response have been successfully returned and parsed, AngularJS will populate this object with the received data (see <a href="#proxy">proxy</a>).</p>
+
+<p>You can find more details for <code>$resource</code> <a href="http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/">The magic of $resource</a> and <a href="https://docs.angularjs.org/api/ngResource/service/%24resource">AngularJS' documentation</a>.</p>
+
 <p>Since Martin Fowler states that</p>
+
 <blockquote>
 <p>responsibility of the Active Record object is to take care of the communication with the databse in order to create...</p>
 </blockquote>
-<p><code>$resource</code> does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as &quot;Active Record like RESTful communication&quot;.</p>
-<h4 id="intercepting-filters">Intercepting Filters</h4>
+
+<p><code>$resource</code> does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".</p>
+
+<h4>
+<a id="intercepting-filters" class="anchor" href="#intercepting-filters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Intercepting Filters</h4>
+
 <blockquote>
 <p>Create a chain of composable filters to implement common pre-processing and post-processing tasks during a Web page request.</p>
 </blockquote>
-<p class="img-container"><img src="./intercepting-filters.svg" alt="Composite" title="Fig. 3"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/intercepting-filters.svg" alt="Composite" title="Fig. 3"></p>
+
 <p>In some cases you need to do some kind of pre and/or post processing of HTTP requests. In the case of the Intercepting Filters you pre/post process given HTTP request/response in order to include logging, security or any other concern, which is influenced by the request body or headers. Basically the Intercepting Filters pattern include a chain of filters, each of which process data in given order. The output of each filter is input of the next one.</p>
+
 <p>In AngularJS we have the idea of the Intercepting Filters in <code>$httpProvider</code>. <code>$httpProvider</code> has an array property called <code>interceptors</code>, which contains a list of objects. Each object may have properties called: <code>request</code>, <code>response</code>, <code>requestError</code>, <code>responseError</code>.</p>
+
 <p><code>requestError</code> is an interceptor, which gets called when a previous interceptor threw an error or resolved with a rejection, respectively <code>responseError</code> is being called when the previous <code>response</code> interceptor has thrown an error.</p>
+
 <p>Here is a basic example how you can add interceptors using object literal:</p>
-<pre class="hljs"><code><span class="hljs-variable">$httpProvider</span>.interceptors.push(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-variable">$q</span>, dependency1, dependency2)</span> </span>{
-  <span class="hljs-keyword">return</span> {
-   <span class="hljs-string">'request'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(config)</span> </span>{
-       <span class="hljs-comment">// same as above</span>
+
+<div class="highlight highlight-JavaScript"><pre>$httpProvider.<span class="pl-c1">interceptors</span>.<span class="pl-c1">push</span>(<span class="pl-k">function</span>(<span class="pl-smi">$q</span>, <span class="pl-smi">dependency1</span>, <span class="pl-smi">dependency2</span>) {
+  <span class="pl-k">return</span> {
+   <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">request</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">config</span>) {
+       <span class="pl-c">// same as above</span>
     },
-    <span class="hljs-string">'response'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
-       <span class="hljs-comment">// same as above</span>
+    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">response</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">response</span>) {
+       <span class="pl-c">// same as above</span>
     }
   };
-});</code></pre><h3 id="directives">Directives</h3>
-<h4 id="composite">Composite</h4>
+});</pre></div>
+
+<h3>
+<a id="directives-1" class="anchor" href="#directives-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Directives</h3>
+
+<h4>
+<a id="composite" class="anchor" href="#composite" aria-hidden="true"><span class="octicon octicon-link"></span></a>Composite</h4>
+
 <blockquote>
-<p>The composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects are to be treated in the same way as a single instance of an object. The intent of a composite is to &quot;compose&quot; objects into tree structures to represent part-whole hierarchies.</p>
+<p>The composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects are to be treated in the same way as a single instance of an object. The intent of a composite is to "compose" objects into tree structures to represent part-whole hierarchies.</p>
 </blockquote>
-<p class="img-container"><img src="./composite.svg" alt="Composite" title="Fig. 3"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/composite.svg" alt="Composite" title="Fig. 3"></p>
+
 <p>According to the Gang of Four, MVC is nothing more than combination of:</p>
-<ul class="list">
+
+<ul>
 <li>Strategy</li>
 <li>Composite</li>
 <li>Observer</li>
 </ul>
+
 <p>They state that the view is composition of components. In AngularJS the situation is similar. Our views are formed by a composition of directives and DOM elements, on which these directives could be applied.</p>
+
 <p>Lets look at the following example:</p>
-<pre class="hljs"><code><span class="hljs-doctype">&lt;!doctype html&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">zippy</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">"Zippy"</span>&gt;</span>
+
+<div class="highlight highlight-HTML"><pre>&lt;!doctype html&gt;
+&lt;<span class="pl-ent">html</span>&gt;
+  &lt;<span class="pl-ent">head</span>&gt;
+  &lt;/<span class="pl-ent">head</span>&gt;
+  &lt;<span class="pl-ent">body</span>&gt;
+    &lt;<span class="pl-ent">zippy</span> <span class="pl-e">title</span>=<span class="pl-s"><span class="pl-pds">"</span>Zippy<span class="pl-pds">"</span></span>&gt;
       Zippy!
-    <span class="hljs-tag">&lt;/<span class="hljs-title">zippy</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre><pre class="hljs"><code>myModule.directive('zippy', function () {
-  <span class="hljs-keyword">return</span> {
-    restrict: 'E',
-    <span class="hljs-keyword">template</span>: '&lt;<span class="hljs-keyword">div</span>&gt;&lt;<span class="hljs-keyword">div</span> class=<span class="hljs-string">"header"</span>&gt;&lt;/<span class="hljs-keyword">div</span>&gt;&lt;<span class="hljs-keyword">div</span> class=<span class="hljs-string">"content"</span> ng-transclude&gt;&lt;/<span class="hljs-keyword">div</span>&gt;&lt;/<span class="hljs-keyword">div</span>&gt;',
-    link: function (scope, el) {
-      el.find('.header').click(function () {
-        el.find('.content').toggle();
+    &lt;/<span class="pl-ent">zippy</span>&gt;
+  &lt;/<span class="pl-ent">body</span>&gt;
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+
+<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">directive</span>(<span class="pl-s"><span class="pl-pds">'</span>zippy<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-k">return</span> {
+    restrict<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>E<span class="pl-pds">'</span></span>,
+    template<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;div&gt;&lt;div class="header"&gt;&lt;/div&gt;&lt;div class="content" ng-transclude&gt;&lt;/div&gt;&lt;/div&gt;<span class="pl-pds">'</span></span>,
+    <span class="pl-en">link</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">scope</span>, <span class="pl-smi">el</span>) {
+      el.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>.header<span class="pl-pds">'</span></span>).<span class="pl-c1">click</span>(<span class="pl-k">function</span> () {
+        el.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>.content<span class="pl-pds">'</span></span>).<span class="pl-c1">toggle</span>();
       });
     }
   }
-});</code></pre><p>This example defines a simple directive, which is a UI component. The defined component (called &quot;zippy&quot;) has header and content. Click on its header toggles the visibility of the content.</p>
+});</pre></div>
+
+<p>This example defines a simple directive, which is a UI component. The defined component (called "zippy") has header and content. Click on its header toggles the visibility of the content.</p>
+
 <p>From the first example we can note that the whole DOM tree is a composition of elements. The root component is the <code>html</code> element, directly followed by the nested elements <code>head</code> and <code>body</code> and so on...</p>
+
 <p>In the second, JavaScript, example we see that the <code>template</code> property of the directive, contains markup with <code>ng-transclude</code> directive inside it. So this means that inside the directive <code>zippy</code> we have another directive called <code>ng-transclude</code>, i.e. composition of directives. Theoretically we can nest the components infinitely until we reach a leaf node.</p>
-<h3 id="interpreter">Interpreter</h3>
+
+<h3>
+<a id="interpreter" class="anchor" href="#interpreter" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interpreter</h3>
+
 <blockquote>
 <p>In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.</p>
 </blockquote>
-<p class="img-container"><img src="./interpreter.svg" alt="Interpreter" title="Fig. 6"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/interpreter.svg" alt="Interpreter" title="Fig. 6"></p>
+
 <p>Behind its <code>$parse</code> service, AngularJS provides its own implementation of interpreter of a DSL (Domain Specific Language). The used DSL is simplified and modified version of JavaScript.
 The main differences between the JavaScript expressions and AngularJS expressions that AngularJS expressions:</p>
-<ul class="list">
+
+<ul>
 <li>may contain filters with UNIX like pipe syntax</li>
-<li>don&#39;t throw any errors</li>
-<li>don&#39;t have any control flow statements (exceptions, loops, if statements although you can use the ternary operator)</li>
+<li>don't throw any errors</li>
+<li>don't have any control flow statements (exceptions, loops, if statements although you can use the ternary operator)</li>
 <li>are evaluated in given context (the context of the current <code>$scope</code>)</li>
 </ul>
+
 <p>Inside the <code>$parse</code> service are defined two main components:</p>
-<pre class="hljs"><code><span class="hljs-comment">//Responsible for converting given string into tokens</span>
-<span class="hljs-keyword">var</span> Lexer;
-<span class="hljs-comment">//Responsible for parsing the tokens and evaluating the expression</span>
-<span class="hljs-keyword">var</span> Parser;</code></pre><p>Once given expression have been tokenized it is cached internally, because of performance concerns.</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-c">//Responsible for converting given string into tokens</span>
+<span class="pl-k">var</span> Lexer;
+<span class="pl-c">//Responsible for parsing the tokens and evaluating the expression</span>
+<span class="pl-k">var</span> Parser;</pre></div>
+
+<p>Once given expression have been tokenized it is cached internally, because of performance concerns.</p>
+
 <p>The terminal expressions in the AngularJS DSL are defined as follows:</p>
-<pre class="hljs"><code><span class="hljs-keyword">var</span> OPERATORS = {
-  <span class="hljs-comment">/* jshint bitwise : false */</span>
-  <span class="hljs-string">'null'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;},
-  <span class="hljs-string">'true'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;},
-  <span class="hljs-string">'false'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;},
-  undefined:noop,
-  <span class="hljs-string">'+'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{
-        <span class="hljs-comment">//...</span>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">var</span> <span class="pl-c1">OPERATORS</span> <span class="pl-k">=</span> {
+  <span class="pl-c">/* jshint bitwise : false */</span>
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">null</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(){<span class="pl-k">return</span> <span class="pl-c1">null</span>;},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">true</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(){<span class="pl-k">return</span> <span class="pl-c1">true</span>;},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">false</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(){<span class="pl-k">return</span> <span class="pl-c1">false</span>;},
+  <span class="pl-c1">undefined</span><span class="pl-k">:</span>noop,
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">+</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){
+        <span class="pl-c">//...</span>
       },
-  <span class="hljs-string">'*'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)*b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'/'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)/b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'%'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)%b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'^'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)^b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'='</span>:noop,
-  <span class="hljs-string">'==='</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a, b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)===b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'!=='</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a, b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)!==b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'=='</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)==b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'!='</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)!=b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'&lt;'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)&lt;b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'&gt;'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)&gt;b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'&lt;='</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)&lt;=b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'&gt;='</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)&gt;=b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'&amp;&amp;'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)&amp;&amp;b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'||'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)||b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'&amp;'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> a(<span class="hljs-keyword">self</span>, locals)&amp;b(<span class="hljs-keyword">self</span>, locals);},
-  <span class="hljs-string">'|'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a,b)</span></span>{<span class="hljs-keyword">return</span> b(<span class="hljs-keyword">self</span>, locals)(<span class="hljs-keyword">self</span>, locals, a(<span class="hljs-keyword">self</span>, locals));},
-  <span class="hljs-string">'!'</span>:<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(self, locals, a)</span></span>{<span class="hljs-keyword">return</span> !a(<span class="hljs-keyword">self</span>, locals);}
-};</code></pre><p>We can think of the function associated with each terminal as implementation of the <code>AbstractExpression</code>&#39;s interface.</p>
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">*</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">*</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">/</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)/<span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">%</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">%</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">^</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">^</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span>=<span class="pl-pds">'</span></span><span class="pl-k">:</span>noop,
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">===</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>, <span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">===</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!==</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>, <span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">!==</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">==</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">==</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">!=</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&lt;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&lt;</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&gt;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&gt;</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&lt;=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&lt;=</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&gt;=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&gt;=</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&amp;&amp;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&amp;&amp;</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">||</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">||</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&amp;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&amp;</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">|</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">b</span>(self, locals)(self, locals, <span class="pl-c1">a</span>(self, locals));},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>){<span class="pl-k">return</span> <span class="pl-k">!</span><span class="pl-c1">a</span>(self, locals);}
+};</pre></div>
+
+<p>We can think of the function associated with each terminal as implementation of the <code>AbstractExpression</code>'s interface.</p>
+
 <p>Each <code>Client</code> interprets given AngularJS expression in a specific context - specific scope.</p>
+
 <p>Few sample AngularJS expressions are:</p>
-<pre class="hljs"><code>// toUpperCase filter <span class="hljs-keyword">is</span> applied to the <span class="hljs-literal">result</span> <span class="hljs-keyword">of</span> the expression
-// (foo) ? bar : baz
-(foo) ? bar : baz | toUpperCase</code></pre><h4 id="template-view">Template View</h4>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-c">// toUpperCase filter is applied to the result of the expression</span>
+<span class="pl-c">// (foo) ? bar : baz</span>
+(foo) <span class="pl-k">?</span> bar <span class="pl-k">:</span> baz | toUpperCase</pre></div>
+
+<h4>
+<a id="template-view" class="anchor" href="#template-view" aria-hidden="true"><span class="octicon octicon-link"></span></a>Template View</h4>
+
 <blockquote>
 <p>Renders information into HTML by embedding markers in an HTML page.</p>
 </blockquote>
-<p class="img-container"><img src="./template-view.svg" alt="Template View" title="Fig. 8"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/template-view.svg" alt="Template View" title="Fig. 8"></p>
+
 <p>The dynamic page rendering is not that trivial thing. It is connected with a lot of string concatenations, manipulations and frustration. Far easier way to build your dynamic page is to write your markup and embed little expressions inside it, which are lately evaluated in given context and so the whole template is being compiled to its end format. In our case this format is going to be HTML (or even DOM). This is exactly what the template engines do - they take given DSL, evaluate it in the appropriate context and then turn it into its end format.</p>
+
 <p>Templates are very commonly used especially in the back-end.
 For example, you can embed PHP code inside HTML and create a dynamic page, you can use Smarty or you can use eRuby with Ruby in order to embed Ruby code inside your static pages.</p>
+
 <p>For JavaScript there are plenty of template engines, such as mustache.js, handlebars, etc. Most of these engines manipulate the template as a string. The template could be located in different places - as static file, which is fetched with AJAX, as <code>script</code> embedded inside your view or even inlined into your JavaScript.</p>
+
 <p>For example:</p>
-<pre class="hljs"><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"template/mustache"</span>&gt;</span><span class="javascript">
-  &lt;h2&gt;Names&lt;<span class="hljs-regexp">/h2&gt;
-  </span></span></span><span class="hljs-expression">{{<span class="hljs-begin-block">#names</span>}}</span><span class="xml"><span class="javascript">
-    &lt;strong&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">name</span>}}</span><span class="xml"><span class="javascript">&lt;<span class="hljs-regexp">/strong&gt;
-  </span></span></span><span class="hljs-expression">{{<span class="hljs-end-block">/names</span>}}</span><span class="xml"><span class="javascript">
-</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></span></code></pre><p>The template engine turns this string into DOM elements by compiling it within a given context. This way all the expressions embedded in the markup are evaluated and replaced by their value.</p>
-<p>For example if we evaluate the template above in the context of the following object: <code>{ names: [&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;] }</code>, so we will get:</p>
-<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Names<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">strong</span>&gt;</span>foo<span class="hljs-tag">&lt;/<span class="hljs-title">strong</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">strong</span>&gt;</span>bar<span class="hljs-tag">&lt;/<span class="hljs-title">strong</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">strong</span>&gt;</span>baz<span class="hljs-tag">&lt;/<span class="hljs-title">strong</span>&gt;</span></code></pre><p>AngularJS templates are actually HTML, they are not in an intermediate format like the traditional templates are.
+
+<div class="highlight highlight-html"><pre><span class="pl-s1">&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>template/mustache<span class="pl-pds">"</span></span>&gt;</span>
+<span class="pl-s1">  <span class="pl-k">&lt;</span>h2<span class="pl-k">&gt;</span>Names<span class="pl-k">&lt;</span>/h2<span class="pl-k">&gt;</span></span>
+<span class="pl-s1">  {{#names}}</span>
+<span class="pl-s1">    <span class="pl-k">&lt;</span>strong<span class="pl-k">&gt;</span>{{name}}<span class="pl-k">&lt;</span>/strong<span class="pl-k">&gt;</span></span>
+<span class="pl-s1">  {{/names}}</span>
+<span class="pl-s1">&lt;/<span class="pl-ent">script</span>&gt;</span></pre></div>
+
+<p>The template engine turns this string into DOM elements by compiling it within a given context. This way all the expressions embedded in the markup are evaluated and replaced by their value.</p>
+
+<p>For example if we evaluate the template above in the context of the following object: <code>{ names: ['foo', 'bar', 'baz'] }</code>, so we will get:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">h2</span>&gt;Names&lt;/<span class="pl-ent">h2</span>&gt;
+  &lt;<span class="pl-ent">strong</span>&gt;foo&lt;/<span class="pl-ent">strong</span>&gt;
+  &lt;<span class="pl-ent">strong</span>&gt;bar&lt;/<span class="pl-ent">strong</span>&gt;
+  &lt;<span class="pl-ent">strong</span>&gt;baz&lt;/<span class="pl-ent">strong</span>&gt;</pre></div>
+
+<p>AngularJS templates are actually HTML, they are not in an intermediate format like the traditional templates are.
 What AngularJS compiler does is to traverse the DOM tree and look for already known directives (elements, attributes, classes or even comments). When AngularJS finds any of these directives it invokes the logic associated with them, which may involve evaluation of different expressions in the context of the current scope.</p>
+
 <p>For example:</p>
-<pre class="hljs"><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">ng-repeat</span>=<span class="hljs-value">"name in names"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">name</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span></span></code></pre><p>in the context of the scope:</p>
-<pre class="hljs"><code><span class="hljs-variable">$scope</span>.names = [<span class="hljs-string">'foo'</span>, <span class="hljs-string">'bar'</span>, <span class="hljs-string">'baz'</span>];</code></pre><p>will produce the same result as the one above. The main difference here is that the template is not wrapped inside a <code>script</code> tag but is HTML instead.</p>
-<h3 id="scope">Scope</h3>
-<h4 id="observer">Observer</h4>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">ul</span> <span class="pl-e">ng-repeat</span>=<span class="pl-s"><span class="pl-pds">"</span>name in names<span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">li</span>&gt;{{name}}&lt;/<span class="pl-ent">li</span>&gt;
+&lt;/<span class="pl-ent">ul</span>&gt;</pre></div>
+
+<p>in the context of the scope:</p>
+
+<div class="highlight highlight-javascript"><pre>$scope.<span class="pl-c1">names</span> <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>baz<span class="pl-pds">'</span></span>];</pre></div>
+
+<p>will produce the same result as the one above. The main difference here is that the template is not wrapped inside a <code>script</code> tag but is HTML instead.</p>
+
+<h3>
+<a id="scope-1" class="anchor" href="#scope-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scope</h3>
+
+<h4>
+<a id="observer" class="anchor" href="#observer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Observer</h4>
+
 <blockquote>
 <p>The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. It is mainly used to implement distributed event handling systems.</p>
 </blockquote>
-<p class="img-container"><img src="./observer.svg" alt="Observer" title="Fig. 7"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/observer.svg" alt="Observer" title="Fig. 7"></p>
+
 <p>There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see <a href="#scope">Scope</a>). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them. This allows decoupling between the different scopes, non of the scopes should be aware of the rest of the scopes.</p>
+
 <p>Each AngularJS scope has public methods called <code>$on</code>, <code>$emit</code> and <code>$broadcast</code>. The method <code>$on</code> accepts topic as first argument and callback as second. We can think of the callback as an observer - an object, which implements the <code>Observer</code> interface (in JavaScript the functions are first-class, so we can provide only implementation of the <code>notify</code> method):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ExampleCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-variable">$scope</span>.<span class="hljs-variable">$on</span>(<span class="hljs-string">'event-name'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handler</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-comment">//body</span>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">ExampleCtrl</span>(<span class="pl-smi">$scope</span>) {
+  $scope.$<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>event-name<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> <span class="pl-en">handler</span>() {
+    <span class="pl-c">//body</span>
   });
-}</code></pre><p>In this way the current scope &quot;subscribes&quot; to events of type <code>event-name</code>. When <code>event-name</code> is triggered in any parent or child scope of the given one, <code>handler</code> would be called.</p>
+}</pre></div>
+
+<p>In this way the current scope "subscribes" to events of type <code>event-name</code>. When <code>event-name</code> is triggered in any parent or child scope of the given one, <code>handler</code> would be called.</p>
+
 <p>The methods <code>$emit</code> and <code>$broadcast</code> are used for triggering events respectively upwards and downwards through the scope chain.
 For example:</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ExampleCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-variable">$scope</span>.<span class="hljs-variable">$emit</span>(<span class="hljs-string">'event-name'</span>, { foo: <span class="hljs-string">'bar'</span> });
-}</code></pre><p>The scope in the example above, triggers the event <code>event-name</code> to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event <code>event-name</code>, would be notified and their handler callback will be invoked.</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">ExampleCtrl</span>(<span class="pl-smi">$scope</span>) {
+  $scope.$<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>event-name<span class="pl-pds">'</span></span>, { foo<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span> });
+}</pre></div>
+
+<p>The scope in the example above, triggers the event <code>event-name</code> to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event <code>event-name</code>, would be notified and their handler callback will be invoked.</p>
+
 <p>Analogical is the case when the method <code>$broadcast</code> is called. The only difference is that the event would be transmitted downwards - to all children scopes.
 Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).</p>
+
 <p>In the JavaScript community this pattern is better known as publish/subscribe.</p>
+
 <p>For a best practice example see <a href="#observer-pattern-as-an-external-service">Observer Pattern as an External Service</a></p>
-<h4 id="chain-of-responsibilities">Chain of Responsibilities</h4>
+
+<h4>
+<a id="chain-of-responsibilities" class="anchor" href="#chain-of-responsibilities" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chain of Responsibilities</h4>
+
 <blockquote>
 <p>The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.</p>
 </blockquote>
-<p class="img-container"><img src="./chain-of-responsibilities.svg" alt="Chain of Responsibilities" title="Fig. 5"></p>
-<p>As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are &quot;isolated&quot;, which means that they don&#39;t inherit prototypically by their parent scope, but are connected to it via their <code>$parent</code> property.</p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/chain-of-responsibilities.svg" alt="Chain of Responsibilities" title="Fig. 5"></p>
+
+<p>As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their <code>$parent</code> property.</p>
+
 <p>When <code>$emit</code> or <code>$broadcast</code> are called we can think of the scope chain as event bus, or even more accurately chain of responsibilities. Once the event is triggered it is emitted downwards or upwards (depending on the method, which was called). Each subsequent scope may:</p>
-<ul class="list">
+
+<ul>
 <li>Handle the event and pass it to the next scope in the chain</li>
 <li>Handle the event and stop its propagation</li>
 <li>Pass the event to the next scope in the chain without handling it</li>
 <li>Stop the event propagation without handling it</li>
 </ul>
-<p>In the example bellow you can see an example in which <code>ChildCtrl</code> triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in <code>ParentCtrl</code> and the one used in <code>MainCtrl</code>) are going to handle the event by logging into the console: <code>&quot;foo received&quot;</code>. If any of the scopes should be considered as final destination it can call the method <code>stopPropagation</code> of the event object, passed to the callback.</p>
-<pre class="hljs"><code>myModule.controller(<span class="hljs-string">'MainCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-variable">$scope</span>.<span class="hljs-variable">$on</span>(<span class="hljs-string">'foo'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-    console.log(<span class="hljs-string">'foo received'</span>);
+
+<p>In the example bellow you can see an example in which <code>ChildCtrl</code> triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in <code>ParentCtrl</code> and the one used in <code>MainCtrl</code>) are going to handle the event by logging into the console: <code>"foo received"</code>. If any of the scopes should be considered as final destination it can call the method <code>stopPropagation</code> of the event object, passed to the callback.</p>
+
+<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>MainCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
+  $scope.$<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>foo received<span class="pl-pds">'</span></span>);
   });
 });
 
-myModule.controller(<span class="hljs-string">'ParentCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-variable">$scope</span>.<span class="hljs-variable">$on</span>(<span class="hljs-string">'foo'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> </span>{
-    console.log(<span class="hljs-string">'foo received'</span>);
+myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>ParentCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
+  $scope.$<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">e</span>) {
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>foo received<span class="pl-pds">'</span></span>);
   });
 });
 
-myModule.controller(<span class="hljs-string">'ChildCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-variable">$scope</span>.<span class="hljs-variable">$emit</span>(<span class="hljs-string">'foo'</span>);
-});</code></pre><p>The different handlers from the UML diagram above are the different scopes, injected to the controllers.</p>
-<h4 id="command">Command</h4>
+myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>ChildCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
+  $scope.$<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>);
+});</pre></div>
+
+<p>The different handlers from the UML diagram above are the different scopes, injected to the controllers.</p>
+
+<h4>
+<a id="command" class="anchor" href="#command" aria-hidden="true"><span class="octicon octicon-link"></span></a>Command</h4>
+
 <blockquote>
 <p>In object-oriented programming, the command pattern is a behavioral design pattern in which an object is used to represent and encapsulate all the information needed to call a method at a later time. This information includes the method name, the object that owns the method and values for the method parameters.</p>
 </blockquote>
-<p class="img-container"><img src="./command.svg" alt="Command" title="Fig. 11"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/command.svg" alt="Command" title="Fig. 11"></p>
+
 <p>Before continuing with the application of the command pattern lets describe how AngularJS implements data binding.</p>
+
 <p>When we want to bind our model to the view we use the directives <code>ng-bind</code> (for single-way data binding) and <code>ng-model</code> (for two-way data binding). For example, if we want each change in the model <code>foo</code> to reflect the view we can:</p>
-<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">ng-bind</span>=<span class="hljs-value">"foo"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span></code></pre><p>Now each time we change the value of <code>foo</code> the inner text of the span will be changed. We can achieve the same effect with more complex AngularJS expressions, like:</p>
-<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">ng-bind</span>=<span class="hljs-value">"foo + ' ' + bar | uppercase"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span></code></pre><p>In the example above the value of the span will be the concatenated uppercased value of <code>foo</code> and <code>bar</code>. What happens behind the scene?</p>
-<p>Each <code>$scope</code> has method called <code>$watch</code>. When the AngularJS compiler find the directive <code>ng-bind</code> it creates a new watcher of the expression <code>foo + &#39; &#39; + bar | uppercase</code>, i.e. <code>$scope.$watch(&quot;foo + &#39; &#39; + bar | uppercase&quot;, function () { /* body */ });</code>. The callback will be triggered each time the value of the expression change. In the current case the callback will update the value of the span.</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
+
+<p>Now each time we change the value of <code>foo</code> the inner text of the span will be changed. We can achieve the same effect with more complex AngularJS expressions, like:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>foo + ' ' + bar | uppercase<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
+
+<p>In the example above the value of the span will be the concatenated uppercased value of <code>foo</code> and <code>bar</code>. What happens behind the scene?</p>
+
+<p>Each <code>$scope</code> has method called <code>$watch</code>. When the AngularJS compiler find the directive <code>ng-bind</code> it creates a new watcher of the expression <code>foo + ' ' + bar | uppercase</code>, i.e. <code>$scope.$watch("foo + ' ' + bar | uppercase", function () { /* body */ });</code>. The callback will be triggered each time the value of the expression change. In the current case the callback will update the value of the span.</p>
+
 <p>Here are the first a couple of lines of the implementation of <code>$watch</code>:</p>
-<pre class="hljs"><code>$watch: <span class="hljs-keyword">function</span>(watchExp, listener, objectEquality) {
-  var scope = this,
-      get = compileToFn(watchExp, <span class="hljs-string">'watch'</span>),
-      array = scope.$$watchers,
-      watcher = {
-        fn: listener,
-        last: initWatchVal,
-        get: get,
-        exp: watchExp,
-        eq: !!objectEquality
+
+<div class="highlight highlight-javascript"><pre>$<span class="pl-en">watch</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">watchExp</span>, <span class="pl-smi">listener</span>, <span class="pl-smi">objectEquality</span>) {
+  <span class="pl-k">var</span> scope <span class="pl-k">=</span> <span class="pl-v">this</span>,
+      get <span class="pl-k">=</span> <span class="pl-c1">compileToFn</span>(watchExp, <span class="pl-s"><span class="pl-pds">'</span>watch<span class="pl-pds">'</span></span>),
+      array <span class="pl-k">=</span> scope.$$watchers,
+      watcher <span class="pl-k">=</span> {
+        fn<span class="pl-k">:</span> listener,
+        last<span class="pl-k">:</span> initWatchVal,
+        get<span class="pl-k">:</span> get,
+        exp<span class="pl-k">:</span> watchExp,
+        eq<span class="pl-k">:</span> <span class="pl-k">!!</span>objectEquality
       };
-//<span class="hljs-keyword">...</span></code></pre><p>We can think of the <code>watcher</code> object as a command. The expression of the command is being evaluated on each <a href="https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest"><code>&quot;$digest&quot;</code></a> loop. Once AngularJS detects change in the expression, it invokes the <code>listener</code> function. The <code>watcher</code> command encapsulates the whole information required for watching given expression and delegates the execution of the command to the <code>listener</code> (the actual receiver). We can think of the <code>$scope</code> as the command&#39;s <code>Client</code> and the <code>$digest</code> loop as the command&#39;s <code>Invoker</code>.</p>
-<h3 id="controllers">Controllers</h3>
-<h4 id="page-controller">Page Controller</h4>
+<span class="pl-c">//...</span></pre></div>
+
+<p>We can think of the <code>watcher</code> object as a command. The expression of the command is being evaluated on each <a href="https://docs.angularjs.org/api/ng/type/%24rootScope.Scope#%24digest"><code>"$digest"</code></a> loop. Once AngularJS detects change in the expression, it invokes the <code>listener</code> function. The <code>watcher</code> command encapsulates the whole information required for watching given expression and delegates the execution of the command to the <code>listener</code> (the actual receiver). We can think of the <code>$scope</code> as the command's <code>Client</code> and the <code>$digest</code> loop as the command's <code>Invoker</code>.</p>
+
+<h3>
+<a id="controllers-1" class="anchor" href="#controllers-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Controllers</h3>
+
+<h4>
+<a id="page-controller" class="anchor" href="#page-controller" aria-hidden="true"><span class="octicon octicon-link"></span></a>Page Controller</h4>
+
 <blockquote>
 <p>An object that handles a request for a specific page or action on a Web site. Martin Fowler</p>
 </blockquote>
-<p class="img-container"><img src="./page-controller.svg" alt="Page Controller" title="Fig. 8"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/page-controller.svg" alt="Page Controller" title="Fig. 8"></p>
+
 <p>According to <a href="#references">4</a> the page controller:</p>
+
 <blockquote>
 <p>Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code</p>
 </blockquote>
-<p>Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user&#39;s session, etc.) page controllers can form a hierarchy. In AngularJS we have controllers, which are with more limited scope of responsibilities. They don&#39;t accept user requests, since this is responsibility of the <code>$route</code> or <code>$state</code> services and the page rendering is responsibility of the directives <code>ng-view</code>/<code>ui-view</code>.</p>
+
+<p>Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) page controllers can form a hierarchy. In AngularJS we have controllers, which are with more limited scope of responsibilities. They don't accept user requests, since this is responsibility of the <code>$route</code> or <code>$state</code> services and the page rendering is responsibility of the directives <code>ng-view</code>/<code>ui-view</code>.</p>
+
 <p>Similarly to the page controllers, AngularJS controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the AngularJS controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.</p>
+
 <p>The controllers in AngularJS are quite similar to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
 Here is an example hierarchy between few controllers:</p>
-<pre class="hljs"><code><span class="xml"><span class="hljs-doctype">&lt;!doctype html&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">ng-controller</span>=<span class="hljs-value">"MainCtrl"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">ng-controller</span>=<span class="hljs-value">"ChildCtrl"</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">span</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">user.name</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">ng-click</span>=<span class="hljs-value">"click()"</span>&gt;</span>Click<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></span></code></pre><pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MainCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>, <span class="hljs-variable">$location</span>, User)</span> </span>{
-  <span class="hljs-keyword">if</span> (!User.isAuthenticated()) {
-    <span class="hljs-variable">$location</span>.path(<span class="hljs-string">'/unauthenticated'</span>);
+
+<div class="highlight highlight-HTML"><pre>&lt;!doctype html&gt;
+&lt;<span class="pl-ent">html</span>&gt;
+  &lt;<span class="pl-ent">head</span>&gt;
+  &lt;/<span class="pl-ent">head</span>&gt;
+  &lt;<span class="pl-ent">body</span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>MainCtrl<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>ChildCtrl<span class="pl-pds">"</span></span>&gt;
+      &lt;<span class="pl-ent">span</span>&gt;{{user.name}}&lt;/<span class="pl-ent">span</span>&gt;
+      &lt;<span class="pl-ent">button</span> <span class="pl-e">ng-click</span>=<span class="pl-s"><span class="pl-pds">"</span>click()<span class="pl-pds">"</span></span>&gt;Click&lt;/<span class="pl-ent">button</span>&gt;
+    &lt;/<span class="pl-ent">div</span>&gt;
+  &lt;/<span class="pl-ent">body</span>&gt;
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+
+<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">$location</span>, <span class="pl-smi">User</span>) {
+  <span class="pl-k">if</span> (<span class="pl-k">!</span>User.<span class="pl-c1">isAuthenticated</span>()) {
+    $location.<span class="pl-c1">path</span>(<span class="pl-s"><span class="pl-pds">'</span>/unauthenticated<span class="pl-pds">'</span></span>);
   }
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ChildCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>, User)</span> </span>{
-  <span class="hljs-variable">$scope</span>.click = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-    alert(<span class="hljs-string">'You clicked me!'</span>);
+<span class="pl-k">function</span> <span class="pl-en">ChildCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">User</span>) {
+  <span class="pl-c1">$scope</span>.<span class="pl-en">click</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-c1">alert</span>(<span class="pl-s"><span class="pl-pds">'</span>You clicked me!<span class="pl-pds">'</span></span>);
   };
-  <span class="hljs-variable">$scope</span>.user = User.get(<span class="hljs-number">0</span>);
-}</code></pre><p>This example aims to illustrates the most trivial way to reuse logic by using a base controller, anyway in production applications I don&#39;t recommend you to put your authorization logic in the controllers. The access to the different routes could be determined on a higher level of abstraction.</p>
-<p>The <code>ChildCtrl</code> is responsible for handling actions such as clicking the button with label <code>&quot;Click&quot;</code> and exposing the model to the view, by attaching it to the scope.</p>
-<h3 id="others">Others</h3>
-<h4 id="module-pattern">Module Pattern</h4>
+  $scope.<span class="pl-c1">user</span> <span class="pl-k">=</span> User.<span class="pl-c1">get</span>(<span class="pl-c1">0</span>);
+}</pre></div>
+
+<p>This example aims to illustrates the most trivial way to reuse logic by using a base controller, anyway in production applications I don't recommend you to put your authorization logic in the controllers. The access to the different routes could be determined on a higher level of abstraction.</p>
+
+<p>The <code>ChildCtrl</code> is responsible for handling actions such as clicking the button with label <code>"Click"</code> and exposing the model to the view, by attaching it to the scope.</p>
+
+<h3>
+<a id="others" class="anchor" href="#others" aria-hidden="true"><span class="octicon octicon-link"></span></a>Others</h3>
+
+<h4>
+<a id="module-pattern" class="anchor" href="#module-pattern" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module Pattern</h4>
+
 <p>This is actually not a design pattern from Gang of Four, neither one from P of EAA. This is a traditional JavaScript pattern, which main goal is to provide encapsulation and privacy.</p>
-<p>Using the module pattern you can achieve privacy based on the JavaScript&#39;s functional lexical scope. Each module may have zero or more private members, which are hidden in the local scope of a function. This function returns an object, which exports the public API of the given module:</p>
-<pre class="hljs"><code><span class="hljs-keyword">var</span> Page = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 
-  <span class="hljs-keyword">var</span> title;
+<p>Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may have zero or more private members, which are hidden in the local scope of a function. This function returns an object, which exports the public API of the given module:</p>
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setTitle</span><span class="hljs-params">(t)</span> </span>{
-    <span class="hljs-built_in">document</span>.title = t;
-    title = t;
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> Page <span class="pl-k">=</span> (<span class="pl-k">function</span> () {
+
+  <span class="pl-k">var</span> title;
+
+  <span class="pl-k">function</span> <span class="pl-en">setTitle</span>(<span class="pl-smi">t</span>) {
+    <span class="pl-c1">document</span>.<span class="pl-c1">title</span> <span class="pl-k">=</span> t;
+    title <span class="pl-k">=</span> t;
   }
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTitle</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-keyword">return</span> title;
+  <span class="pl-k">function</span> <span class="pl-en">getTitle</span>() {
+    <span class="pl-k">return</span> title;
   }
 
-  <span class="hljs-keyword">return</span> {
-    setTitle: setTitle,
-    getTitle: getTitle
+  <span class="pl-k">return</span> {
+    setTitle<span class="pl-k">:</span> setTitle,
+    getTitle<span class="pl-k">:</span> getTitle
   };
-}());</code></pre><p>In the example above we have IIFE (Immediately-Invoked Function Expression), which after being called returns an object, with two methods (<code>setTitle</code> and <code>getTitle</code>). The returned object is being assigned to the <code>Page</code> variable.</p>
-<p>In this case the user of the <code>Page</code> object doesn&#39;t has direct access to the <code>title</code> variable, which is defined inside the local scope of the IIFE.</p>
+}());</pre></div>
+
+<p>In the example above we have IIFE (Immediately-Invoked Function Expression), which after being called returns an object, with two methods (<code>setTitle</code> and <code>getTitle</code>). The returned object is being assigned to the <code>Page</code> variable.</p>
+
+<p>In this case the user of the <code>Page</code> object doesn't has direct access to the <code>title</code> variable, which is defined inside the local scope of the IIFE.</p>
+
 <p>The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually achieve) privacy:</p>
-<pre class="hljs"><code>app.factory(<span class="hljs-string">'foo'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">privateMember</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-comment">//body...</span>
+<div class="highlight highlight-javascript"><pre>app.<span class="pl-c1">factory</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+
+  <span class="pl-k">function</span> <span class="pl-en">privateMember</span>() {
+    <span class="pl-c">//body...</span>
   }
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">publicMember</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-comment">//body...</span>
-    privateMember();
-    <span class="hljs-comment">//body</span>
+  <span class="pl-k">function</span> <span class="pl-en">publicMember</span>() {
+    <span class="pl-c">//body...</span>
+    <span class="pl-c1">privateMember</span>();
+    <span class="pl-c">//body</span>
   }
 
-  <span class="hljs-keyword">return</span> {
-    publicMember: publicMember
+  <span class="pl-k">return</span> {
+    publicMember<span class="pl-k">:</span> publicMember
   };
-});</code></pre><p>Once we want to inject <code>foo</code> inside any other component we won&#39;t be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.</p>
-<h3 id="data-mapper">Data Mapper</h3>
+});</pre></div>
+
+<p>Once we want to inject <code>foo</code> inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.</p>
+
+<h3>
+<a id="data-mapper" class="anchor" href="#data-mapper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Mapper</h3>
+
 <blockquote>
 <p>A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.</p>
 </blockquote>
-<p class="img-container"><img src="./data-mapper.svg" alt="Data Mapper" title="Fig. 10"></p>
+
+<p><img src="https://rawgit.com/mgechev/angularjs-in-patterns/master/images/data-mapper.svg" alt="Data Mapper" title="Fig. 10"></p>
+
 <p>As the description above states, the data mapper is used for bidirectional transfer of data between a persistent data store and an in memory data representation. Usually our AngularJS application communicates with API server, which is written in any server-side language (Ruby, PHP, Java, JavaScript, etc.).</p>
+
 <p>Usually, if we have RESTful API <code>$resource</code> will help us communicate with the server in Active Record like fashion. Although, in some applications the data entities returned by the server are not in the most appropriate format, which we want to use in the front-end.</p>
+
 <p>For instance, lets assume we have application in which each user has:</p>
-<ul class="list">
+
+<ul>
 <li>name</li>
 <li>address</li>
 <li>list of friends</li>
 </ul>
-<p>And our API has the methods:</p>
-<ul class="list">
-<li><code>GET /user/:id</code> - returns the user&#39;s name and the address of given user</li>
-<li><code>GET /friends/:id</code> - returns the list of friends of given user</li>
-</ul>
-<p>Possible solution is to have two different services, one for the first method and one for the second one. Probably more useful solution would be if we have a single service called <code>User</code>, which loads the user&#39;s friends when we request the user:</p>
-<pre class="hljs"><code>app.factory(<span class="hljs-string">'User'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($q)</span> </span>{
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">User</span><span class="hljs-params">(name, address, friends)</span> </span>{
-    <span class="hljs-keyword">this</span>.name = name;
-    <span class="hljs-keyword">this</span>.address = address;
-    <span class="hljs-keyword">this</span>.friends = friends;
+<p>And our API has the methods:</p>
+
+<ul>
+<li>
+<code>GET /user/:id</code> - returns the user's name and the address of given user</li>
+<li>
+<code>GET /friends/:id</code> - returns the list of friends of given user</li>
+</ul>
+
+<p>Possible solution is to have two different services, one for the first method and one for the second one. Probably more useful solution would be if we have a single service called <code>User</code>, which loads the user's friends when we request the user:</p>
+
+<div class="highlight highlight-javascript"><pre>app.<span class="pl-c1">factory</span>(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$q</span>) {
+
+  <span class="pl-k">function</span> <span class="pl-en">User</span>(<span class="pl-smi">name</span>, <span class="pl-smi">address</span>, <span class="pl-smi">friends</span>) {
+    <span class="pl-v">this</span>.<span class="pl-c1">name</span> <span class="pl-k">=</span> name;
+    <span class="pl-v">this</span>.<span class="pl-c1">address</span> <span class="pl-k">=</span> address;
+    <span class="pl-v">this</span>.<span class="pl-c1">friends</span> <span class="pl-k">=</span> friends;
   }
 
-  User.<span class="hljs-keyword">get</span> = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> </span>{
-    <span class="hljs-keyword">var</span> user = $http.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/user/'</span> + params.id),
-        friends = $http.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/friends/'</span> + params.id);
-    $q.all([user, friends])
-    .then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(user, friends)</span> </span>{
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> User(user.name, user.address, friends);
+  <span class="pl-c1">User</span>.<span class="pl-en">get</span> <span class="pl-k">=</span> <span class="pl-k">function</span> (<span class="pl-smi">params</span>) {
+    <span class="pl-k">var</span> user <span class="pl-k">=</span> $http.<span class="pl-c1">get</span>(<span class="pl-s"><span class="pl-pds">'</span>/user/<span class="pl-pds">'</span></span> <span class="pl-k">+</span> params.<span class="pl-c1">id</span>),
+        friends <span class="pl-k">=</span> $http.<span class="pl-c1">get</span>(<span class="pl-s"><span class="pl-pds">'</span>/friends/<span class="pl-pds">'</span></span> <span class="pl-k">+</span> params.<span class="pl-c1">id</span>);
+    $q.<span class="pl-c1">all</span>([user, friends])
+    .<span class="pl-c1">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">user</span>, <span class="pl-smi">friends</span>) {
+      <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">User</span>(user.<span class="pl-c1">name</span>, user.<span class="pl-c1">address</span>, friends);
     });
   };
-  <span class="hljs-keyword">return</span> User;
-});</code></pre><p>This way we create pseudo-data mapper, which adapts our API according to the SPA requirements.</p>
+  <span class="pl-k">return</span> User;
+});</pre></div>
+
+<p>This way we create pseudo-data mapper, which adapts our API according to the SPA requirements.</p>
+
 <p>We can use the <code>User</code> service by:</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MainCtrl</span><span class="hljs-params">(<span class="hljs-variable">$scope</span>, User)</span> </span>{
-  User.get({ id: <span class="hljs-number">1</span> })
-  .then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
-    <span class="hljs-variable">$scope</span>.user = data;
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">User</span>) {
+  User.<span class="pl-c1">get</span>({ id<span class="pl-k">:</span> <span class="pl-c1">1</span> })
+  .<span class="pl-c1">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+    $scope.<span class="pl-c1">user</span> <span class="pl-k">=</span> data;
   });
-}</code></pre><p>And the following partial:</p>
-<pre class="hljs"><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    Name: </span><span class="hljs-expression">{{<span class="hljs-variable">user.name</span>}}</span><span class="xml">
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    Address: </span><span class="hljs-expression">{{<span class="hljs-variable">user.address</span>}}</span><span class="xml">
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+}</pre></div>
+
+<p>And the following partial:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">div</span>&gt;
+  &lt;<span class="pl-ent">div</span>&gt;
+    Name: {{user.name}}
+  &lt;/<span class="pl-ent">div</span>&gt;
+  &lt;<span class="pl-ent">div</span>&gt;
+    Address: {{user.address}}
+  &lt;/<span class="pl-ent">div</span>&gt;
+  &lt;<span class="pl-ent">div</span>&gt;
     Friends with ids:
-    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">ng-repeat</span>=<span class="hljs-value">"friend in user.friends"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">friend</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></span></code></pre><h3 id="observer-pattern-as-an-external-service">Observer Pattern as an External Service</h3>
-<h5 id="about">About</h5>
+    &lt;<span class="pl-ent">ul</span>&gt;
+      &lt;<span class="pl-ent">li</span> <span class="pl-e">ng-repeat</span>=<span class="pl-s"><span class="pl-pds">"</span>friend in user.friends<span class="pl-pds">"</span></span>&gt;{{friend}}&lt;/<span class="pl-ent">li</span>&gt;
+    &lt;/<span class="pl-ent">ul</span>&gt;
+  &lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<h3>
+<a id="observer-pattern-as-an-external-service" class="anchor" href="#observer-pattern-as-an-external-service" aria-hidden="true"><span class="octicon octicon-link"></span></a>Observer Pattern as an External Service</h3>
+
+<h5>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h5>
+
 <p>Below is an example taken from <a href="https://github.com/greglbd/angular-observer-pattern">here</a>. This is an angular factory which creates a service implementing the Observer Pattern.  It works well with the ControllerAs method of working as it can be much more efficient that <code>$scope.$watch</code> and more specific to a unique scope or object than $emit and $broadcast when used correctly.</p>
+
 <p><strong>Use Case:</strong> You would use this pattern to communicate between 2 controllers that use the same model but are not connected in anyway.</p>
-<h5 id="controller-example">Controller Example</h5>
+
+<h5>
+<a id="controller-example" class="anchor" href="#controller-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Controller Example</h5>
+
 <p>Below example shows how to attach, notify and detach an event.</p>
-<pre class="hljs"><code>angular.module(<span class="hljs-string">'app.controllers'</span>)
-  .controller(<span class="hljs-string">'ObserverExample'</span>, ObserverExample);
-ObserverExample.<span class="hljs-variable">$inject</span>= [<span class="hljs-string">'ObserverService'</span>, <span class="hljs-string">'$timeout'</span>];
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ObserverExample</span><span class="hljs-params">(ObserverService, <span class="hljs-variable">$timeout</span>)</span> </span>{
-  <span class="hljs-keyword">var</span> vm = this;
-  <span class="hljs-keyword">var</span> id = <span class="hljs-string">'vm1'</span>;
+<div class="highlight highlight-javascript"><pre>angular.<span class="pl-c1">module</span>(<span class="pl-s"><span class="pl-pds">'</span>app.controllers<span class="pl-pds">'</span></span>)
+  .<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>ObserverExample<span class="pl-pds">'</span></span>, ObserverExample);
+ObserverExample.$inject<span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>ObserverService<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>$timeout<span class="pl-pds">'</span></span>];
 
-  ObserverService.attach(callbackFunction, <span class="hljs-string">'let_me_know'</span>, id)
+<span class="pl-k">function</span> <span class="pl-en">ObserverExample</span>(<span class="pl-smi">ObserverService</span>, <span class="pl-smi">$timeout</span>) {
+  <span class="pl-k">var</span> vm <span class="pl-k">=</span> <span class="pl-v">this</span>;
+  <span class="pl-k">var</span> id <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>vm1<span class="pl-pds">'</span></span>;
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callbackFunction</span><span class="hljs-params">(params)</span></span>{
-    console.log(<span class="hljs-string">'now i know'</span>);
-    ObserverService.detachByEvent(<span class="hljs-string">'let_me_know'</span>)
+  ObserverService.<span class="pl-c1">attach</span>(callbackFunction, <span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>, id)
+
+  <span class="pl-k">function</span> <span class="pl-en">callbackFunction</span>(<span class="pl-smi">params</span>){
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>now i know<span class="pl-pds">'</span></span>);
+    ObserverService.<span class="pl-c1">detachByEvent</span>(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>)
   }
 
-  <span class="hljs-variable">$timeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-    ObserverService.notify(<span class="hljs-string">'let_me_know'</span>);
-  }, <span class="hljs-number">5000</span>);
-}</code></pre><p>Alternative way to remove event</p>
-<pre class="hljs"><code>angular.module(<span class="hljs-string">'app.controllers'</span>)
-  .controller(<span class="hljs-string">'ObserverExample'</span>, ObserverExample);
-ObserverExample.<span class="hljs-variable">$inject</span>= [<span class="hljs-string">'ObserverService'</span>, <span class="hljs-string">'$timeout'</span>, <span class="hljs-string">'$scope'</span>];
+  $<span class="pl-c1">timeout</span>(<span class="pl-k">function</span>(){
+    ObserverService.<span class="pl-c1">notify</span>(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>);
+  }, <span class="pl-c1">5000</span>);
+}</pre></div>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ObserverExample</span><span class="hljs-params">(ObserverService, <span class="hljs-variable">$timeout</span>, <span class="hljs-variable">$scope</span>)</span> </span>{
-  <span class="hljs-keyword">var</span> vm = this;
-  <span class="hljs-keyword">var</span> id = <span class="hljs-string">'vm1'</span>;
-  ObserverService.attach(callbackFunction, <span class="hljs-string">'let_me_know'</span>, id)
+<p>Alternative way to remove event</p>
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callbackFunction</span><span class="hljs-params">(params)</span></span>{
-    console.log(<span class="hljs-string">'now i know'</span>);
+<div class="highlight highlight-javascript"><pre>angular.<span class="pl-c1">module</span>(<span class="pl-s"><span class="pl-pds">'</span>app.controllers<span class="pl-pds">'</span></span>)
+  .<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>ObserverExample<span class="pl-pds">'</span></span>, ObserverExample);
+ObserverExample.$inject<span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>ObserverService<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>$timeout<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>$scope<span class="pl-pds">'</span></span>];
+
+<span class="pl-k">function</span> <span class="pl-en">ObserverExample</span>(<span class="pl-smi">ObserverService</span>, <span class="pl-smi">$timeout</span>, <span class="pl-smi">$scope</span>) {
+  <span class="pl-k">var</span> vm <span class="pl-k">=</span> <span class="pl-v">this</span>;
+  <span class="pl-k">var</span> id <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>vm1<span class="pl-pds">'</span></span>;
+  ObserverService.<span class="pl-c1">attach</span>(callbackFunction, <span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>, id)
+
+  <span class="pl-k">function</span> <span class="pl-en">callbackFunction</span>(<span class="pl-smi">params</span>){
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>now i know<span class="pl-pds">'</span></span>);
   }
 
-  <span class="hljs-variable">$timeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-    ObserverService.notify(<span class="hljs-string">'let_me_know'</span>);
-  }, <span class="hljs-number">5000</span>);
+  $<span class="pl-c1">timeout</span>(<span class="pl-k">function</span>(){
+    ObserverService.<span class="pl-c1">notify</span>(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>);
+  }, <span class="pl-c1">5000</span>);
 
-  <span class="hljs-comment">// Cleanup listeners when this controller is destroyed</span>
-  <span class="hljs-variable">$scope</span>.<span class="hljs-variable">$on</span>(<span class="hljs-string">'$destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handler</span><span class="hljs-params">()</span> </span>{
-    ObserverService.detachByEvent(<span class="hljs-string">'let_me_know'</span>)
+  <span class="pl-c">// Cleanup listeners when this controller is destroyed</span>
+  $scope.$<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>$destroy<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> <span class="pl-en">handler</span>() {
+    ObserverService.<span class="pl-c1">detachByEvent</span>(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>)
   });
-}</code></pre><h2 id="references">References</h2>
-<ol class="list">
-<li><a href="https://en.wikipedia.org/wiki">Wikipedia</a>. The source of all brief descriptions of the design patterns is wikipedia.</li>
-<li><a href="https://docs.angularjs.org">AngularJS&#39; documentation</a></li>
-<li><a href="https://github.com/angular/angular.js">AngularJS&#39; git repository</a></li>
+}</pre></div>
+
+<h2>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h2>
+
+<ol>
+<li>
+<a href="https://en.wikipedia.org/wiki">Wikipedia</a>. The source of all brief descriptions of the design patterns is wikipedia.</li>
+<li><a href="https://docs.angularjs.org">AngularJS' documentation</a></li>
+<li><a href="https://github.com/angular/angular.js">AngularJS' git repository</a></li>
 <li><a href="http://msdn.microsoft.com/en-us/library/ff649595.aspx">Page Controller</a></li>
 <li><a href="http://martinfowler.com/books/eaa.html">Patterns of Enterprise Application Architecture (P of EAA)</a></li>
 <li><a href="http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html">Using Dependancy Injection to Avoid Singletons</a></li>
 <li><a href="https://stackoverflow.com/questions/13512949/why-would-one-use-the-publish-subscribe-pattern-in-js-jquery">Why would one use the Publish/Subscribe pattern (in JS/jQuery)?</a></li>
 </ol>
 
-        </div>
-      </div>
-    </div>
-    <div id="sidebar"><ul class="nav nav-list">
-    <li><a href="#angularjs-in-patterns" class="heading heading-1">AngularJS in Patterns</a></li>
-    <li><a href="#translations" class="heading heading-2">Translations</a></li>
-    <li><a href="#abstract" class="heading heading-2">Abstract</a></li>
-    <li><a href="#introduction" class="heading heading-2">Introduction</a></li>
-    <li><a href="#angularjs-overview" class="heading heading-2">AngularJS overview</a></li>
-    <li><a href="#partials" class="heading heading-3">Partials</a></li>
-    <li><a href="#controllers" class="heading heading-3">Controllers</a></li>
-    <li><a href="#scope" class="heading heading-3">Scope</a></li>
-    <li><a href="#directives" class="heading heading-3">Directives</a></li>
-    <li><a href="#filters" class="heading heading-3">Filters</a></li>
-    <li><a href="#services" class="heading heading-3">Services</a></li>
-    <li><a href="#angularjs-patterns" class="heading heading-2">AngularJS Patterns</a></li>
-    <li><a href="#services" class="heading heading-3">Services</a></li>
-    <li><a href="#singleton" class="heading heading-4">Singleton</a></li>
-    <li><a href="#factory-method" class="heading heading-4">Factory Method</a></li>
-    <li><a href="#decorator" class="heading heading-4">Decorator</a></li>
-    <li><a href="#facade" class="heading heading-4">Facade</a></li>
-    <li><a href="#proxy" class="heading heading-4">Proxy</a></li>
-    <li><a href="#active-record" class="heading heading-4">Active Record</a></li>
-    <li><a href="#intercepting-filters" class="heading heading-4">Intercepting Filters</a></li>
-    <li><a href="#directives" class="heading heading-3">Directives</a></li>
-    <li><a href="#composite" class="heading heading-4">Composite</a></li>
-    <li><a href="#interpreter" class="heading heading-3">Interpreter</a></li>
-    <li><a href="#template-view" class="heading heading-4">Template View</a></li>
-    <li><a href="#scope" class="heading heading-3">Scope</a></li>
-    <li><a href="#observer" class="heading heading-4">Observer</a></li>
-    <li><a href="#chain-of-responsibilities" class="heading heading-4">Chain of Responsibilities</a></li>
-    <li><a href="#command" class="heading heading-4">Command</a></li>
-    <li><a href="#controllers" class="heading heading-3">Controllers</a></li>
-    <li><a href="#page-controller" class="heading heading-4">Page Controller</a></li>
-    <li><a href="#others" class="heading heading-3">Others</a></li>
-    <li><a href="#module-pattern" class="heading heading-4">Module Pattern</a></li>
-    <li><a href="#data-mapper" class="heading heading-3">Data Mapper</a></li>
-    <li><a href="#observer-pattern-as-an-external-service" class="heading heading-3">Observer Pattern as an External Service</a></li>
-    <li><a href="#about" class="heading heading-5">About</a></li>
-    <li><a href="#controller-example" class="heading heading-5">Controller Example</a></li>
-    <li><a href="#references" class="heading heading-2">References</a></li>
-</ul>
-    </div>
-    <div class="clear">
-    </div>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/mgechev/angularjs-in-patterns">AngularJS in Patterns</a> is maintained by <a href="https://github.com/mgechev">mgechev</a>.</span>
 
-    <div id="footer">
-      <p>By <a href="http://blog.mgechev.com/">Minko Gechev</a>.</p>
-    </div>
-  </div>
-</body>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
 </html>
