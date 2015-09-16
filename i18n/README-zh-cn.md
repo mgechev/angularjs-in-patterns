@@ -18,7 +18,7 @@
   * [Services](#services-1)
     * [单例模式 (Singleton)](#singleton)
     * [工厂方法模式 (Factory Method)](#factory-method)
-    * [修饰模式](#decorator)
+    * [修饰模式 (Decorator)](#decorator)
     * [外观模式](#facade)
     * [代理模式](#proxy)
     * [Active Record](#active-record)
@@ -171,12 +171,12 @@ All the custom elements, attributes, comments or classes could be recognized as 
 
 ### Scope
 
-在 AngularJS 中，scope 是一个开放给 partial 的 JavaScript 对象。Scope 可以包含不同的属性 - 基本数据 (primitives)、对象和函数。所有归属于 scope 的函数都可以通过解析该 scope 所对应 partial 中的 AngularJS 表达式来执行，也可以由任何构件直接呼叫该函数，which keeps reference to the scope。附属于 scope 的数据可以通过使用合适的 *directives* 来绑定到视图 (view) 上，如此所有 partial 中的修改都会映射为某个 scope 属性的变化，反之亦然。
+在 AngularJS 中，scope 是一个开放给 partial 的 JavaScript 对象。Scope 可以包含不同的属性 - 基本数据 (primitives)、对象和函数。所有归属于 scope 的函数都可以通过解析该 scope 所对应 partial 中的 AngularJS 表达式来执行，也可以由任何构件直接调用该函数，which keeps reference to the scope。附属于 scope 的数据可以通过使用合适的 *directives* 来绑定到视图 (view) 上，如此所有 partial 中的修改都会映射为某个 scope 属性的变化，反之亦然。
 <!--
 In AngularJS scope is a JavaScript object, which is exposed to the partials. The scope could contain different properties - primitives, objects or methods. All methods attached to the scope could be invoked by evaluation of AngularJS expression inside the partials associated with the given scope or direct call of the method by any component, which keeps reference to the scope. By using appropriate *directives*, the data attached to the scope could be binded to the view in such a way that each change in the partial will reflect a scope property and each change of a scope property will reflect the partial.
 -->
 
-AngularJS 应用中的 scope 还有另一个重要的特质，即它们都被连接到一条原型链 (prototypical chain) 上 (除了那些被表明为*独立 (isolated)* 的 scope)。在这种方式中，任何子 scope 都能呼叫属于其父母的函数，因为这些函数是该 scope 的直接或间接原型 (prototype) 的属性。
+AngularJS 应用中的 scope 还有另一个重要的特质，即它们都被连接到一条原型链 (prototypical chain) 上 (除了那些被表明为*独立 (isolated)* 的 scope)。在这种方式中，任何子 scope 都能调用属于其父母的函数，因为这些函数是该 scope 的直接或间接原型 (prototype) 的属性。
 <!--
 Another important characteristics of the scopes of any AngularJS application is that they are connected into a prototypical chain (except scopes, which are explicitly stated as *isolated*). This way any child scope will be able to invoke methods of its parents since they are properties of its direct or indirect prototype.
 -->
@@ -328,6 +328,7 @@ myModule.service('Developer', function () {
   };
 });
 ```
+
 Service 可以被注入到任何支持依赖注入机制的构件中，例如 controller、其它 service、filter 和 directive。
 <!--
 The service could be injected inside any component, which supports dependency injection (controllers, other services, filters, directives).
@@ -340,7 +341,7 @@ function MyCtrl(Developer) {
 }
 ```
 
-## AngularJS 模式
+## <a name='angularjs-patterns'>AngularJS 模式</a>
 
 我们将在接下来的几节中探讨传统的设计和架构模式是如何在 AngularJS 的各个构件中组合实现的。并在最后一节讨论使用 AngularJS (或其它框架) 开发单页应用程序时常用的架构模式。
 <!--
@@ -351,24 +352,44 @@ In the last chapter we are going to take a look at some architectural patterns, 
 
 ### Services
 
-#### 单例模式 (Singleton)
+#### <a name='singleton'>单例模式 (Singleton)</a>
 
+>单例模式是一种软件设计模式。在应用这个模式时，单例对象的类必须保证只有一个实例存在。许多时候整个系统只需要拥有一个的全局对象，这样有利于我们协调系统整体的行为。如果系统在仅有一个对象或者有限个数的对象实例的环境中运行更加高效，也时常被归属为单例模式概念。
+<!--
 >The singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects.
+-->
 
+以下 UML 图展示了单例设计模式。
+<!--
 In the UML diagram bellow is illustrated the singleton design pattern.
+-->
 
 ![Singleton](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/singleton.svg "Fig. 1")
 
+AngularJS 会按照以下算法来解决构件所需要的依赖关系：
+<!--
 When given dependency is required by any component, AngularJS resolves it using the following algorithm:
+-->
 
+- 提取所依赖组件的名称，并查询哈希表 (该表是定义在一个闭包中，所以外部不可见)。
+- 如果此依赖组件已经存在于应用中，AngularJS 会在需要的时候以参数的形式将其传递给对应的构件。
+- 如果所依赖的组件不存在：
+  - AngularJS 首先会调用其提供者的生成函数，如 `$get`。值得注意的是，创建此依赖组件的实例时，可能会对算法内容进行递归调用，以解决该组件本事的依赖关系。
+  - AngularJS 然后会将其缓存在上面提到的哈希表中。
+  - AngularJS 最后会在需要的时候将其传递给对应组件。
+<!--
 - Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).
 - If the dependency exists AngularJS pass it as parameter to the component, which requires it.
 - If the dependency does not exists:
   - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm, for resolving all the dependencies required by the given dependency. This process may lead to circular dependency.
   - AngularJS caches it inside the hash map mentioned above.
   - AngularJS passes it as parameter to the component, which requires it.
+-->
 
+以 AngularJS 源代码中 `getService` 函数的实现为例：
+<!--
 We can take better look at the AngularJS' source code, which implements the method `getService`:
+-->
 
 ```JavaScript
 function getService(serviceName) {
@@ -394,14 +415,27 @@ function getService(serviceName) {
 }
 ```
 
+由于每个 service 只会被实例化一次，我们可以将每个 service 看成是一个单例。缓存则可以被认为是单例管理器。这里与上面展示的 UML 图有微小的区别，那就是我们并不将单例的静态私有的 reference 保存在其构造 (constructor) 函数中，而是将 reference 保存在单例管理器中 (以上代码中的 `cache`)。
+<!--
 We can think of each service as a singleton, because each service is instantiated no more than a single time. We can consider the cache as a singleton manager. There is a slight variation from the UML diagram illustrated above because instead of keeping static, private reference to the singleton inside its constructor function, we keep the reference inside the singleton manager (stated in the snippet above as `cache`).
+-->
 
+如此 service 实际还是单例，但并不是以传统单例设计模式的方法所实现。相比之下，这种方式有如下优点：
+<!--
 This way the services are actually singletons but not implemented through the Singleton pattern, which provides a few advantages over the standard implementation:
+-->
 
+- 增强代码的可测试性
+- 控制单例对象的创建 (在本节例子中，IoC 容器通过懒惰式单例实例化方式帮我们进行控制)
+<!--
 - It improves the testability of your source code
 - You can control the creation of singleton objects (in our case the IoC container controls it for us, by instantiating the singletons lazy)
+-->
 
+对于更深入的讨论，可以参考 Misko Hevery 在 Google Testing blog 上的[文章](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html)。
+<!--
 For further discussion on this topic Misko Hevery's [article](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) in the Google Testing blog could be considered.
+-->
 
 #### 工厂方法模式 (Factory Method)
 
@@ -493,7 +527,7 @@ There are a few benefits of using the factory method pattern in this case, becau
 - Resolving all the dependencies required by the component
 - The number of instances the given component is allowed to have (for services and filters only a single one but multiple for the controllers)
 
-#### Decorator
+#### <a name='decorator'>修饰模式 (Decorator)</a>
 
 >The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
 
