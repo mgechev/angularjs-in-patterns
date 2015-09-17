@@ -25,7 +25,7 @@
     * [Intercepting Filters](#intercepting-filters)
   * [Directives](#directives-1)
     * [Composite](#composite)
-  * [Interpreter](#interpreter)
+    * [Interpreter](#interpreter)
     * [Template View](#template-view)
   * [Scope](#scope-1)
     * [Observer](#observer)
@@ -663,7 +663,7 @@ From the first example we can note that the whole DOM tree is a composition of e
 
 In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives. Theoretically we can nest the components infinitely until we reach a leaf node.
 
-### Interpreter
+#### Interpreter
 
 >In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.
 
@@ -1016,7 +1016,7 @@ app.factory('foo', function () {
 
 Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.
 
-### Data Mapper
+#### Data Mapper
 
 >A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.
 
@@ -1092,7 +1092,7 @@ And the following partial:
 </div>
 ```
 
-### Observer Pattern as an External Service
+#### Observer Pattern as an External Service
 
 ##### About
 
