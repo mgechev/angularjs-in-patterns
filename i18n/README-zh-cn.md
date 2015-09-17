@@ -19,37 +19,38 @@
     * [单例模式 (Singleton)](#singleton)
     * [工厂方法模式 (Factory Method)](#factory-method)
     * [修饰模式 (Decorator)](#decorator)
-    * [外观模式](#facade)
-    * [代理模式](#proxy)
-    * [Active Record](#active-record)
-    * [截取筛选器](#intercepting-filters)
+    * [外观模式 (Facade)](#facade)
+    * [代理模式 (Proxy)](#proxy)
+    * [Active Record 模式](#active-record)
+    * [截取筛选器 (Intercepting Filters)](#intercepting-filters)
   * [Directives](#directives-1)
-    * [组合模式](#composite)
-  * [Interpreter](#interpreter)
-    * [Template View](#template-view)
+    * [组合模式 (Composite)](#composite)
+    * [解释器模式 (Interpreter)](#interpreter)
+    * [模版视图模式 (Template View)](#template-view)
   * [Scope](#scope-1)
-    * [观察者模式](#observer)
-    * [责任链模式](#chain-of-responsibilities)
-    * [命令模式](#command)
+    * [观察者模式 (Observer)](#observer)
+    * [责任链模式 (Chain of Responsibilities)](#chain-of-responsibilities)
+    * [命令模式 (Command)](#command)
   * [Controller](#controller-1)
-    * [页面控制器](#page-controller)
+    * [页面控制器 (Page Controller)](#page-controller)
   * [其它](#others)
-    * [模块模式](#module-pattern)
-    * [数据映射模式](#data-mapper)
-    * [Observer Pattern as an External Service](#observer-pattern-as-an-external-service)
+    * [模块模式 (Module Pattern)](#module-pattern)
+    * [数据映射模式 (Data Mapper)](#data-mapper)
+    * [观察者模式作为外部服务 (Observer Pattern as an External Service)](#observer-pattern-as-an-external-service)
 * [参考文献](#references)
 
 <!--endtoc-->
 
 ## <a name='translations'>译本</a>
 
-- [日文](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ja-jp.md) 译者：[morizotter](https://twitter.com/morizotter)
-- [俄文](http://habrahabr.ru/post/250149/)
-- [法文](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md) 译者：[manekinekko](https://github.com/manekinekko)
+- [英文原文](https://github.com/mgechev/angularjs-in-patterns/blob/master/README.md) 作者：[mgechev](https://github.com/mgechev)
+- [日文翻译](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ja-jp.md) 译者：[morizotter](https://twitter.com/morizotter)
+- [法文翻译](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md) 译者：[manekinekko](https://github.com/manekinekko)
+- [俄文翻译](http://habrahabr.ru/post/250149/)
 
 ## <a name='abstract'>摘要</a>
 
-学习新事物的最好方式之一就是观察其如何运用整合已知的知识。本文将介绍基本的面向对象、设计模式和架构模式概念，而非向读者传授如何熟练使用设计或架构模式。本文的主旨是细述各种软件设计和架构模式是如何运用在 AngularJS 或者任何单页 AngularJS 应用中。
+学习新事物的最好方式之一就是观察其如何运用整合已知的知识。本文将介绍基本的面向对象、设计模式和架构模式概念，而非向读者传授如何熟练使用这些设计或架构模式。本文的主旨是细述各种软件设计和架构模式是如何运用在 AngularJS 或者任何单页 AngularJS 应用中。
 <!--
 One of the best ways to learn something new is to see how the things you already know are used in it.
 This document does not intend to make its readers familiar with the design or architectural patterns; it suggests basic understanding of the concepts of the OOP, design patterns and architectural patterns.
@@ -537,7 +538,7 @@ From the example above we can notice how the `$get` method is actually used:
 instanceInjector.invoke(provider.$get, provider, undefined, servicename)
 ```
 
-上面这个代码片段调用了 `instanceInjector` 的 `invoke` 函数，其中第一个参数就是某服务的工厂方法 (即 `$get`)。在 `invoke` 内部，`annotate` 函数又将该工厂方法作为其第一个参数。如代码所示，`annotate` 使用 AngularJS 的依赖注入机制来解决所有依赖关系。当所有依赖关系都满足后，工厂方法函数就会被调用：`fn.apply(self, args)`。
+上面这个代码片段调用了 `instanceInjector` 的 `invoke` 函数，其中第一个参数就是某 service 的工厂方法 (即 `$get`)。在 `invoke` 内部，`annotate` 函数又将该工厂方法作为其第一个参数。如代码所示，`annotate` 使用 AngularJS 的依赖注入机制来解决所有依赖关系。当所有依赖关系都满足后，工厂方法函数就会被调用：`fn.apply(self, args)`。
 <!-- 
 The snippet above calls the `invoke` method of `instanceInjector` with the factory method (i.e. `$get`) of given service, as first argument. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS, which was considered above. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
 -->
@@ -552,9 +553,9 @@ If we think in terms of the UML diagram above we can call the provider a "Concre
 There are a few benefits of using the factory method pattern in this case, because of the indirection it creates. This way the framework can take care of the boilerplates during the instantiation of new components like:
 -->
 
-- 最恰当的时候来完成组件所需的实例化过程
+- 选择最恰当的时机来完成组件所需的实例化过程
 - 解决组件所需的所有依赖关系
-- 给定组件所允许存在的实例个数 (对于 service 和 filter 来说只有一个，而 controller 可以有多个实例)
+- 设定组件所允许存在的实例个数 (对于 service 和 filter 来说只有一个，而 controller 可以有多个实例)
 
 <!--
 - The most appropriate moment, when the component needs to be instantiated
@@ -563,14 +564,14 @@ There are a few benefits of using the factory method pattern in this case, becau
 -->
 
 #### <a name='decorator'>修饰模式 (Decorator)</a>
->修饰模式又被称为 wrapper，与 Adapter 模式的别名一样。它是一种可以动态或静态的往一个独立对象中添加新的行为，而不影响同一类所生成的其它对象的行为的设计模式。
+>修饰模式又被称为 wrapper，与适配器模式的别名一样。它是一种可以动态或静态的往一个独立对象中添加新行为，而不影响同一个类所生成的其它对象的行为的设计模式。
 <!--
 >The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
 -->
 
 ![Decorator](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/decorator.svg "Fig. 4")
 
-AngularJS 已经提供了这种方式来扩展/增强现有 service 的功能。在这里通过使用 `$provide` 的 `decorator` 函数，我们可以在第三方已经定义和使用的 service 上创建一个“wrapper”：
+AngularJS 已经提供了这种方式来扩展/增强现有 service 的功能。下面通过使用 `$provide` 的 `decorator` 函数，我们可以在第三方现有的 service 上创建一个“wrapper”：
 <!--
 AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
 -->
@@ -603,19 +604,30 @@ myModule.config(function ($provide) {
 });
 ```
 
-上述例子定义了一个名为 `foo` 的新 service。在 `config` 中，回调了 `$provide.decorator` 函数，其第一个参数 `“foo”` 就是我们想要修饰的 service 的名称，而第二个参数则是实现修饰内容的函数。`$delegate` 则保持引用原有 `foo` service。通过使用 AngularJS 的依赖注入机制，这个本地依赖的 reference 是以构造函数的第一个参数传递。在这里，我们对 service 的修饰是重写其 `bar` 函数。实际修饰内容只是多执行一条 `console.log 语句` - `console.log('Decorated');`，然后继续在对应的上下文中调用原有 `bar` 函数。
+上述例子定义了一个名为 `foo` 的新 service。在 `config` 中，回调了 `$provide.decorator` 函数，其第一个参数 `“foo”` 就是我们想要修饰的 service 的名称，而第二个参数则是实现修饰内容的函数。`$delegate` 则保持引用原有 `foo` service。通过使用 AngularJS 的依赖注入机制，这个本地依赖的引用 (reference) 是以构造函数的第一个参数传递。在这里，我们对 service 的修饰是重写其 `bar` 函数。实际修饰内容只是多执行一条 `console.log` 语句 - `console.log('Decorated');`，然后继续在对应的上下文中调用原有 `bar` 函数。
 <!--
 The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument of the constructor function.
 We decorate the service by overriding its method `bar`. The actual decoration is simply extending `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method with the appropriate context.
 -->
 
-在需要修改第三方 service 的功能时，使用这种模式特别有用。如果需要多个类似功能的修饰时 (例如函数的性能测量，授权，日志记录等)，我们可能会生成大量重复的代码，违反 DRY 原则。这种情况就需要使用[面向侧面的程序设计 (aspect-oriented programming)](http://en.wikipedia.org/wiki/Aspect-oriented_programming)。目前我所知的 AngularJS 的唯一 AOP 框架是 [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop)。
+在需要修改第三方 service 的功能时，使用这种模式特别有用。如果需要使用多个类似功能的修饰 (例如函数的性能测量，授权，日志记录等)，我们可能会生成大量重复的代码，因而违反 DRY 原则。这种情况就需要使用[面向侧面的程序设计 (aspect-oriented programming)](http://en.wikipedia.org/wiki/Aspect-oriented_programming)。目前我所知的 AngularJS 的唯一 AOP 框架是 [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop)。
 <!--
 Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use [aspect-oriented programming](http://en.wikipedia.org/wiki/Aspect-oriented_programming). The only AOP framework for AngularJS I'm aware of could be found at [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop).
 -->
 
-#### Facade
+#### <a name='facade'>外观模式 (Facade)</a>
 
+>Facade 是为大规模代码 (例如类库) 提供简化接口的对象。Facade 可以：
+
+>1. 由于其针对常见任务有各种易用函数，可以让软件库更易于使用、理解和测试；
+
+>2. 在某些情况下，让库更易读；
+
+>3. 减少库的内部工作对外部代码的依赖，允许系统开发时有更大的灵活度；
+
+>4. 可以将一些低劣设计的 API 包装到一个设计良好的 API 中。
+
+<!--
 >A facade is an object that provides a simplified interface to a larger body of code, such as a class library. A facade can:
 
 >1. make a software library easier to use, understand and test, since the facade has convenient methods for common tasks;
@@ -625,12 +637,19 @@ Using this pattern is especially useful when we need to modify the functionality
 >3. reduce dependencies of outside code on the inner workings of a library, since most code uses the facade, thus allowing more flexibility in developing the system;
 
 >4. wrap a poorly designed collection of APIs with a single well-designed API (as per task needs).
+-->
 
 ![Facade](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/facade.svg "Fig. 11")
 
+AngularJS 中已经有很多 facade。实际上，你每次为现有功能提供更高层级的 API 时，都是在创建 facade。
+<!--
 There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you practically create a facade.
+-->
 
+例如，让我们看看如何创建一个 `XMLHttpRequest` POST 请求：
+<!--
 For example, lets take a look how we can create an `XMLHttpRequest` POST request:
+-->
 
 ```JavaScript
 var http = new XMLHttpRequest(),
@@ -649,7 +668,11 @@ http.onreadystatechange = function () {
 }
 http.send(params);
 ```
+
+但是如果我们想要用 AngularJS 的 `$http` service 来发送数据：
+<!--
 But if we want to post this data using the AngularJS' `$http` service we can:
+-->
 
 ```JavaScript
 $http({
@@ -661,33 +684,56 @@ $http({
   alert(response);
 });
 ```
-or we can even:
 
+我们甚至可以用：
+<!--
+or we can even:
+-->
 ```JavaScript
 $http.post('/someUrl', data)
 .then(function (response) {
   alert(response);
 });
 ```
+
+第二选项使用了一个预先设定好的版本，用于向指定的 URL 创建一个 HTTP POST 请求。
+<!--
 The second option provides pre-configured version, which creates a HTTP POST request to the given URL.
+-->
 
+`$resource` 则创建了在 `$http` service 之上更高层级的抽象化。我们会在后面 [Active Record](#active-record) 和 [代理模式 (Proxy)](#proxy) 章节中更深入的探讨此 service。
+<!--
 Even higher level of abstraction is being created by `$resource`, which is build over the `$http` service. We will take a further look at this service in [Active Record](#active-record) and [Proxy](#proxy) sections.
+-->
 
-#### Proxy
+#### <a name='proxy'>代理模式 (Proxy)</a>
 
+>所谓的代理者是指一个类可以作为其它东西的接口。代理者可以作任何东西的接口：网络连接、存储器中的大对象、文件或其它昂贵或无法复制的资源。
+
+<!--
 >A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could interface to anything: a network connection, a large object in memory, a file, or some other resource that is expensive or impossible to duplicate.
+-->
 
 ![Proxy](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/proxy.svg "Fig. 9")
 
+我们可以将代理分为三种不同的类型：
+<!--
 We can distinguish three different types of proxy:
+-->
 
-- Virtual Proxy
-- Remote Proxy
-- Protection Proxy
+- 虚拟代理 (Virtual Proxy)
+- 远端代理 (Remote Proxy)
+- 保护代理 (Protection Proxy)
 
+本节将讨论虚拟代理在 AngularJS 中的实现。
+<!--
 In this sub-chapter we are going to take a look at AngularJS' implementation of Virtual Proxy.
+-->
 
+下面的代码会调用 `get` 函数，其属于一个名为 `User` 的 `$resource` 实例 ：
+<!--
 In the snippet bellow, there is a call to the `get` method of `$resource` instance, called `User`:
+-->
 
 ```JavaScript
 var User = $resource('/users/:id'),
@@ -695,9 +741,15 @@ var User = $resource('/users/:id'),
 console.log(user); //{}
 ```
 
+这里的 `console.log` 将输出一个空对象。原因是当 `User.get` 被执行时，幕后所对应的 AJAX 请求是在异步运行。当 `console.log` 被调用时，我们尚未获得 user 的内容。`User.get` 在发出 GET 请求之后，会立刻返回一个空对象，并保留指向此对象的引用。我们可以将这个对象想像成一个虚拟代理 (简单的占位器)。当客户端从服务器收到响应时，再将实际数据植入此代理对象。
+<!--
 `console.log` would outputs an empty object. Since the AJAX request, which happens behind the scene, when `User.get` is invoked, is asynchronous, we don't have the actual user when `console.log` is called. Just after `User.get` makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy (a simple placeholder), which would be populated with the actual data once the client receives response by the server.
+-->
 
+这在 AngularJS 中是如何工作的？让我们来看下面的代码：
+<!--
 How does this works with AngularJS? Well, lets consider the following snippet:
+-->
 
 ```JavaScript
 function MainCtrl($scope, $resource) {
@@ -709,22 +761,42 @@ function MainCtrl($scope, $resource) {
 ```html
 <span ng-bind="user.name"></span>
 ```
+
+当上面的代码最初执行时，`$scope` 对象内的 `user` 属性将被赋值为一个空对象 (`{}`)，这意味着 `user.name` 的值是 undefined，网页也不会渲染任何内容。一旦服务器返回请求响应，AngularJS 会将来自服务器的数据植入此对象。在下一次 `$digest` 循环中，AngularJS 将会探测到 `$scope.user` 中的变化，然后更新页面。
+<!--
 Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`), which means that `user.name` will be undefined and nothing will be rendered. Internally AngularJS will keep reference to this empty object. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
+-->
 
-#### Active Record
+#### <a name='active-record'>Active Record 模式</a>
 
+>Active Record 是一种包含数据和行为的对象。通常这些对象中的多数对象都是持久的。Active Record 对象负责处理与数据库的交流，以实现创建、更新、接收或者删除数据。It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.
+<!--
 >The Active Record object is an object, which carries both data and behavior. Usually most of the data in these objects is persistent, responsibility of the Active Record object is to take care of the communication with the database in order to create, update, retrieve or delete the data. It may delegate this responsibility to lower level objects but calls to instance or static methods of the active record object cause the database communication.
+-->
 
 ![Active Record](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/active-record.svg "Fig. 7")
 
+AngularJS 定义了一种名为 `$resource` 的 service。在 AngularJS 当前版本 (1.2+) 中，它是以非 AngularJS 核心的模块形式发布。
+<!--
 AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS' core.
+-->
 
+根据 AngularJS 文档，`$resource` 是：
+<!--
 According to the AngularJS' documentation `$resource` is:
+-->
 
+>一个用来创建资源对象的 factory，其功用是与 RESTful 服务器端数据源进行交互操作。返回收到的资源对象包含一些 action 方法以提供高层级功能，而无需使用低层级的 `$http` service。
+
+<!--
 >A factory which creates a resource object that lets you interact with RESTful server-side data sources.
 >The returned resource object has action methods which provide high-level behaviors without the need to interact with the low level $http service.
+-->
 
+`$resource` 可以按以下方式使用：
+<!--
 Here is how `$resource` could be used:
+-->
 
 ```JavaScript
 var User = $resource('/users/:id'),
@@ -736,37 +808,73 @@ var User = $resource('/users/:id'),
 user.$save();
 ```
 
+调用 `$resource` 将会给 model 实例创建一个构造函数。每个 model 实例都包含用于不同 CRUD 操作的方法函数。
+<!--
 The call of `$resource` will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operations.
+-->
 
+如此一来，我们可以用下面的形式来使用构造函数和其静态方法：
+<!--
 This way we can use the constructor function and its static methods by:
+-->
 
 ```JavaScript
 User.get({ userid: userid });
 ```
 
+以上代码会立即返回一个空对象并保留指向该对象的引用。当响应成功返回并解析后，AngularJS 会将所收到的数据植入该对象(参见[代理模式](#proxy))。
+<!--
 The code above will immediately return an empty object and keep reference to it. Once the response have been successfully returned and parsed, AngularJS will populate this object with the received data (see [proxy](#proxy)).
+-->
 
+更多有关 `$resource` 的内容请参阅 [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) 和 [AngularJS 文档](https://docs.angularjs.org/api/ngResource/service/$resource)。
+<!--
 You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
+-->
 
+由于 Martin Fowler 说过
+<!--
 Since Martin Fowler states that
+-->
 
+>Active Record 对象负责处理与数据库的通信，以实现...
+<!--
 > responsibility of the Active Record object is to take care of the communication with the databse in order to create...
+-->
 
+而 `$resource` 是用于 RESTful 服务而非数据库交互，所以它并未完整的实现 Active Record 模式。但我们还是可以认为它是“类似 Active Record 的 RESTful 通信”。
+<!--
 `$resource` does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".
+-->
 
-#### Intercepting Filters
+#### <a name='intercepting-filters'>截取筛选器 (Intercepting Filters)</a>
 
+>创建可组合的筛选器链条来完成网页请求过程中常用的预处理和后处理任务。
+<!--
 >Create a chain of composable filters to implement common pre-processing and post-processing tasks during a Web page request.
+-->
 
 ![Composite](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/intercepting-filters.svg "Fig. 3")
 
+在很多情况下，你需要对 HTTP 请求进行各种预处理和/或后处理工作。使用截取筛选器，你可以根据所给定的 HTTP 请求/响应的头部和正文内容来预处理或者后处理它们，以加入相应的日志、安全和其它信息。截取筛选器模式包含一个筛选器链条，并按照顺序对数据进行处理。每节筛选器的输出即成为下一节的输入。
+<!--
 In some cases you need to do some kind of pre and/or post processing of HTTP requests. In the case of the Intercepting Filters you pre/post process given HTTP request/response in order to include logging, security or any other concern, which is influenced by the request body or headers. Basically the Intercepting Filters pattern include a chain of filters, each of which process data in given order. The output of each filter is input of the next one.
+-->
 
+AngularJS 在 `$httpProvider` 中实作了截取筛选器。`$httpProvider` 拥有一个名为 `interceptors` 的数组，其中包含一组对象。每个对象都可能拥有以下属性：`request`、`response`、`requestError` 和 `responseError`。
+<!--
 In AngularJS we have the idea of the Intercepting Filters in `$httpProvider`. `$httpProvider` has an array property called `interceptors`, which contains a list of objects. Each object may have properties called: `request`, `response`, `requestError`, `responseError`.
+-->
 
+`requestError` 即为一个截取器，每当之前的 `request` 截取器抛出错误或者被拒绝时就会调用 `requestError`。相应的，`responseError` 则是在之前的 `response` 截取器抛出错误时被调用。
+<!--
 `requestError` is an interceptor, which gets called when a previous interceptor threw an error or resolved with a rejection, respectively `responseError` is being called when the previous `response` interceptor has thrown an error.
+-->
 
+以下是一个使用对象字面量 (object literal) 添加截取器的简单例子：
+<!--
 Here is a basic example how you can add interceptors using object literal:
+-->
 
 ```JavaScript
 $httpProvider.interceptors.push(function($q, dependency1, dependency2) {
@@ -1185,7 +1293,7 @@ app.factory('foo', function () {
 
 Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.
 
-### Data Mapper
+#### Data Mapper
 
 >A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.
 
@@ -1261,7 +1369,7 @@ And the following partial:
 </div>
 ```
 
-### Observer Pattern as an External Service
+#### Observer Pattern as an External Service
 
 ##### About
 
