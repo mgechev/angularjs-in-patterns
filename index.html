@@ -65,12 +65,7 @@
 
 <ul>
 <li><a href="#composite">Composite</a></li>
-</ul>
-</li>
-<li>
-<a href="#interpreter">Interpreter</a>
-
-<ul>
+<li><a href="#interpreter">Interpreter</a></li>
 <li><a href="#template-view">Template View</a></li>
 </ul>
 </li>
@@ -169,7 +164,7 @@ Since most of the CRUD applications has common characteristics and requirements,
 
 <p><strong>Sample partial</strong></p>
 
-<div class="highlight highlight-HTML"><pre>&lt;<span class="pl-ent">html</span> <span class="pl-e">ng-app</span>&gt;
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">html</span> <span class="pl-e">ng-app</span>&gt;
  <span class="pl-c">&lt;!-- Body tag augmented with ngController directive  --&gt;</span>
  &lt;<span class="pl-ent">body</span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>MyController<span class="pl-pds">"</span></span>&gt;
    &lt;<span class="pl-ent">input</span> <span class="pl-e">ng-model</span>=<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>&gt;
@@ -188,12 +183,12 @@ Since most of the CRUD applications has common characteristics and requirements,
 
 <p>The AngularJS controllers are JavaScript functions, which help handling the user interactions with the web application (for example mouse events, keyboard events, etc.), by attaching methods to the <em>scope</em>. All required external, for the controllers, components are provided through the Dependency Injection mechanism of AngularJS. The controllers are also responsible for providing the <em>model</em> to the partials by attaching data to the <em>scope</em>. We can think of this data as <em>view model</em>.</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MyController</span>(<span class="pl-smi">$scope</span>) {
-  $scope.<span class="pl-c1">buttonText</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Click me to change foo!<span class="pl-pds">'</span></span>;
-  $scope.<span class="pl-c1">foo</span> <span class="pl-k">=</span> <span class="pl-c1">42</span>;
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">MyController</span>(<span class="pl-smi">$scope</span>) {
+  $scope.buttonText <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Click me to change foo!<span class="pl-pds">'</span></span>;
+  $scope.foo <span class="pl-k">=</span> <span class="pl-c1">42</span>;
 
   <span class="pl-c1">$scope</span>.<span class="pl-en">changeFoo</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
-    $scope.<span class="pl-c1">foo</span> <span class="pl-k">+=</span> <span class="pl-c1">1</span>;
+    $scope.foo <span class="pl-k">+=</span> <span class="pl-c1">1</span>;
     <span class="pl-c1">alert</span>(<span class="pl-s"><span class="pl-pds">'</span>Foo changed<span class="pl-pds">'</span></span>);
   };
 }</pre></div>
@@ -216,14 +211,14 @@ Since most of the CRUD applications has common characteristics and requirements,
 
 <p>Scope inheritance is illustrated in the following example:</p>
 
-<div class="highlight highlight-HTML"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>BaseCtrl<span class="pl-pds">"</span></span>&gt;
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>BaseCtrl<span class="pl-pds">"</span></span>&gt;
   &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>child<span class="pl-pds">"</span></span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>ChildCtrl<span class="pl-pds">"</span></span>&gt;
     &lt;<span class="pl-ent">button</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>parent-method<span class="pl-pds">"</span></span> <span class="pl-e">ng-click</span>=<span class="pl-s"><span class="pl-pds">"</span>foo()<span class="pl-pds">"</span></span>&gt;Parent method&lt;/<span class="pl-ent">button</span>&gt;
     &lt;<span class="pl-ent">button</span> <span class="pl-e">ng-click</span>=<span class="pl-s"><span class="pl-pds">"</span>bar()<span class="pl-pds">"</span></span>&gt;Child method&lt;/<span class="pl-ent">button</span>&gt;
   &lt;/<span class="pl-ent">div</span>&gt;
 &lt;/<span class="pl-ent">div</span>&gt;</pre></div>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">BaseCtrl</span>(<span class="pl-smi">$scope</span>) {
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">BaseCtrl</span>(<span class="pl-smi">$scope</span>) {
   <span class="pl-c1">$scope</span>.<span class="pl-en">foo</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
     <span class="pl-c1">alert</span>(<span class="pl-s"><span class="pl-pds">'</span>Base foo<span class="pl-pds">'</span></span>);
   };
@@ -254,7 +249,7 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>Example:</p>
 
-<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">directive</span>(<span class="pl-s"><span class="pl-pds">'</span>alertButton<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+<div class="highlight highlight-source-js"><pre>myModule.directive(<span class="pl-s"><span class="pl-pds">'</span>alertButton<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
   <span class="pl-k">return</span> {
     template<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;button ng-transclude&gt;&lt;/button&gt;<span class="pl-pds">'</span></span>,
     scope<span class="pl-k">:</span> {
@@ -271,7 +266,7 @@ Each directive has a name and logic associated with it. In the simplest case the
   };
 });</pre></div>
 
-<div class="highlight highlight-HTML"><pre>&lt;<span class="pl-ent">alert</span><span class="pl-e">-button</span> <span class="pl-e">content</span>=<span class="pl-s"><span class="pl-pds">"</span>42<span class="pl-pds">"</span></span>&gt;Click me&lt;/<span class="pl-ent">alert</span><span class="pl-e">-button</span>&gt;</pre></div>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">alert</span><span class="pl-e">-button</span> <span class="pl-e">content</span>=<span class="pl-s"><span class="pl-pds">"</span>42<span class="pl-pds">"</span></span>&gt;Click me&lt;/<span class="pl-ent">alert</span><span class="pl-e">-button</span>&gt;</pre></div>
 
 <p>In the example above the tag <code>&lt;alert-button&gt;&lt;/alert-button&gt;</code> will be replaced button element. When the user clicks on the button the string <code>42</code> will be alerted.</p>
 
@@ -284,7 +279,7 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>Here is a definition of a sample filter, which changes the given string to uppercase:</p>
 
-<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">filter</span>(<span class="pl-s"><span class="pl-pds">'</span>uppercase<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+<div class="highlight highlight-source-js"><pre>myModule.filter(<span class="pl-s"><span class="pl-pds">'</span>uppercase<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
   <span class="pl-k">return</span> <span class="pl-k">function</span> (<span class="pl-smi">str</span>) {
     <span class="pl-k">return</span> (str <span class="pl-k">||</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>).<span class="pl-c1">toUpperCase</span>();
   };
@@ -292,12 +287,12 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>Inside a partial this filter could be used using the Unix's piping syntax:</p>
 
-<div class="highlight highlight-HTML"><pre>&lt;<span class="pl-ent">div</span>&gt;{{ name | uppercase }}&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span>&gt;{{ name | uppercase }}&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
 
 <p>Inside a controller the filter could be used as follows:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MyCtrl</span>(<span class="pl-smi">uppercaseFilter</span>) {
-  $scope.<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-c1">uppercaseFilter</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>); <span class="pl-c">//FOO</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">MyCtrl</span>(<span class="pl-smi">uppercaseFilter</span>) {
+  $scope.<span class="pl-c1">name</span> <span class="pl-k">=</span> uppercaseFilter(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>); <span class="pl-c">//FOO</span>
 }</pre></div>
 
 <h3>
@@ -305,9 +300,9 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>Every piece of logic, which doesn't belong to the components described above should be placed inside a service. Usually services encapsulate the domain specific logic, persistence logic, XHR, WebSockets, etc. When the controllers in the application became too "fat" the repetitive code should be placed inside a service.</p>
 
-<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">service</span>(<span class="pl-s"><span class="pl-pds">'</span>Developer<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+<div class="highlight highlight-source-js"><pre>myModule.service(<span class="pl-s"><span class="pl-pds">'</span>Developer<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
   <span class="pl-v">this</span>.<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Foo<span class="pl-pds">'</span></span>;
-  <span class="pl-v">this</span>.<span class="pl-c1">motherLanguage</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>JavaScript<span class="pl-pds">'</span></span>;
+  <span class="pl-v">this</span>.motherLanguage <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>JavaScript<span class="pl-pds">'</span></span>;
   <span class="pl-c1">this</span>.<span class="pl-en">live</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
     <span class="pl-k">while</span> (<span class="pl-c1">true</span>) {
       <span class="pl-v">this</span>.<span class="pl-c1">code</span>();
@@ -317,9 +312,9 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>The service could be injected inside any component, which supports dependency injection (controllers, other services, filters, directives).</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MyCtrl</span>(<span class="pl-smi">Developer</span>) {
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">MyCtrl</span>(<span class="pl-smi">Developer</span>) {
   <span class="pl-k">var</span> developer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Developer</span>();
-  developer.<span class="pl-c1">live</span>();
+  developer.live();
 }</pre></div>
 
 <h2>
@@ -360,17 +355,17 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>We can take better look at the AngularJS' source code, which implements the method <code>getService</code>:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">getService</span>(<span class="pl-smi">serviceName</span>) {
-  <span class="pl-k">if</span> (cache.<span class="pl-c1">hasOwnProperty</span>(serviceName)) {
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">getService</span>(<span class="pl-smi">serviceName</span>) {
+  <span class="pl-k">if</span> (cache.hasOwnProperty(serviceName)) {
     <span class="pl-k">if</span> (cache[serviceName] <span class="pl-k">===</span> <span class="pl-c1">INSTANTIATING</span>) {
-      <span class="pl-k">throw</span> $<span class="pl-c1">injectorMinErr</span>(<span class="pl-s"><span class="pl-pds">'</span>cdep<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Circular dependency found: {0}<span class="pl-pds">'</span></span>, path.<span class="pl-c1">join</span>(<span class="pl-s"><span class="pl-pds">'</span> &lt;- <span class="pl-pds">'</span></span>));
+      <span class="pl-k">throw</span> $injectorMinErr(<span class="pl-s"><span class="pl-pds">'</span>cdep<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Circular dependency found: {0}<span class="pl-pds">'</span></span>, path.<span class="pl-c1">join</span>(<span class="pl-s"><span class="pl-pds">'</span> &lt;- <span class="pl-pds">'</span></span>));
     }
     <span class="pl-k">return</span> cache[serviceName];
   } <span class="pl-k">else</span> {
     <span class="pl-k">try</span> {
       path.<span class="pl-c1">unshift</span>(serviceName);
       cache[serviceName] <span class="pl-k">=</span> <span class="pl-c1">INSTANTIATING</span>;
-      <span class="pl-k">return</span> cache[serviceName] <span class="pl-k">=</span> <span class="pl-c1">factory</span>(serviceName);
+      <span class="pl-k">return</span> cache[serviceName] <span class="pl-k">=</span> factory(serviceName);
     } <span class="pl-k">catch</span> (err) {
       <span class="pl-k">if</span> (cache[serviceName] <span class="pl-k">===</span> <span class="pl-c1">INSTANTIATING</span>) {
         <span class="pl-k">delete</span> cache[serviceName];
@@ -404,13 +399,13 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>Lets consider the following snippet:</p>
 
-<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">config</span>(<span class="pl-k">function</span> (<span class="pl-smi">$provide</span>) {
-  $provide.<span class="pl-c1">provider</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+<div class="highlight highlight-source-js"><pre>myModule.config(<span class="pl-k">function</span> (<span class="pl-smi">$provide</span>) {
+  $provide.provider(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
     <span class="pl-k">var</span> baz <span class="pl-k">=</span> <span class="pl-c1">42</span>;
     <span class="pl-k">return</span> {
       <span class="pl-c">//Factory method</span>
       $<span class="pl-en">get</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">bar</span>) {
-        <span class="pl-k">var</span> baz <span class="pl-k">=</span> bar.<span class="pl-c1">baz</span>();
+        <span class="pl-k">var</span> baz <span class="pl-k">=</span> bar.baz();
         <span class="pl-k">return</span> {
           baz<span class="pl-k">:</span> baz
         };
@@ -426,11 +421,11 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>We can dig a little bit deeper in AngularJS' implementation:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-c">//...</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">//...</span>
 
-<span class="pl-c1">createInternalInjector</span>(instanceCache, <span class="pl-k">function</span>(<span class="pl-smi">servicename</span>) {
-  <span class="pl-k">var</span> provider <span class="pl-k">=</span> providerInjector.<span class="pl-c1">get</span>(servicename <span class="pl-k">+</span> providerSuffix);
-  <span class="pl-k">return</span> instanceInjector.<span class="pl-c1">invoke</span>(provider.$get, provider, <span class="pl-c1">undefined</span>, servicename);
+createInternalInjector(instanceCache, <span class="pl-k">function</span>(<span class="pl-smi">servicename</span>) {
+  <span class="pl-k">var</span> provider <span class="pl-k">=</span> providerInjector.get(servicename <span class="pl-k">+</span> providerSuffix);
+  <span class="pl-k">return</span> instanceInjector.invoke(provider.$get, provider, <span class="pl-c1">undefined</span>, servicename);
 }, strictDi));
 
 <span class="pl-c">//...</span>
@@ -442,20 +437,20 @@ Each directive has a name and logic associated with it. In the simplest case the
   }
 
   <span class="pl-k">var</span> args <span class="pl-k">=</span> [],
-      $inject <span class="pl-k">=</span> <span class="pl-c1">annotate</span>(fn, strictDi, serviceName),
+      $inject <span class="pl-k">=</span> annotate(fn, strictDi, serviceName),
       length, i,
       key;
 
   <span class="pl-k">for</span>(i <span class="pl-k">=</span> <span class="pl-c1">0</span>, length <span class="pl-k">=</span> $inject.<span class="pl-c1">length</span>; i <span class="pl-k">&lt;</span> length; i<span class="pl-k">++</span>) {
     key <span class="pl-k">=</span> $inject[i];
     <span class="pl-k">if</span> (<span class="pl-k">typeof</span> key <span class="pl-k">!==</span> <span class="pl-s"><span class="pl-pds">'</span>string<span class="pl-pds">'</span></span>) {
-      <span class="pl-k">throw</span> $<span class="pl-c1">injectorMinErr</span>(<span class="pl-s"><span class="pl-pds">'</span>itkn<span class="pl-pds">'</span></span>,
+      <span class="pl-k">throw</span> $injectorMinErr(<span class="pl-s"><span class="pl-pds">'</span>itkn<span class="pl-pds">'</span></span>,
               <span class="pl-s"><span class="pl-pds">'</span>Incorrect injection token! Expected service name as string, got {0}<span class="pl-pds">'</span></span>, key);
     }
     args.<span class="pl-c1">push</span>(
-      locals <span class="pl-k">&amp;&amp;</span> locals.<span class="pl-c1">hasOwnProperty</span>(key)
+      locals <span class="pl-k">&amp;&amp;</span> locals.hasOwnProperty(key)
       <span class="pl-k">?</span> locals[key]
-      <span class="pl-k">:</span> <span class="pl-c1">getService</span>(key)
+      <span class="pl-k">:</span> getService(key)
     );
   }
   <span class="pl-k">if</span> (<span class="pl-k">!</span>fn.$inject) {
@@ -468,7 +463,7 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>From the example above we can notice how the <code>$get</code> method is actually used:</p>
 
-<div class="highlight highlight-JavaScript"><pre>instanceInjector.<span class="pl-c1">invoke</span>(provider.$get, provider, <span class="pl-c1">undefined</span>, servicename)</pre></div>
+<div class="highlight highlight-source-js"><pre>instanceInjector.invoke(provider.$get, provider, <span class="pl-c1">undefined</span>, servicename)</pre></div>
 
 <p>The snippet above calls the <code>invoke</code> method of <code>instanceInjector</code> with the factory method (i.e. <code>$get</code>) of given service, as first argument. Inside <code>invoke</code>'s body <code>annotate</code> is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS, which was considered above. When all dependencies are resolved the factory method is being called: <code>fn.apply(self, args)</code>.</p>
 
@@ -493,11 +488,11 @@ Each directive has a name and logic associated with it. In the simplest case the
 
 <p>AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method <code>decorator</code> of <code>$provide</code> you can create "wrapper" of any service you have previously defined or used by a third-party:</p>
 
-<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>MainCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">foo</span>) {
-  foo.<span class="pl-c1">bar</span>();
+<div class="highlight highlight-source-js"><pre>myModule.controller(<span class="pl-s"><span class="pl-pds">'</span>MainCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">foo</span>) {
+  foo.bar();
 });
 
-myModule.<span class="pl-c1">factory</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+myModule.factory(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
   <span class="pl-k">return</span> {
     <span class="pl-en">bar</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
       <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>I<span class="pl-cce">\'</span>m bar<span class="pl-pds">'</span></span>);
@@ -508,9 +503,9 @@ myModule.<span class="pl-c1">factory</span>(<span class="pl-s"><span class="pl-p
   };
 });
 
-myModule.<span class="pl-c1">config</span>(<span class="pl-k">function</span> (<span class="pl-smi">$provide</span>) {
-  $provide.<span class="pl-c1">decorator</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$delegate</span>) {
-    <span class="pl-k">var</span> barBackup <span class="pl-k">=</span> $delegate.<span class="pl-c1">bar</span>;
+myModule.config(<span class="pl-k">function</span> (<span class="pl-smi">$provide</span>) {
+  $provide.decorator(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$delegate</span>) {
+    <span class="pl-k">var</span> barBackup <span class="pl-k">=</span> $delegate.bar;
     <span class="pl-c1">$delegate</span>.<span class="pl-en">bar</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
       <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>Decorated<span class="pl-pds">'</span></span>);
       barBackup.<span class="pl-c1">apply</span>($delegate, arguments);
@@ -544,9 +539,9 @@ We decorate the service by overriding its method <code>bar</code>. The actual de
 
 <p>For example, lets take a look how we can create an <code>XMLHttpRequest</code> POST request:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">var</span> http <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">XMLHttpRequest</span>(),
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> http <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">XMLHttpRequest</span>(),
     url <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>/example/new<span class="pl-pds">'</span></span>,
-    params <span class="pl-k">=</span> <span class="pl-c1">encodeURIComponent</span>(data);
+    params <span class="pl-k">=</span> encodeURIComponent(data);
 http.<span class="pl-c1">open</span>(<span class="pl-s"><span class="pl-pds">"</span>POST<span class="pl-pds">"</span></span>, url, <span class="pl-c1">true</span>);
 
 http.<span class="pl-c1">setRequestHeader</span>(<span class="pl-s"><span class="pl-pds">"</span>Content-type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>application/x-www-form-urlencoded<span class="pl-pds">"</span></span>);
@@ -555,26 +550,26 @@ http.<span class="pl-c1">setRequestHeader</span>(<span class="pl-s"><span class=
 
 <span class="pl-c1">http</span>.<span class="pl-en">onreadystatechange</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
   <span class="pl-k">if</span>(http.<span class="pl-c1">readyState</span> <span class="pl-k">==</span> <span class="pl-c1">4</span> <span class="pl-k">&amp;&amp;</span> http.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-c1">200</span>) {
-    <span class="pl-c1">alert</span>(http.<span class="pl-c1">responseText</span>);
+    <span class="pl-c1">alert</span>(http.responseText);
   }
 }
 http.<span class="pl-c1">send</span>(params);</pre></div>
 
 <p>But if we want to post this data using the AngularJS' <code>$http</code> service we can:</p>
 
-<div class="highlight highlight-JavaScript"><pre>$<span class="pl-c1">http</span>({
+<div class="highlight highlight-source-js"><pre>$http({
   method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>POST<span class="pl-pds">'</span></span>,
   url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/example/new<span class="pl-pds">'</span></span>,
   data<span class="pl-k">:</span> data
 })
-.<span class="pl-c1">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">response</span>) {
+.then(<span class="pl-k">function</span> (<span class="pl-smi">response</span>) {
   <span class="pl-c1">alert</span>(response);
 });</pre></div>
 
 <p>or we can even:</p>
 
-<div class="highlight highlight-JavaScript"><pre>$http.<span class="pl-c1">post</span>(<span class="pl-s"><span class="pl-pds">'</span>/someUrl<span class="pl-pds">'</span></span>, data)
-.<span class="pl-c1">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">response</span>) {
+<div class="highlight highlight-source-js"><pre>$http.post(<span class="pl-s"><span class="pl-pds">'</span>/someUrl<span class="pl-pds">'</span></span>, data)
+.then(<span class="pl-k">function</span> (<span class="pl-smi">response</span>) {
   <span class="pl-c1">alert</span>(response);
 });</pre></div>
 
@@ -603,20 +598,20 @@ http.<span class="pl-c1">send</span>(params);</pre></div>
 
 <p>In the snippet bellow, there is a call to the <code>get</code> method of <code>$resource</code> instance, called <code>User</code>:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">var</span> User <span class="pl-k">=</span> $<span class="pl-c1">resource</span>(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
-    user <span class="pl-k">=</span> User.<span class="pl-c1">get</span>({ id<span class="pl-k">:</span> <span class="pl-c1">42</span> });
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> User <span class="pl-k">=</span> $resource(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
+    user <span class="pl-k">=</span> User.get({ id<span class="pl-k">:</span> <span class="pl-c1">42</span> });
 <span class="pl-en">console</span><span class="pl-c1">.log</span>(user); <span class="pl-c">//{}</span></pre></div>
 
 <p><code>console.log</code> would outputs an empty object. Since the AJAX request, which happens behind the scene, when <code>User.get</code> is invoked, is asynchronous, we don't have the actual user when <code>console.log</code> is called. Just after <code>User.get</code> makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy (a simple placeholder), which would be populated with the actual data once the client receives response by the server.</p>
 
 <p>How does this works with AngularJS? Well, lets consider the following snippet:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">$resource</span>) {
-  <span class="pl-k">var</span> User <span class="pl-k">=</span> $<span class="pl-c1">resource</span>(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
-  $scope.<span class="pl-c1">user</span> <span class="pl-k">=</span> User.<span class="pl-c1">get</span>({ id<span class="pl-k">:</span> <span class="pl-c1">42</span> });
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">$resource</span>) {
+  <span class="pl-k">var</span> User <span class="pl-k">=</span> $resource(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
+  $scope.user <span class="pl-k">=</span> User.get({ id<span class="pl-k">:</span> <span class="pl-c1">42</span> });
 }</pre></div>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>user.name<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>user.name<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
 
 <p>Initially when the snippet above executes, the property <code>user</code> of the <code>$scope</code> object will be with value an empty object (<code>{}</code>), which means that <code>user.name</code> will be undefined and nothing will be rendered. Internally AngularJS will keep reference to this empty object. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next <code>$digest</code> loop AngularJS will detect change in <code>$scope.user</code>, which will lead to update of the view.</p>
 
@@ -640,19 +635,19 @@ The returned resource object has action methods which provide high-level behavio
 
 <p>Here is how <code>$resource</code> could be used:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">var</span> User <span class="pl-k">=</span> $<span class="pl-c1">resource</span>(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> User <span class="pl-k">=</span> $resource(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
     user <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">User</span>({
       name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>,
       age <span class="pl-k">:</span> <span class="pl-c1">42</span>
     });
 
-user.$<span class="pl-c1">save</span>();</pre></div>
+user.$save();</pre></div>
 
 <p>The call of <code>$resource</code> will create a constructor function for our model instances. Each of the model instances will have methods, which could be used for the different CRUD operations.</p>
 
 <p>This way we can use the constructor function and its static methods by:</p>
 
-<div class="highlight highlight-JavaScript"><pre>User.<span class="pl-c1">get</span>({ userid<span class="pl-k">:</span> userid });</pre></div>
+<div class="highlight highlight-source-js"><pre>User.get({ userid<span class="pl-k">:</span> userid });</pre></div>
 
 <p>The code above will immediately return an empty object and keep reference to it. Once the response have been successfully returned and parsed, AngularJS will populate this object with the received data (see <a href="#proxy">proxy</a>).</p>
 
@@ -683,7 +678,7 @@ user.$<span class="pl-c1">save</span>();</pre></div>
 
 <p>Here is a basic example how you can add interceptors using object literal:</p>
 
-<div class="highlight highlight-JavaScript"><pre>$httpProvider.<span class="pl-c1">interceptors</span>.<span class="pl-c1">push</span>(<span class="pl-k">function</span>(<span class="pl-smi">$q</span>, <span class="pl-smi">dependency1</span>, <span class="pl-smi">dependency2</span>) {
+<div class="highlight highlight-source-js"><pre>$httpProvider.interceptors.<span class="pl-c1">push</span>(<span class="pl-k">function</span>(<span class="pl-smi">$q</span>, <span class="pl-smi">dependency1</span>, <span class="pl-smi">dependency2</span>) {
   <span class="pl-k">return</span> {
    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">request</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">config</span>) {
        <span class="pl-c">// same as above</span>
@@ -718,7 +713,7 @@ user.$<span class="pl-c1">save</span>();</pre></div>
 
 <p>Lets look at the following example:</p>
 
-<div class="highlight highlight-HTML"><pre>&lt;!doctype html&gt;
+<div class="highlight highlight-text-html-basic"><pre>&lt;!doctype html&gt;
 &lt;<span class="pl-ent">html</span>&gt;
   &lt;<span class="pl-ent">head</span>&gt;
   &lt;/<span class="pl-ent">head</span>&gt;
@@ -729,13 +724,13 @@ user.$<span class="pl-c1">save</span>();</pre></div>
   &lt;/<span class="pl-ent">body</span>&gt;
 &lt;/<span class="pl-ent">html</span>&gt;</pre></div>
 
-<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">directive</span>(<span class="pl-s"><span class="pl-pds">'</span>zippy<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+<div class="highlight highlight-source-js"><pre>myModule.directive(<span class="pl-s"><span class="pl-pds">'</span>zippy<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
   <span class="pl-k">return</span> {
     restrict<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>E<span class="pl-pds">'</span></span>,
     template<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;div&gt;&lt;div class="header"&gt;&lt;/div&gt;&lt;div class="content" ng-transclude&gt;&lt;/div&gt;&lt;/div&gt;<span class="pl-pds">'</span></span>,
     <span class="pl-en">link</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">scope</span>, <span class="pl-smi">el</span>) {
       el.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>.header<span class="pl-pds">'</span></span>).<span class="pl-c1">click</span>(<span class="pl-k">function</span> () {
-        el.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>.content<span class="pl-pds">'</span></span>).<span class="pl-c1">toggle</span>();
+        el.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>.content<span class="pl-pds">'</span></span>).toggle();
       });
     }
   }
@@ -747,8 +742,8 @@ user.$<span class="pl-c1">save</span>();</pre></div>
 
 <p>In the second, JavaScript, example we see that the <code>template</code> property of the directive, contains markup with <code>ng-transclude</code> directive inside it. So this means that inside the directive <code>zippy</code> we have another directive called <code>ng-transclude</code>, i.e. composition of directives. Theoretically we can nest the components infinitely until we reach a leaf node.</p>
 
-<h3>
-<a id="interpreter" class="anchor" href="#interpreter" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interpreter</h3>
+<h4>
+<a id="interpreter" class="anchor" href="#interpreter" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interpreter</h4>
 
 <blockquote>
 <p>In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.</p>
@@ -768,7 +763,7 @@ The main differences between the JavaScript expressions and AngularJS expression
 
 <p>Inside the <code>$parse</code> service are defined two main components:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-c">//Responsible for converting given string into tokens</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">//Responsible for converting given string into tokens</span>
 <span class="pl-k">var</span> Lexer;
 <span class="pl-c">//Responsible for parsing the tokens and evaluating the expression</span>
 <span class="pl-k">var</span> Parser;</pre></div>
@@ -777,7 +772,7 @@ The main differences between the JavaScript expressions and AngularJS expression
 
 <p>The terminal expressions in the AngularJS DSL are defined as follows:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">var</span> <span class="pl-c1">OPERATORS</span> <span class="pl-k">=</span> {
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> <span class="pl-c1">OPERATORS</span> <span class="pl-k">=</span> {
   <span class="pl-c">/* jshint bitwise : false */</span>
   <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">null</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(){<span class="pl-k">return</span> <span class="pl-c1">null</span>;},
   <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">true</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(){<span class="pl-k">return</span> <span class="pl-c1">true</span>;},
@@ -786,24 +781,24 @@ The main differences between the JavaScript expressions and AngularJS expression
   <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">+</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){
         <span class="pl-c">//...</span>
       },
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">*</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">*</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">/</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)/<span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">%</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">%</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">^</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">^</span><span class="pl-c1">b</span>(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">*</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">*</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">/</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">/</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">%</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">%</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">^</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">^</span>b(self, locals);},
   <span class="pl-s"><span class="pl-pds">'</span>=<span class="pl-pds">'</span></span><span class="pl-k">:</span>noop,
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">===</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>, <span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">===</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!==</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>, <span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">!==</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">==</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">==</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">!=</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&lt;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&lt;</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&gt;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&gt;</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&lt;=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&lt;=</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&gt;=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&gt;=</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&amp;&amp;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&amp;&amp;</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">||</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">||</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&amp;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">a</span>(self, locals)<span class="pl-k">&amp;</span><span class="pl-c1">b</span>(self, locals);},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">|</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> <span class="pl-c1">b</span>(self, locals)(self, locals, <span class="pl-c1">a</span>(self, locals));},
-  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>){<span class="pl-k">return</span> <span class="pl-k">!</span><span class="pl-c1">a</span>(self, locals);}
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">===</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>, <span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">===</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!==</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>, <span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">!==</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">==</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">==</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">!=</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&lt;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">&lt;</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&gt;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">&gt;</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&lt;=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">&lt;=</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&gt;=</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">&gt;=</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&amp;&amp;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">&amp;&amp;</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">||</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">||</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">&amp;</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> a(self, locals)<span class="pl-k">&amp;</span>b(self, locals);},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">|</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>,<span class="pl-smi">b</span>){<span class="pl-k">return</span> b(self, locals)(self, locals, a(self, locals));},
+  <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">!</span><span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">locals</span>, <span class="pl-smi">a</span>){<span class="pl-k">return</span> <span class="pl-k">!</span>a(self, locals);}
 };</pre></div>
 
 <p>We can think of the function associated with each terminal as implementation of the <code>AbstractExpression</code>'s interface.</p>
@@ -812,7 +807,7 @@ The main differences between the JavaScript expressions and AngularJS expression
 
 <p>Few sample AngularJS expressions are:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-c">// toUpperCase filter is applied to the result of the expression</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// toUpperCase filter is applied to the result of the expression</span>
 <span class="pl-c">// (foo) ? bar : baz</span>
 (foo) <span class="pl-k">?</span> bar <span class="pl-k">:</span> baz | toUpperCase</pre></div>
 
@@ -834,18 +829,18 @@ For example, you can embed PHP code inside HTML and create a dynamic page, you c
 
 <p>For example:</p>
 
-<div class="highlight highlight-html"><pre><span class="pl-s1">&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>template/mustache<span class="pl-pds">"</span></span>&gt;</span>
-<span class="pl-s1">  <span class="pl-k">&lt;</span>h2<span class="pl-k">&gt;</span>Names<span class="pl-k">&lt;</span>/h2<span class="pl-k">&gt;</span></span>
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-s1">&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>template/mustache<span class="pl-pds">"</span></span>&gt;</span>
+<span class="pl-s1">  <span class="pl-k">&lt;</span>h2<span class="pl-k">&gt;</span>Names<span class="pl-k">&lt;/</span>h2<span class="pl-k">&gt;</span></span>
 <span class="pl-s1">  {{#names}}</span>
-<span class="pl-s1">    <span class="pl-k">&lt;</span>strong<span class="pl-k">&gt;</span>{{name}}<span class="pl-k">&lt;</span>/strong<span class="pl-k">&gt;</span></span>
-<span class="pl-s1">  {{/names}}</span>
+<span class="pl-s1">    <span class="pl-k">&lt;</span>strong<span class="pl-k">&gt;</span>{{name}}<span class="pl-k">&lt;/</span>strong<span class="pl-k">&gt;</span></span>
+<span class="pl-s1">  {{<span class="pl-k">/</span>names}}</span>
 <span class="pl-s1">&lt;/<span class="pl-ent">script</span>&gt;</span></pre></div>
 
 <p>The template engine turns this string into DOM elements by compiling it within a given context. This way all the expressions embedded in the markup are evaluated and replaced by their value.</p>
 
 <p>For example if we evaluate the template above in the context of the following object: <code>{ names: ['foo', 'bar', 'baz'] }</code>, so we will get:</p>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">h2</span>&gt;Names&lt;/<span class="pl-ent">h2</span>&gt;
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">h2</span>&gt;Names&lt;/<span class="pl-ent">h2</span>&gt;
   &lt;<span class="pl-ent">strong</span>&gt;foo&lt;/<span class="pl-ent">strong</span>&gt;
   &lt;<span class="pl-ent">strong</span>&gt;bar&lt;/<span class="pl-ent">strong</span>&gt;
   &lt;<span class="pl-ent">strong</span>&gt;baz&lt;/<span class="pl-ent">strong</span>&gt;</pre></div>
@@ -855,13 +850,13 @@ What AngularJS compiler does is to traverse the DOM tree and look for already kn
 
 <p>For example:</p>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">ul</span> <span class="pl-e">ng-repeat</span>=<span class="pl-s"><span class="pl-pds">"</span>name in names<span class="pl-pds">"</span></span>&gt;
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">ul</span> <span class="pl-e">ng-repeat</span>=<span class="pl-s"><span class="pl-pds">"</span>name in names<span class="pl-pds">"</span></span>&gt;
   &lt;<span class="pl-ent">li</span>&gt;{{name}}&lt;/<span class="pl-ent">li</span>&gt;
 &lt;/<span class="pl-ent">ul</span>&gt;</pre></div>
 
 <p>in the context of the scope:</p>
 
-<div class="highlight highlight-javascript"><pre>$scope.<span class="pl-c1">names</span> <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>baz<span class="pl-pds">'</span></span>];</pre></div>
+<div class="highlight highlight-source-js"><pre>$scope.names <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>baz<span class="pl-pds">'</span></span>];</pre></div>
 
 <p>will produce the same result as the one above. The main difference here is that the template is not wrapped inside a <code>script</code> tag but is HTML instead.</p>
 
@@ -881,8 +876,8 @@ What AngularJS compiler does is to traverse the DOM tree and look for already kn
 
 <p>Each AngularJS scope has public methods called <code>$on</code>, <code>$emit</code> and <code>$broadcast</code>. The method <code>$on</code> accepts topic as first argument and callback as second. We can think of the callback as an observer - an object, which implements the <code>Observer</code> interface (in JavaScript the functions are first-class, so we can provide only implementation of the <code>notify</code> method):</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">ExampleCtrl</span>(<span class="pl-smi">$scope</span>) {
-  $scope.$<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>event-name<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> <span class="pl-en">handler</span>() {
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">ExampleCtrl</span>(<span class="pl-smi">$scope</span>) {
+  $scope.$on(<span class="pl-s"><span class="pl-pds">'</span>event-name<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> <span class="pl-en">handler</span>() {
     <span class="pl-c">//body</span>
   });
 }</pre></div>
@@ -892,8 +887,8 @@ What AngularJS compiler does is to traverse the DOM tree and look for already kn
 <p>The methods <code>$emit</code> and <code>$broadcast</code> are used for triggering events respectively upwards and downwards through the scope chain.
 For example:</p>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">ExampleCtrl</span>(<span class="pl-smi">$scope</span>) {
-  $scope.$<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>event-name<span class="pl-pds">'</span></span>, { foo<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span> });
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">ExampleCtrl</span>(<span class="pl-smi">$scope</span>) {
+  $scope.$emit(<span class="pl-s"><span class="pl-pds">'</span>event-name<span class="pl-pds">'</span></span>, { foo<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span> });
 }</pre></div>
 
 <p>The scope in the example above, triggers the event <code>event-name</code> to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event <code>event-name</code>, would be notified and their handler callback will be invoked.</p>
@@ -927,20 +922,20 @@ Each scope can subscribe to any event with multiple callbacks (i.e. it can assoc
 
 <p>In the example bellow you can see an example in which <code>ChildCtrl</code> triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in <code>ParentCtrl</code> and the one used in <code>MainCtrl</code>) are going to handle the event by logging into the console: <code>"foo received"</code>. If any of the scopes should be considered as final destination it can call the method <code>stopPropagation</code> of the event object, passed to the callback.</p>
 
-<div class="highlight highlight-JavaScript"><pre>myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>MainCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
-  $scope.$<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+<div class="highlight highlight-source-js"><pre>myModule.controller(<span class="pl-s"><span class="pl-pds">'</span>MainCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
+  $scope.$on(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
     <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>foo received<span class="pl-pds">'</span></span>);
   });
 });
 
-myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>ParentCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
-  $scope.$<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">e</span>) {
+myModule.controller(<span class="pl-s"><span class="pl-pds">'</span>ParentCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
+  $scope.$on(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">e</span>) {
     <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>foo received<span class="pl-pds">'</span></span>);
   });
 });
 
-myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>ChildCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
-  $scope.$<span class="pl-c1">emit</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>);
+myModule.controller(<span class="pl-s"><span class="pl-pds">'</span>ChildCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
+  $scope.$emit(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>);
 });</pre></div>
 
 <p>The different handlers from the UML diagram above are the different scopes, injected to the controllers.</p>
@@ -958,11 +953,11 @@ myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="p
 
 <p>When we want to bind our model to the view we use the directives <code>ng-bind</code> (for single-way data binding) and <code>ng-model</code> (for two-way data binding). For example, if we want each change in the model <code>foo</code> to reflect the view we can:</p>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
 
 <p>Now each time we change the value of <code>foo</code> the inner text of the span will be changed. We can achieve the same effect with more complex AngularJS expressions, like:</p>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>foo + ' ' + bar | uppercase<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">span</span> <span class="pl-e">ng-bind</span>=<span class="pl-s"><span class="pl-pds">"</span>foo + ' ' + bar | uppercase<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;</pre></div>
 
 <p>In the example above the value of the span will be the concatenated uppercased value of <code>foo</code> and <code>bar</code>. What happens behind the scene?</p>
 
@@ -970,9 +965,9 @@ myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="p
 
 <p>Here are the first a couple of lines of the implementation of <code>$watch</code>:</p>
 
-<div class="highlight highlight-javascript"><pre>$<span class="pl-en">watch</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">watchExp</span>, <span class="pl-smi">listener</span>, <span class="pl-smi">objectEquality</span>) {
+<div class="highlight highlight-source-js"><pre>$<span class="pl-en">watch</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">watchExp</span>, <span class="pl-smi">listener</span>, <span class="pl-smi">objectEquality</span>) {
   <span class="pl-k">var</span> scope <span class="pl-k">=</span> <span class="pl-v">this</span>,
-      get <span class="pl-k">=</span> <span class="pl-c1">compileToFn</span>(watchExp, <span class="pl-s"><span class="pl-pds">'</span>watch<span class="pl-pds">'</span></span>),
+      get <span class="pl-k">=</span> compileToFn(watchExp, <span class="pl-s"><span class="pl-pds">'</span>watch<span class="pl-pds">'</span></span>),
       array <span class="pl-k">=</span> scope.$$watchers,
       watcher <span class="pl-k">=</span> {
         fn<span class="pl-k">:</span> listener,
@@ -1010,7 +1005,7 @@ myModule.<span class="pl-c1">controller</span>(<span class="pl-s"><span class="p
 <p>The controllers in AngularJS are quite similar to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
 Here is an example hierarchy between few controllers:</p>
 
-<div class="highlight highlight-HTML"><pre>&lt;!doctype html&gt;
+<div class="highlight highlight-text-html-basic"><pre>&lt;!doctype html&gt;
 &lt;<span class="pl-ent">html</span>&gt;
   &lt;<span class="pl-ent">head</span>&gt;
   &lt;/<span class="pl-ent">head</span>&gt;
@@ -1022,9 +1017,9 @@ Here is an example hierarchy between few controllers:</p>
   &lt;/<span class="pl-ent">body</span>&gt;
 &lt;/<span class="pl-ent">html</span>&gt;</pre></div>
 
-<div class="highlight highlight-JavaScript"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">$location</span>, <span class="pl-smi">User</span>) {
-  <span class="pl-k">if</span> (<span class="pl-k">!</span>User.<span class="pl-c1">isAuthenticated</span>()) {
-    $location.<span class="pl-c1">path</span>(<span class="pl-s"><span class="pl-pds">'</span>/unauthenticated<span class="pl-pds">'</span></span>);
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">$location</span>, <span class="pl-smi">User</span>) {
+  <span class="pl-k">if</span> (<span class="pl-k">!</span>User.isAuthenticated()) {
+    $location.path(<span class="pl-s"><span class="pl-pds">'</span>/unauthenticated<span class="pl-pds">'</span></span>);
   }
 }
 
@@ -1032,7 +1027,7 @@ Here is an example hierarchy between few controllers:</p>
   <span class="pl-c1">$scope</span>.<span class="pl-en">click</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
     <span class="pl-c1">alert</span>(<span class="pl-s"><span class="pl-pds">'</span>You clicked me!<span class="pl-pds">'</span></span>);
   };
-  $scope.<span class="pl-c1">user</span> <span class="pl-k">=</span> User.<span class="pl-c1">get</span>(<span class="pl-c1">0</span>);
+  $scope.user <span class="pl-k">=</span> User.get(<span class="pl-c1">0</span>);
 }</pre></div>
 
 <p>This example aims to illustrates the most trivial way to reuse logic by using a base controller, anyway in production applications I don't recommend you to put your authorization logic in the controllers. The access to the different routes could be determined on a higher level of abstraction.</p>
@@ -1049,7 +1044,7 @@ Here is an example hierarchy between few controllers:</p>
 
 <p>Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may have zero or more private members, which are hidden in the local scope of a function. This function returns an object, which exports the public API of the given module:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> Page <span class="pl-k">=</span> (<span class="pl-k">function</span> () {
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Page <span class="pl-k">=</span> (<span class="pl-k">function</span> () {
 
   <span class="pl-k">var</span> title;
 
@@ -1074,7 +1069,7 @@ Here is an example hierarchy between few controllers:</p>
 
 <p>The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually achieve) privacy:</p>
 
-<div class="highlight highlight-javascript"><pre>app.<span class="pl-c1">factory</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+<div class="highlight highlight-source-js"><pre>app.factory(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
 
   <span class="pl-k">function</span> <span class="pl-en">privateMember</span>() {
     <span class="pl-c">//body...</span>
@@ -1082,7 +1077,7 @@ Here is an example hierarchy between few controllers:</p>
 
   <span class="pl-k">function</span> <span class="pl-en">publicMember</span>() {
     <span class="pl-c">//body...</span>
-    <span class="pl-c1">privateMember</span>();
+    privateMember();
     <span class="pl-c">//body</span>
   }
 
@@ -1093,8 +1088,8 @@ Here is an example hierarchy between few controllers:</p>
 
 <p>Once we want to inject <code>foo</code> inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.</p>
 
-<h3>
-<a id="data-mapper" class="anchor" href="#data-mapper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Mapper</h3>
+<h4>
+<a id="data-mapper" class="anchor" href="#data-mapper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Mapper</h4>
 
 <blockquote>
 <p>A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.</p>
@@ -1125,20 +1120,20 @@ Here is an example hierarchy between few controllers:</p>
 
 <p>Possible solution is to have two different services, one for the first method and one for the second one. Probably more useful solution would be if we have a single service called <code>User</code>, which loads the user's friends when we request the user:</p>
 
-<div class="highlight highlight-javascript"><pre>app.<span class="pl-c1">factory</span>(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$q</span>) {
+<div class="highlight highlight-source-js"><pre>app.factory(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$q</span>) {
 
   <span class="pl-k">function</span> <span class="pl-en">User</span>(<span class="pl-smi">name</span>, <span class="pl-smi">address</span>, <span class="pl-smi">friends</span>) {
     <span class="pl-v">this</span>.<span class="pl-c1">name</span> <span class="pl-k">=</span> name;
-    <span class="pl-v">this</span>.<span class="pl-c1">address</span> <span class="pl-k">=</span> address;
-    <span class="pl-v">this</span>.<span class="pl-c1">friends</span> <span class="pl-k">=</span> friends;
+    <span class="pl-v">this</span>.address <span class="pl-k">=</span> address;
+    <span class="pl-v">this</span>.friends <span class="pl-k">=</span> friends;
   }
 
   <span class="pl-c1">User</span>.<span class="pl-en">get</span> <span class="pl-k">=</span> <span class="pl-k">function</span> (<span class="pl-smi">params</span>) {
-    <span class="pl-k">var</span> user <span class="pl-k">=</span> $http.<span class="pl-c1">get</span>(<span class="pl-s"><span class="pl-pds">'</span>/user/<span class="pl-pds">'</span></span> <span class="pl-k">+</span> params.<span class="pl-c1">id</span>),
-        friends <span class="pl-k">=</span> $http.<span class="pl-c1">get</span>(<span class="pl-s"><span class="pl-pds">'</span>/friends/<span class="pl-pds">'</span></span> <span class="pl-k">+</span> params.<span class="pl-c1">id</span>);
+    <span class="pl-k">var</span> user <span class="pl-k">=</span> $http.get(<span class="pl-s"><span class="pl-pds">'</span>/user/<span class="pl-pds">'</span></span> <span class="pl-k">+</span> params.<span class="pl-c1">id</span>),
+        friends <span class="pl-k">=</span> $http.get(<span class="pl-s"><span class="pl-pds">'</span>/friends/<span class="pl-pds">'</span></span> <span class="pl-k">+</span> params.<span class="pl-c1">id</span>);
     $q.<span class="pl-c1">all</span>([user, friends])
-    .<span class="pl-c1">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">user</span>, <span class="pl-smi">friends</span>) {
-      <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">User</span>(user.<span class="pl-c1">name</span>, user.<span class="pl-c1">address</span>, friends);
+    .then(<span class="pl-k">function</span> (<span class="pl-smi">user</span>, <span class="pl-smi">friends</span>) {
+      <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">User</span>(user.<span class="pl-c1">name</span>, user.address, friends);
     });
   };
   <span class="pl-k">return</span> User;
@@ -1148,16 +1143,16 @@ Here is an example hierarchy between few controllers:</p>
 
 <p>We can use the <code>User</code> service by:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">User</span>) {
-  User.<span class="pl-c1">get</span>({ id<span class="pl-k">:</span> <span class="pl-c1">1</span> })
-  .<span class="pl-c1">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
-    $scope.<span class="pl-c1">user</span> <span class="pl-k">=</span> data;
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">MainCtrl</span>(<span class="pl-smi">$scope</span>, <span class="pl-smi">User</span>) {
+  User.get({ id<span class="pl-k">:</span> <span class="pl-c1">1</span> })
+  .then(<span class="pl-k">function</span> (<span class="pl-smi">data</span>) {
+    $scope.user <span class="pl-k">=</span> data;
   });
 }</pre></div>
 
 <p>And the following partial:</p>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">div</span>&gt;
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span>&gt;
   &lt;<span class="pl-ent">div</span>&gt;
     Name: {{user.name}}
   &lt;/<span class="pl-ent">div</span>&gt;
@@ -1172,8 +1167,8 @@ Here is an example hierarchy between few controllers:</p>
   &lt;/<span class="pl-ent">div</span>&gt;
 &lt;/<span class="pl-ent">div</span>&gt;</pre></div>
 
-<h3>
-<a id="observer-pattern-as-an-external-service" class="anchor" href="#observer-pattern-as-an-external-service" aria-hidden="true"><span class="octicon octicon-link"></span></a>Observer Pattern as an External Service</h3>
+<h4>
+<a id="observer-pattern-as-an-external-service" class="anchor" href="#observer-pattern-as-an-external-service" aria-hidden="true"><span class="octicon octicon-link"></span></a>Observer Pattern as an External Service</h4>
 
 <h5>
 <a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h5>
@@ -1187,48 +1182,48 @@ Here is an example hierarchy between few controllers:</p>
 
 <p>Below example shows how to attach, notify and detach an event.</p>
 
-<div class="highlight highlight-javascript"><pre>angular.<span class="pl-c1">module</span>(<span class="pl-s"><span class="pl-pds">'</span>app.controllers<span class="pl-pds">'</span></span>)
-  .<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>ObserverExample<span class="pl-pds">'</span></span>, ObserverExample);
+<div class="highlight highlight-source-js"><pre>angular.module(<span class="pl-s"><span class="pl-pds">'</span>app.controllers<span class="pl-pds">'</span></span>)
+  .controller(<span class="pl-s"><span class="pl-pds">'</span>ObserverExample<span class="pl-pds">'</span></span>, ObserverExample);
 ObserverExample.$inject<span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>ObserverService<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>$timeout<span class="pl-pds">'</span></span>];
 
 <span class="pl-k">function</span> <span class="pl-en">ObserverExample</span>(<span class="pl-smi">ObserverService</span>, <span class="pl-smi">$timeout</span>) {
   <span class="pl-k">var</span> vm <span class="pl-k">=</span> <span class="pl-v">this</span>;
   <span class="pl-k">var</span> id <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>vm1<span class="pl-pds">'</span></span>;
 
-  ObserverService.<span class="pl-c1">attach</span>(callbackFunction, <span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>, id)
+  ObserverService.attach(callbackFunction, <span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>, id)
 
   <span class="pl-k">function</span> <span class="pl-en">callbackFunction</span>(<span class="pl-smi">params</span>){
     <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>now i know<span class="pl-pds">'</span></span>);
-    ObserverService.<span class="pl-c1">detachByEvent</span>(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>)
+    ObserverService.detachByEvent(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>)
   }
 
-  $<span class="pl-c1">timeout</span>(<span class="pl-k">function</span>(){
-    ObserverService.<span class="pl-c1">notify</span>(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>);
+  $timeout(<span class="pl-k">function</span>(){
+    ObserverService.notify(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>);
   }, <span class="pl-c1">5000</span>);
 }</pre></div>
 
 <p>Alternative way to remove event</p>
 
-<div class="highlight highlight-javascript"><pre>angular.<span class="pl-c1">module</span>(<span class="pl-s"><span class="pl-pds">'</span>app.controllers<span class="pl-pds">'</span></span>)
-  .<span class="pl-c1">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>ObserverExample<span class="pl-pds">'</span></span>, ObserverExample);
+<div class="highlight highlight-source-js"><pre>angular.module(<span class="pl-s"><span class="pl-pds">'</span>app.controllers<span class="pl-pds">'</span></span>)
+  .controller(<span class="pl-s"><span class="pl-pds">'</span>ObserverExample<span class="pl-pds">'</span></span>, ObserverExample);
 ObserverExample.$inject<span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>ObserverService<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>$timeout<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>$scope<span class="pl-pds">'</span></span>];
 
 <span class="pl-k">function</span> <span class="pl-en">ObserverExample</span>(<span class="pl-smi">ObserverService</span>, <span class="pl-smi">$timeout</span>, <span class="pl-smi">$scope</span>) {
   <span class="pl-k">var</span> vm <span class="pl-k">=</span> <span class="pl-v">this</span>;
   <span class="pl-k">var</span> id <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>vm1<span class="pl-pds">'</span></span>;
-  ObserverService.<span class="pl-c1">attach</span>(callbackFunction, <span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>, id)
+  ObserverService.attach(callbackFunction, <span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>, id)
 
   <span class="pl-k">function</span> <span class="pl-en">callbackFunction</span>(<span class="pl-smi">params</span>){
     <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>now i know<span class="pl-pds">'</span></span>);
   }
 
-  $<span class="pl-c1">timeout</span>(<span class="pl-k">function</span>(){
-    ObserverService.<span class="pl-c1">notify</span>(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>);
+  $timeout(<span class="pl-k">function</span>(){
+    ObserverService.notify(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>);
   }, <span class="pl-c1">5000</span>);
 
   <span class="pl-c">// Cleanup listeners when this controller is destroyed</span>
-  $scope.$<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">'</span>$destroy<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> <span class="pl-en">handler</span>() {
-    ObserverService.<span class="pl-c1">detachByEvent</span>(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>)
+  $scope.$on(<span class="pl-s"><span class="pl-pds">'</span>$destroy<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> <span class="pl-en">handler</span>() {
+    ObserverService.detachByEvent(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>)
   });
 }</pre></div>
 
