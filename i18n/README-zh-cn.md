@@ -377,6 +377,7 @@ When given dependency is required by any component, AngularJS resolves it using 
   - AngularJS 首先会调用其提供者的生成函数，如 `$get`。值得注意的是，创建此依赖组件的实例时，可能会对算法内容进行递归调用，以解决该组件本事的依赖关系。
   - AngularJS 然后会将其缓存在上面提到的哈希表中。
   - AngularJS 最后会在需要的时候将其传递给对应组件。
+  
 <!--
 - Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).
 - If the dependency exists AngularJS pass it as parameter to the component, which requires it.
@@ -427,6 +428,7 @@ This way the services are actually singletons but not implemented through the Si
 
 - 增强代码的可测试性
 - 控制单例对象的创建 (在本节例子中，IoC 容器通过懒惰式单例实例化方式帮我们进行控制)
+
 <!--
 - It improves the testability of your source code
 - You can control the creation of singleton objects (in our case the IoC container controls it for us, by instantiating the singletons lazy)
@@ -437,13 +439,19 @@ This way the services are actually singletons but not implemented through the Si
 For further discussion on this topic Misko Hevery's [article](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html) in the Google Testing blog could be considered.
 -->
 
-#### 工厂方法模式 (Factory Method)
+#### <a name='factory-method'>工厂方法模式 (Factory Method)</a>
 
+>工厂方法模式是一种创建型模式，其实现了一个“工厂方法”概念来处理在不指定对象具体类型的情况下创建对象的问题。其解决方式不是通过构造函数来完成，而是在接口 (abstract class) 中定义一个用来创建对象的工厂方法，然后在实现类 (concrete classes) 中实现它。或者在一个基础类 (base class) 中实现它，而该类又可以通过继承关系被派生类 (derived class) 所重写。
+<!--
 >The factory method pattern is a creational pattern, which uses factory methods to deal with the problem of creating objects without specifying the exact class of object that will be created. This is done by creating objects via a factory method, which is either specified in an interface (abstract class) and implemented in implementing classes (concrete classes); or implemented in a base class, which can be overridden when inherited in derived classes; rather than by a constructor.
+-->
 
 ![Factory Method](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/factory-method.svg "Fig. 2")
 
+用如下代码为例：
+<!--
 Lets consider the following snippet:
+-->
 
 ```JavaScript
 myModule.config(function ($provide) {
@@ -463,11 +471,20 @@ myModule.config(function ($provide) {
 
 ```
 
+在上面的代码中，我们使用 `config` 回调来定义一个新的“provider”。Provider 是一个对象，其中含有一个 `$get` 函数。由于 JavaScript 语言没有接口 (interface)，而语言本身是鸭子类型 (duck-typed)，所以这里提供了一个给 provider 命名工厂方法的规则。
+<!--
 In the code above we use the `config` callback in order to define new "provider". Provider is an object, which has a method called `$get`. Since in JavaScript we don't have interfaces and the language is duck-typed there is a convention to name the factory method of the providers that way.
+-->
 
+每个 service、filter、directive 和 controller 都包含一个 provider (即工厂方法名为 `$get` 的对象)，用于负责创建该组件的实例。
+<!-- 
 Each service, filter, directive and controller has a provider (i.e. object which factory method, called `$get`), which is responsible for creating the component's instance.
+-->
 
+让我们更深入的来看看 AngularJS 中是如何实现的：
+<!-- 
 We can dig a little bit deeper in AngularJS' implementation:
+-->
 
 ```JavaScript
 //...
@@ -511,29 +528,52 @@ function invoke(fn, self, locals, serviceName){
 }
 ```
 
+从以上例子中，我们注意到 `$get` 函数被下面的代码使用：
+<!-- 
 From the example above we can notice how the `$get` method is actually used:
+-->
 
 ```JavaScript
 instanceInjector.invoke(provider.$get, provider, undefined, servicename)
 ```
 
+上面这个代码片段调用了 `instanceInjector` 的 `invoke` 函数，其中第一个参数就是某服务的工厂方法 (即 `$get`)。在 `invoke` 内部，`annotate` 函数又将该工厂方法作为其第一个参数。如代码所示，`annotate` 使用 AngularJS 的依赖注入机制来解决所有依赖关系。当所有依赖关系都满足后，工厂方法函数就会被调用：`fn.apply(self, args)`。
+<!-- 
 The snippet above calls the `invoke` method of `instanceInjector` with the factory method (i.e. `$get`) of given service, as first argument. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS, which was considered above. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
+-->
 
+如果对照上面的 UML 图来看，我们可以认为这里的 provider 就是图中的“ConcreteCreator”，而实际组件就是“Product”。
+<!--
 If we think in terms of the UML diagram above we can call the provider a "ConcreteCreator" and the actual component, which is being created a "Product".
+-->
 
+由于工厂方法能间接的创建对象，使用这种设计模式能带来一些益处。尤其是框架能够在组件实例化的过程中关注解决一些 boilerplate:
+<!--
 There are a few benefits of using the factory method pattern in this case, because of the indirection it creates. This way the framework can take care of the boilerplates during the instantiation of new components like:
+-->
 
+- 最恰当的时候来完成组件所需的实例化过程
+- 解决组件所需的所有依赖关系
+- 给定组件所允许存在的实例个数 (对于 service 和 filter 来说只有一个，而 controller 可以有多个实例)
+
+<!--
 - The most appropriate moment, when the component needs to be instantiated
 - Resolving all the dependencies required by the component
 - The number of instances the given component is allowed to have (for services and filters only a single one but multiple for the controllers)
+-->
 
 #### <a name='decorator'>修饰模式 (Decorator)</a>
-
+>修饰模式又被称为 wrapper，与 Adapter 模式的别名一样。它是一种可以动态或静态的往一个独立对象中添加新的行为，而不影响同一类所生成的其它对象的行为的设计模式。
+<!--
 >The decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
+-->
 
 ![Decorator](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/decorator.svg "Fig. 4")
 
+AngularJS 已经提供了这种方式来扩展/增强现有 service 的功能。在这里通过使用 `$provide` 的 `decorator` 函数，我们可以在第三方已经定义和使用的 service 上创建一个“wrapper”：
+<!--
 AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
+-->
 
 ```JavaScript
 myModule.controller('MainCtrl', function (foo) {
@@ -562,10 +602,17 @@ myModule.config(function ($provide) {
   });
 });
 ```
+
+上述例子定义了一个名为 `foo` 的新 service。在 `config` 中，回调了 `$provide.decorator` 函数，其第一个参数 `“foo”` 就是我们想要修饰的 service 的名称，而第二个参数则是实现修饰内容的函数。`$delegate` 则保持引用原有 `foo` service。通过使用 AngularJS 的依赖注入机制，这个本地依赖的 reference 是以构造函数的第一个参数传递。在这里，我们对 service 的修饰是重写其 `bar` 函数。实际修饰内容只是多执行一条 `console.log 语句` - `console.log('Decorated');`，然后继续在对应的上下文中调用原有 `bar` 函数。
+<!--
 The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument of the constructor function.
 We decorate the service by overriding its method `bar`. The actual decoration is simply extending `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method with the appropriate context.
+-->
 
+在需要修改第三方 service 的功能时，使用这种模式特别有用。如果需要多个类似功能的修饰时 (例如函数的性能测量，授权，日志记录等)，我们可能会生成大量重复的代码，违反 DRY 原则。这种情况就需要使用[面向侧面的程序设计 (aspect-oriented programming)](http://en.wikipedia.org/wiki/Aspect-oriented_programming)。目前我所知的 AngularJS 的唯一 AOP 框架是 [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop)。
+<!--
 Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use [aspect-oriented programming](http://en.wikipedia.org/wiki/Aspect-oriented_programming). The only AOP framework for AngularJS I'm aware of could be found at [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop).
+-->
 
 #### Facade
 
