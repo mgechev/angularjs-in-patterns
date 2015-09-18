@@ -891,21 +891,33 @@ $httpProvider.interceptors.push(function($q, dependency1, dependency2) {
 
 ### Directives
 
-#### Composite
+#### <a name='composite'>组合模式 (Composite)</a>
 
+>组合模式是一种树状结构设计模式，是将一组相似的对象与一个单一的对象实例一致对待。将对象组合成树形结构以表示“部分-整体”的树形结构。
+<!--
 >The composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects are to be treated in the same way as a single instance of an object. The intent of a composite is to "compose" objects into tree structures to represent part-whole hierarchies.
+-->
 
 ![Composite](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/composite.svg "Fig. 3")
 
+根据“四人帮”的经典论述， MVC 实际是以下部件的组合：
+<!--
 According to the Gang of Four, MVC is nothing more than combination of:
+-->
 
-- Strategy
-- Composite
-- Observer
+- 策略模式 (Strategy)
+- 组合模式 (Composite)
+- 观察者模式 (Observer)
 
+其中，页面 (view) 即是各部件的组合。非常相似的是，AngularJS 中的页面 (view) 就是由 directives 及其对应的 DOM 元素所形成的组合。
+<!--
 They state that the view is composition of components. In AngularJS the situation is similar. Our views are formed by a composition of directives and DOM elements, on which these directives could be applied.
+-->
 
+让我们来看以下例子：
+<!--
 Lets look at the following example:
+-->
 
 ```HTML
 <!doctype html>
@@ -934,13 +946,22 @@ myModule.directive('zippy', function () {
 });
 ```
 
+以上例子定义了一个简单的 directive，其功能是一个 UI 构件。此构件 (名为 "zippy") 包含头部和内容。点击其头部会切换内容部分显示或隐藏。
+<!--
 This example defines a simple directive, which is a UI component. The defined component (called "zippy") has header and content. Click on its header toggles the visibility of the content.
+-->
 
+在第一段例子中，我们注意到整个 DOM 树就是由很多元素形成的组合。其根组件是 `html` 元素，紧接着是嵌套的 `head` 和 `body` 等等。
+<!--
 From the first example we can note that the whole DOM tree is a composition of elements. The root component is the `html` element, directly followed by the nested elements `head` and `body` and so on...
+-->
 
+在第二段 JavaScript 例子中，我们看到 directive 的 `template` 属性又包含了 `ng-transclude` directive 标记。因此，在 directive `zippy` 中又存在另一个名为 `ng-transclude` 的 directive。理论上我们可以无限的嵌套这些组件直到抵达叶节点 (leaf node)。
+<!--
 In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives. Theoretically we can nest the components infinitely until we reach a leaf node.
+-->
 
-### Interpreter
+#### <a name='interpreter'>解释器模式 (Interpreter)</a>
 
 >In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.
 
