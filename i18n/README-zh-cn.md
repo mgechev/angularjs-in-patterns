@@ -946,7 +946,7 @@ myModule.directive('zippy', function () {
 });
 ```
 
-以上例子定义了一个简单的 directive，其功能是一个 UI 构件。此构件 (名为 "zippy") 包含头部和内容。点击其头部会切换内容部分显示或隐藏。
+以上例子定义了一个简单的 directive，其功能是一个 UI 构件。此构件 (名为 "zippy") 包含头部结构和正文内容。点击其头部会切换正文部分显示或隐藏。
 <!--
 This example defines a simple directive, which is a UI component. The defined component (called "zippy") has header and content. Click on its header toggles the visibility of the content.
 -->
@@ -955,27 +955,42 @@ This example defines a simple directive, which is a UI component. The defined co
 <!--
 From the first example we can note that the whole DOM tree is a composition of elements. The root component is the `html` element, directly followed by the nested elements `head` and `body` and so on...
 -->
-
-在第二段 JavaScript 例子中，我们看到 directive 的 `template` 属性又包含了 `ng-transclude` directive 标记。因此，在 directive `zippy` 中又存在另一个名为 `ng-transclude` 的 directive。理论上我们可以无限的嵌套这些组件直到抵达叶节点 (leaf node)。
+我们可以从第二段 JavaScript 例子看到，此 directive 的 `template` 属性又包含了 `ng-transclude` directive 标记。因此，在 `zippy` directive 中又存在另一个 `ng-transclude` directive。理论上我们可以无限的嵌套这些组件直到抵达叶节点 (leaf node)。
 <!--
 In the second, JavaScript, example we see that the `template` property of the directive, contains markup with `ng-transclude` directive inside it. So this means that inside the directive `zippy` we have another directive called `ng-transclude`, i.e. composition of directives. Theoretically we can nest the components infinitely until we reach a leaf node.
 -->
 
 #### <a name='interpreter'>解释器模式 (Interpreter)</a>
 
+>解释器模式是一种对计算机语言的语句进行解释估值的设计模式。其基本理念就是在该语言中，给每个终结符或者非终结符表达式赋予一个类结构。一个语句的语法树就是一个对该语句进行解释的组合模式的结构实例。
+<!--
 >In computer programming, the interpreter pattern is a design pattern that specifies how to evaluate sentences in a language. The basic idea is to have a class for each symbol (terminal or nonterminal) in a specialized computer language. The syntax tree of a sentence in the language is an instance of the composite pattern and is used to evaluate (interpret) the sentence.
+-->
 
 ![Interpreter](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/interpreter.svg "Fig. 6")
 
+在 AngularJS 的 `$parse` service 背后，其提供了一个 DSL (领域专用语言) 语言的解释器实例。此 DSL 语言是一种精简修改版的 JavaScript。JavaScript 表达式与 AngularJS 表达式之间的区别是：
+<!--
 Behind its `$parse` service, AngularJS provides its own implementation of interpreter of a DSL (Domain Specific Language). The used DSL is simplified and modified version of JavaScript.
 The main differences between the JavaScript expressions and AngularJS expressions that AngularJS expressions:
+-->
 
+- 可以包含 UNIX 类管道语法的过滤器
+- 不会抛出任何错误
+- 不含任何控制流语句 (异常、循环、条件语句，但可以使用三元运算符)
+- 在特定的上下文环境中进行解析估值 (当前 `$scope` 的上下文)
+
+<!--
 - may contain filters with UNIX like pipe syntax
 - don't throw any errors
 - don't have any control flow statements (exceptions, loops, if statements although you can use the ternary operator)
 - are evaluated in given context (the context of the current `$scope`)
+-->
 
+`$parse` service 中定义了两个主要的组件：
+<!--
 Inside the `$parse` service are defined two main components:
+-->
 
 ```JavaScript
 //Responsible for converting given string into tokens
@@ -984,9 +999,15 @@ var Lexer;
 var Parser;
 ```
 
+当给定的表达式被分词后，出于性能需求会被内部缓存。
+<!--
 Once given expression have been tokenized it is cached internally, because of performance concerns.
+-->
 
+AngularJS DSL 中的终结符表达式定义如下：
+<!--
 The terminal expressions in the AngularJS DSL are defined as follows:
+-->
 
 ```JavaScript
 var OPERATORS = {
@@ -1019,11 +1040,20 @@ var OPERATORS = {
 };
 ```
 
+我们可以将每个终结符所属函数看作是 `AbstractExpression` 接口的实现。
+<!--
 We can think of the function associated with each terminal as implementation of the `AbstractExpression`'s interface.
+-->
 
+每个 `Client` 在一个特定的上下文和作用域中解释给定的 AngularJS 表达式。
+<!--
 Each `Client` interprets given AngularJS expression in a specific context - specific scope.
+-->
 
+以下是 AngularJS 表达式：
+<!--
 Few sample AngularJS expressions are:
+-->
 
 ```JavaScript
 // toUpperCase filter is applied to the result of the expression
@@ -1031,20 +1061,35 @@ Few sample AngularJS expressions are:
 (foo) ? bar : baz | toUpperCase
 ```
 
-#### Template View
+#### <a name='template-view'>模版视图模式 (Template View)</a>
 
+>模版视图指的是用嵌入标签符号的方式将信息渲染为 HTML 形式。
+<!--
 > Renders information into HTML by embedding markers in an HTML page.
+-->
 
 ![Template View](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/template-view.svg "Fig. 8")
 
+渲染动态页面并不是件简单的事情，包含大量字符串的连接、修改和一些难以解决的操作。创造动态页面的最简单的方法是编写自己的标记符号并在其中嵌入表达式。稍后在给定的上下文中对这些表达式进行解析，从而将整个模版编译成其最终格式，此处即为 HTML (或 DOM) 格式。这就是模版引擎的功用 - 取得给定的 DSL，在恰当的上下文中进行解析，并转换成其最终格式。
+<!--
 The dynamic page rendering is not that trivial thing. It is connected with a lot of string concatenations, manipulations and frustration. Far easier way to build your dynamic page is to write your markup and embed little expressions inside it, which are lately evaluated in given context and so the whole template is being compiled to its end format. In our case this format is going to be HTML (or even DOM). This is exactly what the template engines do - they take given DSL, evaluate it in the appropriate context and then turn it into its end format.
+-->
 
+模版是一种常用技术，尤其是在后端应用中。例如，你可以将 PHP 代码嵌入到 HTML 中形成动态页面，也可以使用 Smarty 模版引擎，或者还可以使用 eRuby 将 Ruby 代码嵌入静态页面中。
+<!--
 Templates are very commonly used especially in the back-end.
 For example, you can embed PHP code inside HTML and create a dynamic page, you can use Smarty or you can use eRuby with Ruby in order to embed Ruby code inside your static pages.
+-->
 
+适用于 JavaScript 的模版引擎有很多，例如 mustache.js、handlebars 等。大部分引擎是将模版以字符串的方式进行操作。模版可以存在于不同的地方：一是静态文件，其可以通过 AJAX 方式获取；二是以 `script` 形式嵌在视图中；或甚至是内嵌在 JavaScript 中。
+<!--
 For JavaScript there are plenty of template engines, such as mustache.js, handlebars, etc. Most of these engines manipulate the template as a string. The template could be located in different places - as static file, which is fetched with AJAX, as `script` embedded inside your view or even inlined into your JavaScript.
+-->
 
+例如：
+<!--
 For example:
+-->
 
 ```html
 <script type="template/mustache">
@@ -1055,9 +1100,15 @@ For example:
 </script>
 ```
 
+模版引擎在一个给定的上下文中编译此字符串，将其转换为 DOM 元素。如此，所有嵌在标记符中的表达式都会被解析，并替换成其计算值。
+<!--
 The template engine turns this string into DOM elements by compiling it within a given context. This way all the expressions embedded in the markup are evaluated and replaced by their value.
+-->
 
+例如，如果以 `{ names: ['foo', 'bar', 'baz'] }` 对象为上下文对上面的模版进行解析，我们可以得到：
+<!--
 For example if we evaluate the template above in the context of the following object: `{ names: ['foo', 'bar', 'baz'] }`, so we will get:
+-->
 
 ```html
 <h2>Names</h2>
@@ -1066,10 +1117,16 @@ For example if we evaluate the template above in the context of the following ob
   <strong>baz</strong>
 ```
 
+AngularJS 模版实际就是 HTML，而非类似其他传统模版的中间层格式。AngularJS 编译器会遍历 DOM 树并搜索已知的 directive (适用于元素、属性、类或甚至注释)。当 AngularJS 找到任何 directive，就会调用其所属的逻辑代码，在当前作用域的上下文中解析其中的表达式。
+<!--
 AngularJS templates are actually HTML, they are not in an intermediate format like the traditional templates are.
 What AngularJS compiler does is to traverse the DOM tree and look for already known directives (elements, attributes, classes or even comments). When AngularJS finds any of these directives it invokes the logic associated with them, which may involve evaluation of different expressions in the context of the current scope.
+-->
 
+例如：
+<!--
 For example:
+-->
 
 ```html
 <ul ng-repeat="name in names">
@@ -1077,14 +1134,19 @@ For example:
 </ul>
 ```
 
+在下列作用域的上下文中：
+<!--
 in the context of the scope:
+-->
 
 ```javascript
 $scope.names = ['foo', 'bar', 'baz'];
 ```
 
+会生成跟上面相同的结果。其主要区别是，模版是包装在 HTML 中，而非 `script` 标签之间。
+<!--
 will produce the same result as the one above. The main difference here is that the template is not wrapped inside a `script` tag but is HTML instead.
-
+-->
 
 ### Scope
 
