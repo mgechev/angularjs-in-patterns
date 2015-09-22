@@ -31,7 +31,7 @@
     * [观察者模式 (Observer)](#observer)
     * [责任链模式 (Chain of Responsibilities)](#chain-of-responsibilities)
     * [命令模式 (Command)](#command)
-  * [Controller](#controller-1)
+  * [Controllers](#controllers-1)
     * [页面控制器 (Page Controller)](#page-controller)
   * [其它](#others)
     * [模块模式 (Module Pattern)](#module-pattern)
@@ -47,6 +47,8 @@
 - [日文翻译](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ja-jp.md) 译者：[morizotter](https://twitter.com/morizotter)
 - [法文翻译](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md) 译者：[manekinekko](https://github.com/manekinekko)
 - [俄文翻译](http://habrahabr.ru/post/250149/)
+
+(此中文版尽量将所有 AngularJS 的组件名称和专有术语保留为原有英文或将译名放置在注释内，原因是这些词汇通常会被直接用于程序源代码中，保留英文有助于避免歧义。如果您对译文有任何改进建议，请提交 Pull Request。)
 
 ## <a name='abstract'>摘要</a>
 
@@ -1150,15 +1152,24 @@ will produce the same result as the one above. The main difference here is that 
 
 ### Scope
 
-#### Observer
+#### <a name='observer'>观察者模式 (Observer)</a>
 
+>观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实作事件处理系统。
+<!--
 >The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods. It is mainly used to implement distributed event handling systems.
+-->
 
 ![Observer](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/observer.svg "Fig. 7")
 
+AngularJS 应用中 scope 之间有两种互相通信的方式。其一是在子 scope 中调用父 scope 的函数方法，这是基于子 scope 与其父母的原型继承关系 (参见 [Scope](#scope))。这种方式允许一种的单向通信 - 从子到父。当然有些时候也需要在父 scope 的上下文中调用子 scope 的函数方法或者通知其某个触发事件。对于此需求，AngularJS 内置了一种观察者模式的实现。观察者模式的另一个使用场景是，如果多个 scope 都关注某个事件，但该事件触发所处上下文对应的 scope 与其它这些 scope 并无联系。这可以切断不同 scope 之间的耦合关系，独立的存在。
+<!--
 There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them. This allows decoupling between the different scopes, non of the scopes should be aware of the rest of the scopes.
+-->
 
+每个 AngularJS scope 都含有几个公有函数：`$on`、`$emit` 和 `$broadcast` 。`$on` 函数接受事件主题为第一参数，事件回调函数做为第二参数。我们可以将回调函数看作为一个观察者，即实作 `Observer` 接口的对象 (因为JavaScript 的头等函数特性，所以我们只需提供 `notify` 函数方法的实现)。
+<!--
 Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as an observer - an object, which implements the `Observer` interface (in JavaScript the functions are first-class, so we can provide only implementation of the `notify` method):
+-->
 
 ```JavaScript
 function ExampleCtrl($scope) {
@@ -1168,10 +1179,16 @@ function ExampleCtrl($scope) {
 }
 ```
 
+在这种方式中，当前 scope 会“订阅”类别为 `event-name` 的事件。当 `event-name` 在任何父 scope 或子 scope 中被触发后，`handler` 将被调用。
+<!--
 In this way the current scope "subscribes" to events of type `event-name`. When `event-name` is triggered in any parent or child scope of the given one, `handler` would be called.
+-->
 
+`$emit` 和 `$broadcast` 函数则分别被用于在 scope 链中向上或向下触发事件。例如：
+<!--
 The methods `$emit` and `$broadcast` are used for triggering events respectively upwards and downwards through the scope chain.
 For example:
+-->
 
 ```JavaScript
 function ExampleCtrl($scope) {
@@ -1179,16 +1196,28 @@ function ExampleCtrl($scope) {
 }
 ```
 
+以上例子中的 scope 会向上方的 scope 触发 `event-name` 事件。意思是所有订阅了 `event-name` 事件的的父 scope 都会得到通知并执行其 `handler` 回调函数。
+<!--
 The scope in the example above, triggers the event `event-name` to all scopes upwards. This means that each of the parent scopes of the given one, which are subscribed to the event `event-name`, would be notified and their handler callback will be invoked.
+-->
 
+`$broadcast` 函数调用与此类似。唯一的区别是事件是向下传递给所有子 scope。每个 scope 可以给任何事件订阅配属多个回调函数 (即，一个给定事件对应多个观察者)。
+<!--
 Analogical is the case when the method `$broadcast` is called. The only difference is that the event would be transmitted downwards - to all children scopes.
 Each scope can subscribe to any event with multiple callbacks (i.e. it can associate multiple observers to given event).
+-->
 
+在 JavaScript 社区中，这种模式又被称为发布/订阅模式。
+<!--
 In the JavaScript community this pattern is better known as publish/subscribe.
+-->
 
+更好的实战例子请参见[观察者模式作为外部服务](#observer-pattern-as-an-external-service)章节。
+<!--
 For a best practice example see [Observer Pattern as an External Service](#observer-pattern-as-an-external-service)
+-->
 
-#### Chain of Responsibilities
+#### <a name='chain-of-responsibilities'>责任链模式 (Chain of Responsibilities)</a>
 
 >The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
 
@@ -1517,7 +1546,7 @@ function ObserverExample(ObserverService, $timeout, $scope) {
 1. [维基百科](https://en.wikipedia.org/wiki) 本文所有设计模式的简介都引自维基百科。
 2. [AngularJS 文档](https://docs.angularjs.org)
 3. [AngularJS 源码库](https://github.com/angular/angular.js)
-4. [Page Controller](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
+4. [页面控制器 (Page Controller)](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
 5. [企业应用架构模式 (P of EAA)](http://martinfowler.com/books/eaa.html)
 6. [Using Dependancy Injection to Avoid Singletons](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html)
 7. [Why would one use the Publish/Subscribe pattern (in JS/jQuery)?](https://stackoverflow.com/questions/13512949/why-would-one-use-the-publish-subscribe-pattern-in-js-jquery)
