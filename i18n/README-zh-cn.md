@@ -1219,20 +1219,38 @@ For a best practice example see [Observer Pattern as an External Service](#obser
 
 #### <a name='chain-of-responsibilities'>责任链模式 (Chain of Responsibilities)</a>
 
+>责任链模式在面向对象程式设计里是一种软件设计模式，它包含了一些命令对象和一系列的处理对象。每一个处理对象决定它能处理哪些命令对象，它也知道如何将它不能处理的命令对象传递给该链中的下一个处理对象。该模式还描述了往该处理链的末尾添加新的处理对象的方法。
+<!--
 >The chain-of-responsibility pattern is a design pattern consisting of a source of command objects and a series of processing objects. Each processing object contains logic that defines the types of command objects that it can handle; the rest are passed to the next processing object in the chain. A mechanism also exists for adding new processing objects to the end of this chain.
+-->
 
 ![Chain of Responsibilities](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/chain-of-responsibilities.svg "Fig. 5")
 
+AngularJs 应用中的 scope 组成了一个等级体系，称为 scope 链。其中有些 scope 是“独立的”，指的是它们并不从其父 scope 进行原型继承，而是通过 `$parent` 属性进行连接。
+<!--
 As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
+-->
 
+当调用 `$emit` 或者 `$broadcast` 时，我们可以将 scope 链看作事件传递总线，或更精确的说就是责任链。每当某个事件被触发时，无论是向上还是向下传递 (基于调用不同的函数方法)，链条中紧随而后的 scope 可能会进行如下操作：
+<!--
 When `$emit` or `$broadcast` are called we can think of the scope chain as event bus, or even more accurately chain of responsibilities. Once the event is triggered it is emitted downwards or upwards (depending on the method, which was called). Each subsequent scope may:
+-->
 
+- 处理该事件并传递给链条中的下一环
+- 处理该事件并终止传递
+- 不处理此事件，而直接将事件传递给下一环
+- 不处理此事件，并终止传递
+<!--
 - Handle the event and pass it to the next scope in the chain
 - Handle the event and stop its propagation
 - Pass the event to the next scope in the chain without handling it
 - Stop the event propagation without handling it
+-->
 
+从下面的例子中可以看到 `ChildCtrl` 触发了一个在 scope 链条中向上传递的事件。每个父 scope (`ParentCtrl` 和 `MainCtrl` 中的 scope) 将处理此事件，即在 console 中输出记录 `"foo received"`。如果某个 scope 被认为是最终目标，则可以此处调用此事件对象 (即为回调函数所传递的参数) 的 `stopPropagation` 方法。
+<!--
 In the example bellow you can see an example in which `ChildCtrl` triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in `ParentCtrl` and the one used in `MainCtrl`) are going to handle the event by logging into the console: `"foo received"`. If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
+-->
 
 ```JavaScript
 myModule.controller('MainCtrl', function ($scope) {
@@ -1252,33 +1270,57 @@ myModule.controller('ChildCtrl', function ($scope) {
 });
 ```
 
+上面这些被注入到 controller 中的 scope 即为稍早提到的 UML 图中的各个不同 handler 。
+<!--
 The different handlers from the UML diagram above are the different scopes, injected to the controllers.
+-->
 
-#### Command
+#### <a name='command'>命令模式 (Command)</a>
 
+>在面向对象程式设计的范畴中，命令模式是一种行为设计模式，它尝试以物件来代表并封装所有用于在稍后某个时间调用一个函数方法所需要的信息。此信息包括所要调用的函数的名称、宿主对象及其参数值。
+<!--
 >In object-oriented programming, the command pattern is a behavioral design pattern in which an object is used to represent and encapsulate all the information needed to call a method at a later time. This information includes the method name, the object that owns the method and values for the method parameters.
+-->
 
 ![Command](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/command.svg "Fig. 11")
 
+在继续讨论命令模式的应用之前，让我们来看看 AngularJS 是如何实现数据绑定的。
+<!--
 Before continuing with the application of the command pattern lets describe how AngularJS implements data binding.
+-->
 
+当我们需要将模型与视图绑定时，可以使用 `ng-bind` (单向数据绑定) 或 `ng-model` (双向数据绑定) directive。例如，下面的代码可以将 `foo` 模型中的每个变化反映到视图中：
+<!--
 When we want to bind our model to the view we use the directives `ng-bind` (for single-way data binding) and `ng-model` (for two-way data binding). For example, if we want each change in the model `foo` to reflect the view we can:
+-->
 
 ```html
 <span ng-bind="foo"></span>
 ```
 
+每当我们改变 `foo` 的值时，span 中的 inner text 就会随之改变。我们可以使用更复杂的 AngularJS 表达式来实现同样的效果，例如：
+<!--
 Now each time we change the value of `foo` the inner text of the span will be changed. We can achieve the same effect with more complex AngularJS expressions, like:
+-->
 
 ```html
 <span ng-bind="foo + ' ' + bar | uppercase"></span>
 ```
 
+上面的例子中，span 的文本值等于 `foo` 和 `bar` 的值串联后再转为大写字母。让我们来看看幕后都发生了什么事？
+<!--
 In the example above the value of the span will be the concatenated uppercased value of `foo` and `bar`. What happens behind the scene?
+-->
 
+每个 `$scope` 都含有名为 `$watch` 的函数方法。当 AngularJS 编译器找到 `ng-bind` directive 时，就会为 `foo + ' ' + bar | uppercase` 表达式创建一个新的监视器，即 `$scope.$watch("foo + ' ' + bar | uppercase", function () { /* body */ });`。每当表达式的值改变时，其中的回调函数就会被触发。在本例中，回调将会更新 span 的文本值。
+<!--
 Each `$scope` has method called `$watch`. When the AngularJS compiler find the directive `ng-bind` it creates a new watcher of the expression `foo + ' ' + bar | uppercase`, i.e. `$scope.$watch("foo + ' ' + bar | uppercase", function () { /* body */ });`. The callback will be triggered each time the value of the expression change. In the current case the callback will update the value of the span.
+-->
 
+下面是 `$watch` 函数实现的头几行：
+<!--
 Here are the first a couple of lines of the implementation of `$watch`:
+-->
 
 ```javascript
 $watch: function(watchExp, listener, objectEquality) {
@@ -1295,11 +1337,14 @@ $watch: function(watchExp, listener, objectEquality) {
 //...
 ```
 
+我们可以将 `watcher` 对象视为一条命令。该命令的表达式会在每次 [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) 循环中被估值。一旦 AngularJS 发现表达式中的数值改变，就会调用 `listener` 函数。`watcher` 命令中封装了用以完成以下任务所需的全部信息。任务包括监视所给定的表达式并将命令执行委托给 `listener` 函数 (实际接收者) 。我们可以将 `$scope` 视为命令的 `Client` (客户)，将 `$digest` 循环视为命令的 `Invoker` (执行者)。
+<!--
 We can think of the `watcher` object as a command. The expression of the command is being evaluated on each [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) loop. Once AngularJS detects change in the expression, it invokes the `listener` function. The `watcher` command encapsulates the whole information required for watching given expression and delegates the execution of the command to the `listener` (the actual receiver). We can think of the `$scope` as the command's `Client` and the `$digest` loop as the command's `Invoker`.
+-->
 
 ### Controllers
 
-#### Page Controller
+#### <a name='page-controller'>页面控制器 (Page Controller)</a>
 
 >An object that handles a request for a specific page or action on a Web site. Martin Fowler
 
