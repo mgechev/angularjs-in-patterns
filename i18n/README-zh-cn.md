@@ -22,7 +22,7 @@
     * [外观模式 (Facade)](#facade)
     * [代理模式 (Proxy)](#proxy)
     * [Active Record 模式](#active-record)
-    * [截取筛选器 (Intercepting Filters)](#intercepting-filters)
+    * [截取筛选器模式 (Intercepting Filters)](#intercepting-filters)
   * [Directives](#directives-1)
     * [组合模式 (Composite)](#composite)
     * [解释器模式 (Interpreter)](#interpreter)
@@ -35,7 +35,7 @@
     * [页面控制器 (Page Controller)](#page-controller)
   * [其它](#others)
     * [模块模式 (Module Pattern)](#module-pattern)
-    * [数据映射模式 (Data Mapper)](#data-mapper)
+    * [数据映射器模式 (Data Mapper)](#data-mapper)
     * [观察者模式作为外部服务 (Observer Pattern as an External Service)](#observer-pattern-as-an-external-service)
 * [参考文献](#references)
 
@@ -48,7 +48,7 @@
 - [法文翻译](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md) 译者：[manekinekko](https://github.com/manekinekko)
 - [俄文翻译](http://habrahabr.ru/post/250149/)
 
-(此中文版尽量将所有 AngularJS 的组件名称和专有术语保留为原有英文或将译名放置在注释内，原因是这些词汇通常会被直接用于程序源代码中，保留英文有助于避免歧义。如果您对译文有任何改进建议，请提交 Pull Request。)
+(由于 AngularJS 的组件名称和专有术语通常会被直接用于程序源代码中，此中文版会尽量将此类词汇保留为原有英文，或将其译名放置在注释内，以避免歧义。如果您对译文有任何改进建议，请提交 Pull Request。)
 
 ## <a name='abstract'>摘要</a>
 
@@ -849,7 +849,7 @@ Since Martin Fowler states that
 `$resource` does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".
 -->
 
-#### <a name='intercepting-filters'>截取筛选器 (Intercepting Filters)</a>
+#### <a name='intercepting-filters'>截取筛选器模式 (Intercepting Filters)</a>
 
 >创建可组合的筛选器链条来完成网页请求过程中常用的预处理和后处理任务。
 <!--
@@ -1226,7 +1226,7 @@ For a best practice example see [Observer Pattern as an External Service](#obser
 
 ![Chain of Responsibilities](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/chain-of-responsibilities.svg "Fig. 5")
 
-AngularJs 应用中的 scope 组成了一个等级体系，称为 scope 链。其中有些 scope 是“独立的”，指的是它们并不从其父 scope 进行原型继承，而是通过 `$parent` 属性进行连接。
+AngularJs 应用中的 scope 组成了一个层级结构，称为 scope 链。其中有些 scope 是“独立的”，指的是它们并不从其父 scope 进行原型继承，而是通过 `$parent` 属性进行连接。
 <!--
 As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
 -->
@@ -1346,20 +1346,38 @@ We can think of the `watcher` object as a command. The expression of the command
 
 #### <a name='page-controller'>页面控制器 (Page Controller)</a>
 
+>页面控制器指的是用于处理网站上某个特定页面请求或操作的对象。 Martin Fowler
+<!--
 >An object that handles a request for a specific page or action on a Web site. Martin Fowler
+-->
 
 ![Page Controller](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/page-controller.svg "Fig. 8")
 
+根据参考文献[4](#references)：
+<!--
 According to [4](#references) the page controller:
+-->
 
+>页面控制器模式接受来自页面请求的输入、依照要求调用对模型执行的操作，并确定在结果页面所使用的正确视图。将调度逻辑从视图相关代码中分离。
+<!--
 >Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code
+-->
 
+由于不同的页面之间存在大量重复操作 (例如渲染页脚、页眉，处理用户会话等)，各个页面控制器在一起可以构成一个层级结构。AngularJS 中的控制器 (controller) 有着相对较有限的用途。它们并不接受用户请求，那是 `$route` 或 `$state` service 的任务，页面渲染则是 `ng-view`/`ui-view` directive 的责任。
+<!--
 Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) page controllers can form a hierarchy. In AngularJS we have controllers, which are with more limited scope of responsibilities. They don't accept user requests, since this is responsibility of the `$route` or `$state` services and the page rendering is responsibility of the directives `ng-view`/`ui-view`.
+-->
 
+与页面控制器类似，AngularJS 的 controller 负责处理用户交互操作，提供并更新模型。当模型 (model) 附着于 scope 上，它就被暴露给页面 (view) 所使用。基于用户的操作行为，页面会调用已经附着于 scope 上的相应函数方法。页面控制器与 AngularJS controller 的另一个相似点则是由它们组成的层级结构。此结构于 scope 层级相对应。由此，通用的操作可以被隔离出来置于基础 controller 中。
+<!--
 Similarly to the page controllers, AngularJS controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the AngularJS controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.
+-->
 
+AngularJS 中的 controller 与 ASP.NET WebForms 背后的代码非常相似，它们有着几乎重合的功用。以下是控制器层级的例子：
+<!--
 The controllers in AngularJS are quite similar to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
 Here is an example hierarchy between few controllers:
+-->
 
 ```HTML
 <!doctype html>
@@ -1390,17 +1408,29 @@ function ChildCtrl($scope, User) {
 }
 ```
 
+此例子描述了一个最简单的通过使用基础控制器来实现重用逻辑的例子。当然，我们不推荐在生产应用中将授权逻辑置于控制器中。不同路径 (route) 的权限可以在更高的抽象层级来判定。
+<!--
 This example aims to illustrates the most trivial way to reuse logic by using a base controller, anyway in production applications I don't recommend you to put your authorization logic in the controllers. The access to the different routes could be determined on a higher level of abstraction.
+-->
 
+`ChildCtrl` 负责处理点击 `"Click"` 按钮之类的操作，并将模型附着于 scope 上，使其暴露给页面使用。
+<!--
 The `ChildCtrl` is responsible for handling actions such as clicking the button with label `"Click"` and exposing the model to the view, by attaching it to the scope.
+-->
 
 ### <a name='others'>其它</a>
 
-#### Module Pattern
+#### <a name='module-pattern'>模块模式 (Module Pattern)</a>
 
+模块模式并非‘四人帮’所提出的设计模式之一，也不是来自《企业应用架构模式》。它是一种传统的 JavaScript 模式，主要用来提供封装和私密特性。
+<!--
 This is actually not a design pattern from Gang of Four, neither one from P of EAA. This is a traditional JavaScript pattern, which main goal is to provide encapsulation and privacy.
+-->
 
+通过使用模块模式，你可以基于 JavaScript 的函数作用域来实现程序结构的私密性。每个模块可以拥有零至多个私有成员，这些成员都隐藏在函数的本地作用域中。此函数会返回一个对象，用于输出给定模块的公有 API：
+<!--
 Using the module pattern you can achieve privacy based on the JavaScript's functional lexical scope. Each module may have zero or more private members, which are hidden in the local scope of a function. This function returns an object, which exports the public API of the given module:
+-->
 
 ```javascript
 var Page = (function () {
@@ -1423,11 +1453,20 @@ var Page = (function () {
 }());
 ```
 
+上面的例子中，我们实作了一个 IIFE (立即执行函数表达式)。当它被调用后会返回一个拥有两个函数方法 (`setTitle` 和 `getTitle`) 的对象。此对象又被赋值给 `Page` 变量。
+<!--
 In the example above we have IIFE (Immediately-Invoked Function Expression), which after being called returns an object, with two methods (`setTitle` and `getTitle`). The returned object is being assigned to the `Page` variable.
+-->
 
+在此处，使用 `Page` 对象并不能直接修改在 IIFE 本地作用域内部所定义的 `title` 变量。
+<!--
 In this case the user of the `Page` object doesn't has direct access to the `title` variable, which is defined inside the local scope of the IIFE.
+-->
 
+模块模式在定义 AngularJS 中的 service 时非常有用。使用此模式可以模拟 (并实现) 私密特性：
+<!--
 The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually achieve) privacy:
+-->
 
 ```javascript
 app.factory('foo', function () {
@@ -1448,30 +1487,55 @@ app.factory('foo', function () {
 });
 ```
 
+当 `foo` 被注入到任何其他组件中时，我们并不能使用其私有函数方法，而只能使用公有方法。这种解决方案在搭建可重用的库时极为有用。
+<!--
 Once we want to inject `foo` inside any other component we won't be able to use the private methods, but only the public ones. This solution is extremely powerful especially when one is building a reusable library.
+-->
 
-#### Data Mapper
+#### <a name='data-mapper'>数据映射器模式 (Data Mapper)</a>
 
+>数据映射器指的是在持久化数据存储 (通常是关系数据库) 与内存数据表述 (domain layer) 之间执行双向传输的数据存取层。此模式的目的是保持内存中的数据表述和持久化数据存储相互独立，以及数据映射器本身的独立性。
+<!--
 >A Data Mapper is a Data Access Layer that performs bidirectional transfer of data between a persistent data store (often a relational database) and an in memory data representation (the domain layer). The goal of the pattern is to keep the in memory representation and the persistent data store independent of each other and the data mapper itself.
+-->
 
 ![Data Mapper](https://rawgit.com/mgechev/angularjs-in-patterns/master/images/data-mapper.svg "Fig. 10")
 
+根据以上表述，数据映射器是用来在持久化数据存储和内存中的数据表述之间进行双向数据传输。AngularJS 应用通常是与 API 服务器进行数据交流。此服务器是用某种服务器端语言 (Ruby、PHP、Java、JavaScript 等) 实现.
+<!--
 As the description above states, the data mapper is used for bidirectional transfer of data between a persistent data store and an in memory data representation. Usually our AngularJS application communicates with API server, which is written in any server-side language (Ruby, PHP, Java, JavaScript, etc.).
+-->
 
+一般来说，如果服务器端提供 RESTful API，`$resource` 可以帮助我们以 Active Record 类的方式与服务器通讯。尽管在某些应用中，从服务器返回的数据并非是最适合于在前端使用的格式。
+<!--
 Usually, if we have RESTful API `$resource` will help us communicate with the server in Active Record like fashion. Although, in some applications the data entities returned by the server are not in the most appropriate format, which we want to use in the front-end.
+-->
 
+例如，让我们假设某个应用中，每个用户包含：
+<!--
 For instance, lets assume we have application in which each user has:
+-->
 
 - name
 - address
 - list of friends
 
+并且 API 提供了一下方法：
+<!--
 And our API has the methods:
+-->
 
+- `GET /user/:id` - 返回指定用户的用户名和地址
+- `GET /friends/:id` - 返回指定用户的好友列表
+<!--
 - `GET /user/:id` - returns the user's name and the address of given user
 - `GET /friends/:id` - returns the list of friends of given user
+-->
 
+一种可能的解决方案是使用两个不同的服务，分别用于以上两个方法。另一个更好的方案是，提供一个名为 `User` 的 service，它会在请求某个用户时加载该用户的好友。
+<!--
 Possible solution is to have two different services, one for the first method and one for the second one. Probably more useful solution would be if we have a single service called `User`, which loads the user's friends when we request the user:
+-->
 
 ```javascript
 app.factory('User', function ($q) {
@@ -1494,9 +1558,15 @@ app.factory('User', function ($q) {
 });
 ```
 
+如此一来，我们就创建了一个伪数据映射器，用来使我们的 API 适应 SPA (单页应用程序) 的需求。
+<!--
 This way we create pseudo-data mapper, which adapts our API according to the SPA requirements.
+-->
 
+我们可以以下方式使用 `User` 服务：
+<!--
 We can use the `User` service by:
+-->
 
 ```javascript
 function MainCtrl($scope, User) {
@@ -1507,7 +1577,10 @@ function MainCtrl($scope, User) {
 }
 ```
 
+以及如下模版片段：
+<!--
 And the following partial:
+-->
 
 ```html
 <div>
@@ -1526,17 +1599,26 @@ And the following partial:
 </div>
 ```
 
-#### Observer Pattern as an External Service
+#### <a name='observer-pattern-as-an-external-service'>观察者模式作为外部服务 (Observer Pattern as an External Service)</a>
 
-##### About
+##### 关于
 
+以下是一个取自[此处](https://github.com/greglbd/angular-observer-pattern)的例子。这是一个 AngularJS factory，它实作了一个观察者模式的 service。它很好的适用于 ControllerAs 方法，如果正确使用的话，它比 `$scope.$watch` 运行更有效率，比 `$emit` 和 `$broadcast` 更明确的对应唯一的 scope 或对象。
+<!--
 Below is an example taken from [here](https://github.com/greglbd/angular-observer-pattern). This is an angular factory which creates a service implementing the Observer Pattern.  It works well with the ControllerAs method of working as it can be much more efficient that `$scope.$watch` and more specific to a unique scope or object than $emit and $broadcast when used correctly.
+-->
 
+**用例：**你可以使用此模式来在两个使用同一模型但互不关联的控制器之间通讯。
+<!--
 **Use Case:** You would use this pattern to communicate between 2 controllers that use the same model but are not connected in anyway.
+-->
 
-##### Controller Example
+##### 控制器实例
 
+以下例子展示了如何添附 (attach)、通知 (notify) 以及解附 (detach) 一个事件。
+<!--
 Below example shows how to attach, notify and detach an event.
+-->
 
 ```javascript
 angular.module('app.controllers')
@@ -1559,7 +1641,11 @@ function ObserverExample(ObserverService, $timeout) {
   }, 5000);
 }
 ```
+
+另一种移除事件的方式
+<!--
 Alternative way to remove event
+-->
 
 ```javascript
 angular.module('app.controllers')
