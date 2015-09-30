@@ -112,6 +112,9 @@
 <li>
 <a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md">French Translation</a> by <a href="https://github.com/manekinekko">manekinekko</a>
 </li>
+<li>
+<a href="https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-zh-cn.md">Chinese Translation</a> by <a href="https://github.com/carlosliu">carlosliu</a>
+</li>
 </ul>
 
 <h2>
@@ -495,10 +498,10 @@ createInternalInjector(instanceCache, <span class="pl-k">function</span>(<span c
 myModule.factory(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
   <span class="pl-k">return</span> {
     <span class="pl-en">bar</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
-      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>I<span class="pl-cce">\'</span>m bar<span class="pl-pds">'</span></span>);
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>I<span class="pl-cce">\'</span>m bar<span class="pl-pds">'</span></span>);
     },
     <span class="pl-en">baz</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
-      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>I<span class="pl-cce">\'</span>m baz<span class="pl-pds">'</span></span>);
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>I<span class="pl-cce">\'</span>m baz<span class="pl-pds">'</span></span>);
     }
   };
 });
@@ -507,7 +510,7 @@ myModule.config(<span class="pl-k">function</span> (<span class="pl-smi">$provid
   $provide.decorator(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$delegate</span>) {
     <span class="pl-k">var</span> barBackup <span class="pl-k">=</span> $delegate.bar;
     <span class="pl-c1">$delegate</span>.<span class="pl-en">bar</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
-      <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>Decorated<span class="pl-pds">'</span></span>);
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>Decorated<span class="pl-pds">'</span></span>);
       barBackup.<span class="pl-c1">apply</span>($delegate, arguments);
     };
     <span class="pl-k">return</span> $delegate;
@@ -600,7 +603,7 @@ http.<span class="pl-c1">send</span>(params);</pre></div>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> User <span class="pl-k">=</span> $resource(<span class="pl-s"><span class="pl-pds">'</span>/users/:id<span class="pl-pds">'</span></span>),
     user <span class="pl-k">=</span> User.get({ id<span class="pl-k">:</span> <span class="pl-c1">42</span> });
-<span class="pl-en">console</span><span class="pl-c1">.log</span>(user); <span class="pl-c">//{}</span></pre></div>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(user); <span class="pl-c">//{}</span></pre></div>
 
 <p><code>console.log</code> would outputs an empty object. Since the AJAX request, which happens behind the scene, when <code>User.get</code> is invoked, is asynchronous, we don't have the actual user when <code>console.log</code> is called. Just after <code>User.get</code> makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy (a simple placeholder), which would be populated with the actual data once the client receives response by the server.</p>
 
@@ -924,13 +927,13 @@ Each scope can subscribe to any event with multiple callbacks (i.e. it can assoc
 
 <div class="highlight highlight-source-js"><pre>myModule.controller(<span class="pl-s"><span class="pl-pds">'</span>MainCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
   $scope.$on(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
-    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>foo received<span class="pl-pds">'</span></span>);
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>foo received<span class="pl-pds">'</span></span>);
   });
 });
 
 myModule.controller(<span class="pl-s"><span class="pl-pds">'</span>ParentCtrl<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
   $scope.$on(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">e</span>) {
-    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>foo received<span class="pl-pds">'</span></span>);
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>foo received<span class="pl-pds">'</span></span>);
   });
 });
 
@@ -1193,7 +1196,7 @@ ObserverExample.$inject<span class="pl-k">=</span> [<span class="pl-s"><span cla
   ObserverService.attach(callbackFunction, <span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>, id)
 
   <span class="pl-k">function</span> <span class="pl-en">callbackFunction</span>(<span class="pl-smi">params</span>){
-    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>now i know<span class="pl-pds">'</span></span>);
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>now i know<span class="pl-pds">'</span></span>);
     ObserverService.detachByEvent(<span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>)
   }
 
@@ -1214,7 +1217,7 @@ ObserverExample.$inject<span class="pl-k">=</span> [<span class="pl-s"><span cla
   ObserverService.attach(callbackFunction, <span class="pl-s"><span class="pl-pds">'</span>let_me_know<span class="pl-pds">'</span></span>, id)
 
   <span class="pl-k">function</span> <span class="pl-en">callbackFunction</span>(<span class="pl-smi">params</span>){
-    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>now i know<span class="pl-pds">'</span></span>);
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>now i know<span class="pl-pds">'</span></span>);
   }
 
   $timeout(<span class="pl-k">function</span>(){
