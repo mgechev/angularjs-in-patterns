@@ -44,7 +44,8 @@
 ## Translations
 
 - [Japanese Translation](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ja-jp.md) by [morizotter](https://twitter.com/morizotter)
-- [Russian Translation](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ru-ru.md) by [l.s.kramarov](https://github.com/lskramarov)
+- [Russian Translation 1](http://habrahabr.ru/post/250149/)
+- [Russian Translation 2](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-ru-ru.md) by [l.s.kramarov](https://github.com/lskramarov)
 - [French Translation](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-fr-fr.md) by [manekinekko](https://github.com/manekinekko)
 - [Chinese Translation](https://github.com/mgechev/angularjs-in-patterns/blob/master/i18n/README-zh-cn.md) by [carlosliu](https://github.com/carlosliu)
 
