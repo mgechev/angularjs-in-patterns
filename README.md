@@ -583,7 +583,7 @@ You can find more details for `$resource` [The magic of $resource](http://blog.m
 
 Since Martin Fowler states that
 
-> responsibility of the Active Record object is to take care of the communication with the databse in order to create...
+> responsibility of the Active Record object is to take care of the communication with the database in order to create...
 
 `$resource` does not implements exactly the Active Record pattern, since it communicates with RESTful service instead of the database. Anyway, we can consider it as "Active Record like RESTful communication".
 
@@ -1156,10 +1156,10 @@ function ObserverExample(ObserverService, $timeout, $scope) {
 
 ## References
 
-1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is wikipedia.
+1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is Wikipedia.
 2. [AngularJS' documentation](https://docs.angularjs.org)
 3. [AngularJS' git repository](https://github.com/angular/angular.js)
 4. [Page Controller](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
 5. [Patterns of Enterprise Application Architecture (P of EAA)](http://martinfowler.com/books/eaa.html)
-6. [Using Dependancy Injection to Avoid Singletons](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html)
+6. [Using Dependency Injection to Avoid Singletons](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html)
 7. [Why would one use the Publish/Subscribe pattern (in JS/jQuery)?](https://stackoverflow.com/questions/13512949/why-would-one-use-the-publish-subscribe-pattern-in-js-jquery)
