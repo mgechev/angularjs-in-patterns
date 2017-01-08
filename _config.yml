@@ -1,0 +1,8 @@
+title: AngularJS in Patterns
+description: "\"AngularJS in Patterns\" provides different look into AngularJS. It contains information where different design patterns are used inside the framework or any AngularJS application."
+google_analytics: UA-18060688-20
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
