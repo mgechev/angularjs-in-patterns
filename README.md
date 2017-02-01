@@ -1,4 +1,4 @@
-# Angular 1 in Patterns
+# AngularJS in Patterns
 
 <!--toc-->
 
@@ -7,14 +7,14 @@
 * [Translations](#translations)
 * [Abstract](#abstract)
 * [Introduction](#introduction)
-* [Angular 1 overview](#angular-1-overview)
+* [AngularJS overview](#angular-1-overview)
   * [Partials](#partials)
   * [Controllers](#controllers)
   * [Scope](#scope)
   * [Directives](#directives)
   * [Filters](#filters)
   * [Services](#services)
-* [Angular 1 Patterns](#angular-1-patterns)
+* [AngularJS Patterns](#angular-1-patterns)
   * [Services](#services-1)
     * [Singleton](#singleton)
     * [Factory Method](#factory-method)
@@ -53,19 +53,19 @@
 
 One of the best ways to learn something new is to see how the things you already know are used in it.
 This document does not intend to make its readers familiar with the design or architectural patterns; it suggests basic understanding of the concepts of the OOP, design patterns and architectural patterns.
-The goal of this paper is to describe how different software design and architectural patterns are applied in Angular 1 or any Angular 1 single-page application.
+The goal of this paper is to describe how different software design and architectural patterns are applied in AngularJS or any AngularJS single-page application.
 
 ## Introduction
 
-The document begins with brief overview of the Angular 1 framework. The overview explains the main Angular 1 components - directives, filters, controllers, services, scope. The second section lists and describes different design and architectural patterns, which are implemented inside the framework. The patterns are grouped by the Angular 1 component they are used in. If some patterns are used inside multiple components it will be explicitly mentioned.
+The document begins with brief overview of the AngularJS framework. The overview explains the main AngularJS components - directives, filters, controllers, services, scope. The second section lists and describes different design and architectural patterns, which are implemented inside the framework. The patterns are grouped by the AngularJS component they are used in. If some patterns are used inside multiple components it will be explicitly mentioned.
 
-The last section contains a few architectural patterns, which are commonly used inside most of the single-page applications built with Angular 1.
+The last section contains a few architectural patterns, which are commonly used inside most of the single-page applications built with AngularJS.
 
-## Angular 1 overview
+## AngularJS overview
 
-Angular 1 is a JavaScript framework developed by Google. It intends to provide a solid base for the development of CRUD Single-Page Applications (SPA).
+AngularJS is a JavaScript framework developed by Google. It intends to provide a solid base for the development of CRUD Single-Page Applications (SPA).
 SPA is a web application, which once loaded, does not require full page reload when the user performs any actions with it. This means that all application resources (data, templates, scripts, styles) should be loaded with the initial request or better - the information and resources should be loaded on demand.
-Since most of the CRUD applications has common characteristics and requirements, Angular 1 intends to provide the optimal set of them out-of-the-box. A few important features of Angular 1 are:
+Since most of the CRUD applications has common characteristics and requirements, AngularJS intends to provide the optimal set of them out-of-the-box. A few important features of AngularJS are:
 
 - two-way data binding
 - dependency injection
@@ -73,7 +73,7 @@ Since most of the CRUD applications has common characteristics and requirements,
 - testability
 - abstraction
 
-The separation of concerns is achieved by dividing each Angular 1 application into separate components, such as:
+The separation of concerns is achieved by dividing each AngularJS application into separate components, such as:
 
 - partials
 - controllers
@@ -85,9 +85,9 @@ These components can be grouped inside different modules, which helps to achieve
 
 ### Partials
 
-The partials are HTML strings. They may contain Angular 1 expressions inside the elements or their attributes. One of the distinctions between Angular 1 and the others frameworks is the fact that Angular 1' templates are not in an intermediate format, which needs to be turned into HTML (which is the case with mustache.js and handlebars, for example).
+The partials are HTML strings. They may contain AngularJS expressions inside the elements or their attributes. One of the distinctions between AngularJS and the others frameworks is the fact that AngularJS' templates are not in an intermediate format, which needs to be turned into HTML (which is the case with mustache.js and handlebars, for example).
 
-Initially each SPA loads `index.html` file. In the case of Angular 1 this file contains a set of standard and custom HTML attributes, elements and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, for example through the data binding provided by the framework.
+Initially each SPA loads `index.html` file. In the case of AngularJS this file contains a set of standard and custom HTML attributes, elements and comments, which configure and bootstrap the application. Each sub-sequenced user action requires only load of another partial or change of the state of the application, for example through the data binding provided by the framework.
 
 **Sample partial**
 
@@ -105,11 +105,11 @@ Initially each SPA loads `index.html` file. In the case of Angular 1 this file c
 </html>
 ```
 
-With Angular 1 expressions partials define what kind of actions should be performed for handling different user interactions. In the example above the value of the attribute `ng-click` states that the method `changeFoo` of the current *scope* will be invoked.
+With AngularJS expressions partials define what kind of actions should be performed for handling different user interactions. In the example above the value of the attribute `ng-click` states that the method `changeFoo` of the current *scope* will be invoked.
 
 ### Controllers
 
-The Angular 1 controllers are JavaScript functions, which help handling the user interactions with the web application (for example mouse events, keyboard events, etc.), by attaching methods to the *scope*. All required external, for the controllers, components are provided through the Dependency Injection mechanism of Angular 1. The controllers are also responsible for providing the *model* to the partials by attaching data to the *scope*. We can think of this data as *view model*.
+The AngularJS controllers are JavaScript functions, which help handling the user interactions with the web application (for example mouse events, keyboard events, etc.), by attaching methods to the *scope*. All required external, for the controllers, components are provided through the Dependency Injection mechanism of AngularJS. The controllers are also responsible for providing the *model* to the partials by attaching data to the *scope*. We can think of this data as *view model*.
 
 ```JavaScript
 function MyController($scope) {
@@ -128,13 +128,13 @@ For example, if we wire the sample controller above with the partial provided in
 1. Change the value of `foo` by typing in the input box. This will immediately reflect the value of `foo` because of the two-way data binding.
 2. Change the value of `foo` by clicking the button, which will be labeled `Click me to change foo!`.
 
-All the custom elements, attributes, comments or classes could be recognized as Angular 1 *directives* if they are previously defined as ones.
+All the custom elements, attributes, comments or classes could be recognized as AngularJS *directives* if they are previously defined as ones.
 
 ### Scope
 
-In Angular 1 scope is a JavaScript object, which is exposed to the partials. The scope could contain different properties - primitives, objects or methods. All methods attached to the scope could be invoked by evaluation of Angular 1 expression inside the partials associated with the given scope or direct call of the method by any component, which keeps reference to the scope. By using appropriate *directives*, the data attached to the scope could be binded to the view in such a way that each change in the partial will reflect a scope property and each change of a scope property will reflect the partial.
+In AngularJS scope is a JavaScript object, which is exposed to the partials. The scope could contain different properties - primitives, objects or methods. All methods attached to the scope could be invoked by evaluation of AngularJS expression inside the partials associated with the given scope or direct call of the method by any component, which keeps reference to the scope. By using appropriate *directives*, the data attached to the scope could be binded to the view in such a way that each change in the partial will reflect a scope property and each change of a scope property will reflect the partial.
 
-Another important characteristics of the scopes of any Angular 1 application is that they are connected into a prototypical chain (except scopes, which are explicitly stated as *isolated*). This way any child scope will be able to invoke methods of its parents since they are properties of its direct or indirect prototype.
+Another important characteristics of the scopes of any AngularJS application is that they are connected into a prototypical chain (except scopes, which are explicitly stated as *isolated*). This way any child scope will be able to invoke methods of its parents since they are properties of its direct or indirect prototype.
 
 Scope inheritance is illustrated in the following example:
 
@@ -165,7 +165,7 @@ With `div#child` is associated `ChildCtrl` but since the scope injected inside `
 
 ### Directives
 
-In Angular 1 the directives are the place where all DOM manipulations should be placed. As a rule of thumb, when you have DOM manipulations in your controller you should create a new directive or consider refactoring of already existing one, which could handle the required DOM manipulations.
+In AngularJS the directives are the place where all DOM manipulations should be placed. As a rule of thumb, when you have DOM manipulations in your controller you should create a new directive or consider refactoring of already existing one, which could handle the required DOM manipulations.
 Each directive has a name and logic associated with it. In the simplest case the directive contains only name and definition of *postLink* function, which encapsulates all the logic required for the directive. In more complex cases the directive could contain a lot of properties such as:
 
 - template
@@ -202,11 +202,11 @@ myModule.directive('alertButton', function () {
 
 In the example above the tag `<alert-button></alert-button>` will be replaced button element. When the user clicks on the button the string `42` will be alerted.
 
-Since the intent of this paper is not to explain the complete API of Angular 1, we will stop with the directives here.
+Since the intent of this paper is not to explain the complete API of AngularJS, we will stop with the directives here.
 
 ### Filters
 
-The filters in Angular 1 are responsible for encapsulating logic required for formatting data. Usually filters are used inside the partials but they are also accessible in the controllers, directives, *services* and other filters through Dependency Injection.
+The filters in AngularJS are responsible for encapsulating logic required for formatting data. Usually filters are used inside the partials but they are also accessible in the controllers, directives, *services* and other filters through Dependency Injection.
 
 Here is a definition of a sample filter, which changes the given string to uppercase:
 
@@ -257,11 +257,11 @@ function MyCtrl(Developer) {
 }
 ```
 
-## Angular 1 Patterns
+## AngularJS Patterns
 
-In the next a couple of sections, we are going to take a look how the traditional design and architectural patterns are composed in the Angular 1 components.
+In the next a couple of sections, we are going to take a look how the traditional design and architectural patterns are composed in the AngularJS components.
 
-In the last chapter we are going to take a look at some architectural patterns, which are frequently used in the development of Single-Page Applications with (but not limited to) Angular 1.
+In the last chapter we are going to take a look at some architectural patterns, which are frequently used in the development of Single-Page Applications with (but not limited to) AngularJS.
 
 ### Services
 
@@ -273,16 +273,16 @@ In the UML diagram bellow is illustrated the singleton design pattern.
 
 ![Singleton](https://rawgit.com/mgechev/angular-in-patterns/master/images/singleton.svg "Fig. 1")
 
-When given dependency is required by any component, Angular 1 resolves it using the following algorithm:
+When given dependency is required by any component, AngularJS resolves it using the following algorithm:
 
 - Takes its name and makes a lookup at a hash map, which is defined into a lexical closure (so it has a private visibility).
-- If the dependency exists Angular 1 pass it as parameter to the component, which requires it.
+- If the dependency exists AngularJS pass it as parameter to the component, which requires it.
 - If the dependency does not exists:
-  - Angular 1 instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm, for resolving all the dependencies required by the given dependency. This process may lead to circular dependency.
-  - Angular 1 caches it inside the hash map mentioned above.
-  - Angular 1 passes it as parameter to the component, which requires it.
+  - AngularJS instantiate it by calling the factory method of its provider (i.e. `$get`). Note that instantiating the dependency may require recursive call to the same algorithm, for resolving all the dependencies required by the given dependency. This process may lead to circular dependency.
+  - AngularJS caches it inside the hash map mentioned above.
+  - AngularJS passes it as parameter to the component, which requires it.
 
-We can take better look at the Angular 1' source code, which implements the method `getService`:
+We can take better look at the AngularJS' source code, which implements the method `getService`:
 
 ```JavaScript
 function getService(serviceName) {
@@ -347,7 +347,7 @@ In the code above we use the `config` callback in order to define new "provider"
 
 Each service, filter, directive and controller has a provider (i.e. object which factory method, called `$get`), which is responsible for creating the component's instance.
 
-We can dig a little bit deeper in Angular 1' implementation:
+We can dig a little bit deeper in AngularJS' implementation:
 
 ```JavaScript
 //...
@@ -397,7 +397,7 @@ From the example above we can notice how the `$get` method is actually used:
 instanceInjector.invoke(provider.$get, provider, undefined, servicename)
 ```
 
-The snippet above calls the `invoke` method of `instanceInjector` with the factory method (i.e. `$get`) of given service, as first argument. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of Angular 1, which was considered above. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
+The snippet above calls the `invoke` method of `instanceInjector` with the factory method (i.e. `$get`) of given service, as first argument. Inside `invoke`'s body `annotate` is called with first argument the factory method. Annotate resolves all dependencies through the dependency injection mechanism of AngularJS, which was considered above. When all dependencies are resolved the factory method is being called: `fn.apply(self, args)`.
 
 If we think in terms of the UML diagram above we can call the provider a "ConcreteCreator" and the actual component, which is being created a "Product".
 
@@ -413,7 +413,7 @@ There are a few benefits of using the factory method pattern in this case, becau
 
 ![Decorator](https://rawgit.com/mgechev/angular-in-patterns/master/images/decorator.svg "Fig. 4")
 
-Angular 1 provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
+AngularJS provides out-of-the-box way for extending and/or enhancing the functionality of already existing services. Using the method `decorator` of `$provide` you can create "wrapper" of any service you have previously defined or used by a third-party:
 
 ```JavaScript
 myModule.controller('MainCtrl', function (foo) {
@@ -442,10 +442,10 @@ myModule.config(function ($provide) {
   });
 });
 ```
-The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of Angular 1, reference to this local dependency is passed as first argument of the constructor function.
+The example above defines new service called `foo`. In the `config` callback is called the method `$provide.decorator` with first argument `"foo"`, which is the name of the service, we want to decorate and second argument factory function, which implements the actual decoration. `$delegate` keeps reference to the original service `foo`. Using the dependency injection mechanism of AngularJS, reference to this local dependency is passed as first argument of the constructor function.
 We decorate the service by overriding its method `bar`. The actual decoration is simply extending `bar` by invoking one more `console.log statement` - `console.log('Decorated');` and after that call the original `bar` method with the appropriate context.
 
-Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use [aspect-oriented programming](http://en.wikipedia.org/wiki/Aspect-oriented_programming). The only AOP framework for Angular 1 I'm aware of could be found at [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop).
+Using this pattern is especially useful when we need to modify the functionality of third party services. In cases when multiple similar decorations are required (like performance measurement of multiple methods, authorization, logging, etc.), we may have a lot of duplications and violate the DRY principle. In such cases it is useful to use [aspect-oriented programming](http://en.wikipedia.org/wiki/Aspect-oriented_programming). The only AOP framework for AngularJS I'm aware of could be found at [github.com/mgechev/angular-aop](https://github.com/mgechev/angular-aop).
 
 #### Facade
 
@@ -461,7 +461,7 @@ Using this pattern is especially useful when we need to modify the functionality
 
 ![Facade](https://rawgit.com/mgechev/angular-in-patterns/master/images/facade.svg "Fig. 11")
 
-There are a few facades in Angular 1. Each time you want to provide higher level API to given functionality you practically create a facade.
+There are a few facades in AngularJS. Each time you want to provide higher level API to given functionality you practically create a facade.
 
 For example, lets take a look how we can create an `XMLHttpRequest` POST request:
 
@@ -482,7 +482,7 @@ http.onreadystatechange = function () {
 }
 http.send(params);
 ```
-But if we want to post this data using the Angular 1' `$http` service we can:
+But if we want to post this data using the AngularJS' `$http` service we can:
 
 ```JavaScript
 $http({
@@ -518,7 +518,7 @@ We can distinguish three different types of proxy:
 - Remote Proxy
 - Protection Proxy
 
-In this sub-chapter we are going to take a look at Angular 1' implementation of Virtual Proxy.
+In this sub-chapter we are going to take a look at AngularJS' implementation of Virtual Proxy.
 
 In the snippet bellow, there is a call to the `get` method of `$resource` instance, called `User`:
 
@@ -530,7 +530,7 @@ console.log(user); //{}
 
 `console.log` would outputs an empty object. Since the AJAX request, which happens behind the scene, when `User.get` is invoked, is asynchronous, we don't have the actual user when `console.log` is called. Just after `User.get` makes the GET request it returns an empty object and keeps reference to it. We can think of this object as virtual proxy (a simple placeholder), which would be populated with the actual data once the client receives response by the server.
 
-How does this works with Angular 1? Well, lets consider the following snippet:
+How does this works with AngularJS? Well, lets consider the following snippet:
 
 ```JavaScript
 function MainCtrl($scope, $resource) {
@@ -542,7 +542,7 @@ function MainCtrl($scope, $resource) {
 ```html
 <span ng-bind="user.name"></span>
 ```
-Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`), which means that `user.name` will be undefined and nothing will be rendered. Internally Angular 1 will keep reference to this empty object. Once the server returns response for the get request, Angular 1 will populate the object with the data, received from the server. During the next `$digest` loop Angular 1 will detect change in `$scope.user`, which will lead to update of the view.
+Initially when the snippet above executes, the property `user` of the `$scope` object will be with value an empty object (`{}`), which means that `user.name` will be undefined and nothing will be rendered. Internally AngularJS will keep reference to this empty object. Once the server returns response for the get request, AngularJS will populate the object with the data, received from the server. During the next `$digest` loop AngularJS will detect change in `$scope.user`, which will lead to update of the view.
 
 #### Active Record
 
@@ -550,9 +550,9 @@ Initially when the snippet above executes, the property `user` of the `$scope` o
 
 ![Active Record](https://rawgit.com/mgechev/angular-in-patterns/master/images/active-record.svg "Fig. 7")
 
-Angular 1 defines a service called `$resource`. In the current version of Angular 1 (1.2+) it is being distributed in module outside of the Angular 1' core.
+AngularJS defines a service called `$resource`. In the current version of AngularJS (1.2+) it is being distributed in module outside of the AngularJS' core.
 
-According to the Angular 1' documentation `$resource` is:
+According to the AngularJS' documentation `$resource` is:
 
 >A factory which creates a resource object that lets you interact with RESTful server-side data sources.
 >The returned resource object has action methods which provide high-level behaviors without the need to interact with the low level $http service.
@@ -577,9 +577,9 @@ This way we can use the constructor function and its static methods by:
 User.get({ userid: userid });
 ```
 
-The code above will immediately return an empty object and keep reference to it. Once the response have been successfully returned and parsed, Angular 1 will populate this object with the received data (see [proxy](#proxy)).
+The code above will immediately return an empty object and keep reference to it. Once the response have been successfully returned and parsed, AngularJS will populate this object with the received data (see [proxy](#proxy)).
 
-You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [Angular 1' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
+You can find more details for `$resource` [The magic of $resource](http://blog.mgechev.com/2014/02/05/angularjs-resource-active-record-http/) and [AngularJS' documentation](https://docs.angularjs.org/api/ngResource/service/$resource).
 
 Since Martin Fowler states that
 
@@ -595,7 +595,7 @@ Since Martin Fowler states that
 
 In some cases you need to do some kind of pre and/or post processing of HTTP requests. In the case of the Intercepting Filters you pre/post process given HTTP request/response in order to include logging, security or any other concern, which is influenced by the request body or headers. Basically the Intercepting Filters pattern include a chain of filters, each of which process data in given order. The output of each filter is input of the next one.
 
-In Angular 1 we have the idea of the Intercepting Filters in `$httpProvider`. `$httpProvider` has an array property called `interceptors`, which contains a list of objects. Each object may have properties called: `request`, `response`, `requestError`, `responseError`.
+In AngularJS we have the idea of the Intercepting Filters in `$httpProvider`. `$httpProvider` has an array property called `interceptors`, which contains a list of objects. Each object may have properties called: `request`, `response`, `requestError`, `responseError`.
 
 `requestError` is an interceptor, which gets called when a previous interceptor threw an error or resolved with a rejection, respectively `responseError` is being called when the previous `response` interceptor has thrown an error.
 
@@ -628,7 +628,7 @@ According to the Gang of Four, MVC is nothing more than combination of:
 - Composite
 - Observer
 
-They state that the view is composition of components. In Angular 1 the situation is similar. Our views are formed by a composition of directives and DOM elements, on which these directives could be applied.
+They state that the view is composition of components. In AngularJS the situation is similar. Our views are formed by a composition of directives and DOM elements, on which these directives could be applied.
 
 Lets look at the following example:
 
@@ -671,8 +671,8 @@ In the second, JavaScript, example we see that the `template` property of the di
 
 ![Interpreter](https://rawgit.com/mgechev/angular-in-patterns/master/images/interpreter.svg "Fig. 6")
 
-Behind its `$parse` service, Angular 1 provides its own implementation of interpreter of a DSL (Domain Specific Language). The used DSL is simplified and modified version of JavaScript.
-The main differences between the JavaScript expressions and Angular 1 expressions that Angular 1 expressions:
+Behind its `$parse` service, AngularJS provides its own implementation of interpreter of a DSL (Domain Specific Language). The used DSL is simplified and modified version of JavaScript.
+The main differences between the JavaScript expressions and AngularJS expressions that AngularJS expressions:
 
 - may contain filters with UNIX like pipe syntax
 - don't throw any errors
@@ -690,7 +690,7 @@ var Parser;
 
 Once given expression have been tokenized it is cached internally, because of performance concerns.
 
-The terminal expressions in the Angular 1 DSL are defined as follows:
+The terminal expressions in the AngularJS DSL are defined as follows:
 
 ```JavaScript
 var OPERATORS = {
@@ -725,9 +725,9 @@ var OPERATORS = {
 
 We can think of the function associated with each terminal as implementation of the `AbstractExpression`'s interface.
 
-Each `Client` interprets given Angular 1 expression in a specific context - specific scope.
+Each `Client` interprets given AngularJS expression in a specific context - specific scope.
 
-Few sample Angular 1 expressions are:
+Few sample AngularJS expressions are:
 
 ```JavaScript
 // toUpperCase filter is applied to the result of the expression
@@ -770,8 +770,8 @@ For example if we evaluate the template above in the context of the following ob
   <strong>baz</strong>
 ```
 
-Angular 1 templates are actually HTML, they are not in an intermediate format like the traditional templates are.
-What Angular 1 compiler does is to traverse the DOM tree and look for already known directives (elements, attributes, classes or even comments). When Angular 1 finds any of these directives it invokes the logic associated with them, which may involve evaluation of different expressions in the context of the current scope.
+AngularJS templates are actually HTML, they are not in an intermediate format like the traditional templates are.
+What AngularJS compiler does is to traverse the DOM tree and look for already known directives (elements, attributes, classes or even comments). When AngularJS finds any of these directives it invokes the logic associated with them, which may involve evaluation of different expressions in the context of the current scope.
 
 For example:
 
@@ -798,9 +798,9 @@ will produce the same result as the one above. The main difference here is that 
 
 ![Observer](https://rawgit.com/mgechev/angular-in-patterns/master/images/observer.svg "Fig. 7")
 
-There are two basic ways of communication between the scopes in an Angular 1 application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. Angular 1 provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them. This allows decoupling between the different scopes, non of the scopes should be aware of the rest of the scopes.
+There are two basic ways of communication between the scopes in an AngularJS application. The first one is calling methods of parent scope by a child scope. This is possible since the child scope inherits prototypically by its parent, as mentioned above (see [Scope](#scope)). This allows communication in a single direction - child to parent. Some times it is necessary to call method of given child scope or notify it about a triggered event in the context of the parent scope. AngularJS provides built-in observer pattern, which allows this. Another possible use case, of the observer pattern, is when multiple scopes are interested in given event but the scope, in which context the event is triggered, is not aware of them. This allows decoupling between the different scopes, non of the scopes should be aware of the rest of the scopes.
 
-Each Angular 1 scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as an observer - an object, which implements the `Observer` interface (in JavaScript the functions are first-class, so we can provide only implementation of the `notify` method):
+Each AngularJS scope has public methods called `$on`, `$emit` and `$broadcast`. The method `$on` accepts topic as first argument and callback as second. We can think of the callback as an observer - an object, which implements the `Observer` interface (in JavaScript the functions are first-class, so we can provide only implementation of the `notify` method):
 
 ```JavaScript
 function ExampleCtrl($scope) {
@@ -836,7 +836,7 @@ For a best practice example see [Observer Pattern as an External Service](#obser
 
 ![Chain of Responsibilities](https://rawgit.com/mgechev/angular-in-patterns/master/images/chain-of-responsibilities.svg "Fig. 5")
 
-As stated above the scopes in an Angular 1 application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
+As stated above the scopes in an AngularJS application form a hierarchy known as the scope chain. Some of the scopes are "isolated", which means that they don't inherit prototypically by their parent scope, but are connected to it via their `$parent` property.
 
 When `$emit` or `$broadcast` are called we can think of the scope chain as event bus, or even more accurately chain of responsibilities. Once the event is triggered it is emitted downwards or upwards (depending on the method, which was called). Each subsequent scope may:
 
@@ -873,7 +873,7 @@ The different handlers from the UML diagram above are the different scopes, inje
 
 ![Command](https://rawgit.com/mgechev/angular-in-patterns/master/images/command.svg "Fig. 11")
 
-Before continuing with the application of the command pattern lets describe how Angular 1 implements data binding.
+Before continuing with the application of the command pattern lets describe how AngularJS implements data binding.
 
 When we want to bind our model to the view we use the directives `ng-bind` (for single-way data binding) and `ng-model` (for two-way data binding). For example, if we want each change in the model `foo` to reflect the view we can:
 
@@ -881,7 +881,7 @@ When we want to bind our model to the view we use the directives `ng-bind` (for 
 <span ng-bind="foo"></span>
 ```
 
-Now each time we change the value of `foo` the inner text of the span will be changed. We can achieve the same effect with more complex Angular 1 expressions, like:
+Now each time we change the value of `foo` the inner text of the span will be changed. We can achieve the same effect with more complex AngularJS expressions, like:
 
 ```html
 <span ng-bind="foo + ' ' + bar | uppercase"></span>
@@ -889,7 +889,7 @@ Now each time we change the value of `foo` the inner text of the span will be ch
 
 In the example above the value of the span will be the concatenated uppercased value of `foo` and `bar`. What happens behind the scene?
 
-Each `$scope` has method called `$watch`. When the Angular 1 compiler find the directive `ng-bind` it creates a new watcher of the expression `foo + ' ' + bar | uppercase`, i.e. `$scope.$watch("foo + ' ' + bar | uppercase", function () { /* body */ });`. The callback will be triggered each time the value of the expression change. In the current case the callback will update the value of the span.
+Each `$scope` has method called `$watch`. When the AngularJS compiler find the directive `ng-bind` it creates a new watcher of the expression `foo + ' ' + bar | uppercase`, i.e. `$scope.$watch("foo + ' ' + bar | uppercase", function () { /* body */ });`. The callback will be triggered each time the value of the expression change. In the current case the callback will update the value of the span.
 
 Here are the first a couple of lines of the implementation of `$watch`:
 
@@ -908,7 +908,7 @@ $watch: function(watchExp, listener, objectEquality) {
 //...
 ```
 
-We can think of the `watcher` object as a command. The expression of the command is being evaluated on each [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) loop. Once Angular 1 detects change in the expression, it invokes the `listener` function. The `watcher` command encapsulates the whole information required for watching given expression and delegates the execution of the command to the `listener` (the actual receiver). We can think of the `$scope` as the command's `Client` and the `$digest` loop as the command's `Invoker`.
+We can think of the `watcher` object as a command. The expression of the command is being evaluated on each [`"$digest"`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) loop. Once AngularJS detects change in the expression, it invokes the `listener` function. The `watcher` command encapsulates the whole information required for watching given expression and delegates the execution of the command to the `listener` (the actual receiver). We can think of the `$scope` as the command's `Client` and the `$digest` loop as the command's `Invoker`.
 
 ### Controllers
 
@@ -922,11 +922,11 @@ According to [4](#references) the page controller:
 
 >Page Controller pattern accept input from the page request, invoke the requested actions on the model, and determine the correct view to use for the resulting page. Separate the dispatching logic from any view-related code
 
-Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) page controllers can form a hierarchy. In Angular 1 we have controllers, which are with more limited scope of responsibilities. They don't accept user requests, since this is responsibility of the `$route` or `$state` services and the page rendering is responsibility of the directives `ng-view`/`ui-view`.
+Since there is a lot of duplicate behavior between the different pages (like rendering footers, headers, taking care of the user's session, etc.) page controllers can form a hierarchy. In AngularJS we have controllers, which are with more limited scope of responsibilities. They don't accept user requests, since this is responsibility of the `$route` or `$state` services and the page rendering is responsibility of the directives `ng-view`/`ui-view`.
 
-Similarly to the page controllers, Angular 1 controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the Angular 1 controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.
+Similarly to the page controllers, AngularJS controllers handle user interactions, provide and update the models. The model is exposed to the view when it is being attached to the scope, all methods invoked by the view, in result of user actions, are ones, which are already attached to the scope. Another similarity between the page controllers and the AngularJS controllers is the hierarchy, which they form. It corresponds to the scope hierarchy. That way common actions can be isolated to the base controllers.
 
-The controllers in Angular 1 are quite similar to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
+The controllers in AngularJS are quite similar to the code-behind in ASP.NET WebForms, since their responsibilities almost overlap.
 Here is an example hierarchy between few controllers:
 
 ```HTML
@@ -995,7 +995,7 @@ In the example above we have IIFE (Immediately-Invoked Function Expression), whi
 
 In this case the user of the `Page` object doesn't has direct access to the `title` variable, which is defined inside the local scope of the IIFE.
 
-The module pattern is very useful when defining services in Angular 1. Using this pattern we can simulate (and actually achieve) privacy:
+The module pattern is very useful when defining services in AngularJS. Using this pattern we can simulate (and actually achieve) privacy:
 
 ```javascript
 app.factory('foo', function () {
@@ -1024,7 +1024,7 @@ Once we want to inject `foo` inside any other component we won't be able to use 
 
 ![Data Mapper](https://rawgit.com/mgechev/angular-in-patterns/master/images/data-mapper.svg "Fig. 10")
 
-As the description above states, the data mapper is used for bidirectional transfer of data between a persistent data store and an in memory data representation. Usually our Angular 1 application communicates with API server, which is written in any server-side language (Ruby, PHP, Java, JavaScript, etc.).
+As the description above states, the data mapper is used for bidirectional transfer of data between a persistent data store and an in memory data representation. Usually our AngularJS application communicates with API server, which is written in any server-side language (Ruby, PHP, Java, JavaScript, etc.).
 
 Usually, if we have RESTful API `$resource` will help us communicate with the server in Active Record like fashion. Although, in some applications the data entities returned by the server are not in the most appropriate format, which we want to use in the front-end.
 
@@ -1157,8 +1157,8 @@ function ObserverExample(ObserverService, $timeout, $scope) {
 ## References
 
 1. [Wikipedia](https://en.wikipedia.org/wiki). The source of all brief descriptions of the design patterns is Wikipedia.
-2. [Angular 1' documentation](https://docs.angularjs.org)
-3. [Angular 1' git repository](https://github.com/angular/angular.js)
+2. [AngularJS' documentation](https://docs.angularjs.org)
+3. [AngularJS' git repository](https://github.com/angular/angular.js)
 4. [Page Controller](http://msdn.microsoft.com/en-us/library/ff649595.aspx)
 5. [Patterns of Enterprise Application Architecture (P of EAA)](http://martinfowler.com/books/eaa.html)
 6. [Using Dependency Injection to Avoid Singletons](http://googletesting.blogspot.com/2008/05/tott-using-dependancy-injection-to.html)
