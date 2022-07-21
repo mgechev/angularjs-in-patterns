@@ -269,7 +269,7 @@ In the last chapter we are going to take a look at some architectural patterns, 
 
 >The singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system. The concept is sometimes generalized to systems that operate more efficiently when only one object exists, or that restrict the instantiation to a certain number of objects.
 
-In the UML diagram bellow is illustrated the singleton design pattern.
+The UML diagram below illustrates the singleton design pattern.
 
 ![Singleton](https://rawgit.com/mgechev/angular-in-patterns/master/images/singleton.svg "Fig. 1")
 
@@ -520,7 +520,7 @@ We can distinguish three different types of proxy:
 
 In this sub-chapter we are going to take a look at AngularJS' implementation of Virtual Proxy.
 
-In the snippet bellow, there is a call to the `get` method of `$resource` instance, called `User`:
+In the snippet below, there is a call to the `get` method of `$resource` instance, called `User`:
 
 ```JavaScript
 var User = $resource('/users/:id'),
@@ -845,7 +845,7 @@ When `$emit` or `$broadcast` are called we can think of the scope chain as event
 - Pass the event to the next scope in the chain without handling it
 - Stop the event propagation without handling it
 
-In the example bellow you can see an example in which `ChildCtrl` triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in `ParentCtrl` and the one used in `MainCtrl`) are going to handle the event by logging into the console: `"foo received"`. If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
+In the example below, `ChildCtrl` triggers an event, which is propagated upwards through the scope chain. In the case above each of the parent scopes (the one used in `ParentCtrl` and the one used in `MainCtrl`) are going to handle the event by logging into the console: `"foo received"`. If any of the scopes should be considered as final destination it can call the method `stopPropagation` of the event object, passed to the callback.
 
 ```JavaScript
 myModule.controller('MainCtrl', function ($scope) {
